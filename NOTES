@@ -1,0 +1,255 @@
+Desiderata: provide an IP stack that is sufficient for a NAT box.
+
+Approach: an asymmetric IP protocol stack 
+
+Network architecture:
+
+                       Ethernet (VLAN 0)
+          A standard network that forms 'Internet side'
+        ---------------------------------------------------
+                               |                      |
+                            -------                 ----
+                           |       |               | H0 |
+           ----------------|   R   |--              ----
+          |                |       |  |
+          |                 -------   |
+          |                           |
+          | These two networks form   |
+          | the 'backside' of NAT.    |
+          |                           |
+          |                           |
+          | Othernet1 (VLAN1)         | Othernet2 (VLAN 2)
+        ----------------------      -----------------------
+                  |                           |
+                ----                         ----
+               | H1 |                       | H2 |
+                ----                         ----
+
+Need a version of the code to act as a normal host on the Ethernet (H0),
+a host on Othernet1 (H1), a host on Othernet2 (h2), or a router (R).
+
+Software Architecture: three network "interfaces", each with its own
+network input process and queue of packets.  For now, an input process,
+netiface_in, reads from the underlying Ethernet and demultiplexes onto
+the three interfaces.  The code uses Ethernet multicast addresses to
+create the illusion of separate VLANs.  If multicast is not availbale,
+the code could be modified to use the Ethernet packet type field.
+
+The process structure is:
+
+                -------      -------       -------
+               | netin |    | netin |     | netin |
+                -------      -------       -------
+                   ^            ^             ^
+                   |            |             |
+           --------------------------------------------
+          | 0 (Ethernet) | 1 (Othernet) | 2 (Othernet) |   interfaces
+           --------------------------------------------
+                   ^            ^             ^
+                   |            |             |
+                    ---------   |   ----------
+                             |  |  |
+                             |  |  |
+                          -------------
+                         |  raw_input   |
+                          -------------
+                                ^
+                                |
+                              ETHER
+
+where the raw input process reads from the Ethernet device and
+uses the Ethernet address to demultiplex packets onto the
+correct interface.  Packets sent to the device's unicast
+Ethernet address or to the all-1s Ethernet broadcast address
+are delivered to interface 0.
+
+Startup:
+
+   - Interface 0 (Ethernet) is the only interface that's "up".
+
+   - The raw input passes all packets to interface 0
+
+   - Xinu starts and a call to getlocalip triggers a normal
+	DHCP request to obtain an IP address.
+
+   - Netstart prompts user for a BINGID and to whether to
+     configure the system as a host or router.  For a host,
+     the user must also specify a network (interface 0, 1,
+     or 2).
+
+   - From the IP address of the device and BINGID, set up
+     the emulated mac and emulated IP addresses in all
+     Othernet interface structures
+
+   - Set interface status of the interfaces to reflect
+     the answer the user gave above
+
+   - If a host on an Othernet, set the default route to
+	the well-known IP address of the router (e.g.,
+	10.X.Y.100.
+
+Output of locally-generated datagrams:
+
+status = ipsend(packet)  /* send an outgoing IP datagram */
+
+   - If ipaddr matches 255.255.255.255, send over the first
+	interface that is available (initially, interface 0)
+   - if ipaddr matches 127.0.0.0/8, deliver to local stack
+	Could we get away (a) find the first interface that's
+	"up", (b) set the source IP address to interface
+	unicast address, and (c) enqueue it on the interface?
+   - if ipaddr matches local IP unicast address of interface i,
+	set IP source to the unicast address of interface i and
+	send back to interface i (discard if interface queue
+	is full)
+   - if ipaddr matches IP broadcast address of interface i,
+	set source to unicast address of interface i and
+	broadcast over interface i
+   - If net portion of ipaddr matches network portion of
+	interface i, use ARP send to host over interface i
+   - Search interfaces: if an interface is enabled and has a
+	default route set, send to default router over the
+	interface (using ARP to resolve router address)
+
+iproute(ipaddr)	/* chooses an interface for a given IP address */
+
+   - If ipaddr matches 255.255.255.255, return the first
+	interface that is available (initially the Ethernet)
+   - if ipaddr matches 127.0.0.0/8, return the first
+	interface that is available (initially the Ethernet)
+   - If ipaddr matches an interface unicast IP address, an
+	interface net broadcast address, or the net portion
+	of an interface address, return the interface
+   - Search interfaces: if an interface is enabled and has a
+	default route set, return the interface
+   - Return SYSERR
+
+netin(iface)  /* Repeatedly read and process packets from aninterface */
+   -While (TRUE) {
+	- Obtain next packet
+	- If ARP, send to arp_in(iface)
+	- If IP, send to ip_in(iface)
+	- Ignore everything else
+    }
+
+arp_in(iface)
+   - Find ARP table for interface iface
+   - Run ARP code using table found above
+
+
+ip_in (iface) /* Handle IP packets that arrive over an interface */
+   - Verify header checksum and IP version
+   - Verify that IP source is zero or network portion of IP source
+	matches network portion of Ethernet (or discard)
+   -If (iface == 0) { /* Ethernet */
+	-If dest IP is all-1s, dest matches the interface IP unicast
+		address, or dest matches the interface broadcast address,
+		send to nat_in
+	- Otherwise drop the packet	
+    } else {  /* othernet */
+	-If dest IP is all-1s, dest matches the interface IP unicast
+	   address, or dest matches the interface broadcast address,
+		send to local stack
+	- If dest IP matches some othernet unicast or broadcast address,
+		or the net portion of dest matches the net portion of an
+		Othernet address)
+		enqueue for transmission over the othernet
+	-Otherwise send to nat_out
+    }	
+
+nat_in()	/* NAT an incoming packet */
+   -If UDP and port is in the NAT table, rewrite destination IP and
+	dest port and then enqueue for output to host on Othernet
+   -Else if ICMP and ID is in the NAT table, rewrite destination IP and
+	ICMP ID and then enqueue for output to host on Othernet
+   -Else deliver to local stack
+
+nat_out()
+   -If UDP {
+	- If entry not already in NAT table, add it
+	- Rewrite source IP address and source port number according to
+		NAT table, and then enqueue for output over the Ethernet
+    }
+   -If ICMP {
+	- If entry not already in NAT table, add it
+	- Rewrite ICMP ID according to NAT table, and then enqueue
+		for output over the Ethernet
+    }
+
+
+UDP
+	When registering a UDP port, application can specify all four items:
+		remote IP address
+		remote protocol port
+		local IP address
+		local protocol port
+	or application can leave off local IP address and the
+	appropriate local IP address will be selected automatically
+	based on the destination
+	If all four are specified, the local IP address must be
+	one of the valid interface unicast addresses
+
+ICMP
+	ping of XXXX uses iproute to find an interface and then
+	sends the request over that interface
+	incoming ICMP is either natted or processed locally
+
+----------------------------------------------------------------------------
+
+Addresses
+
+ETHER0
+  MAC unicast   Set from NIC card
+  MAC broadcast 0xff 0xff 0xff 0xff 0xff 0xff
+
+  IP  unicast   Set from DHCP to  P.Q.R.S
+  IP  mask      Set from DHCP
+  IP  net       Set from above  (unicast&mask)
+  IP  broadcast Set from above  (net | ~mask)
+
+OTHERNET1
+  MAC unicast   0x11   P    Q    R    S  BINGID
+  MAC broadcast 0x11 0xff 0xff 0xff 0xff BINGID
+
+  IP  unicast   10.1.R.S
+  IP  mask      255.255.0.0
+  IP  net       10.1.0.0/16
+  IP  broadcast 10.1.255.255
+
+OTHERNET2
+  MAC unicast   0x21   P    Q    R    S  BINGID
+  MAC broadcast 0x21 0xff 0fxx 0xff 0xff BINGID
+
+  IP  unicast   10.2.R.S
+  IP  mask      255.255.0.0
+  IP  net       10.2.0.0/16
+  IP  broadcast 10.2.255.255
+
+OTHERNET3
+  MAC unicast   0x31 IP0  IP1  IP2  IP3  BINGID
+  MAC broadcast 0x31 0xff 0fxx 0xff 0xff BINGID
+
+
+  IP  unicast   10.3.R.S
+  IP  mask      255.255.0.0
+  IP  net       10.3.0.0/16
+  IP  broadcast 10.3.255.255
+
+
+----------------------------------------------------------------------------
+
+
+			MULTICAST AND ETHERNET TYPES
+
+Can Othernets use broadcast instead of multicast?
+
+   Make Ethernet types as follows:
+
+Lat base type be 0x700
+
+Let BINGID range from 0 through 31, call it B
+
+  ARP on     ARP on    IP on      IP on     IPv6 on    IPv6 on
+Othernet1  Othernet2  Othernet1  Othernet2  Othernet1  Othernet2
+ 0x700+B    0x720+B     0x740+B   0x760+B    0x780+B    0x7A0+B
+

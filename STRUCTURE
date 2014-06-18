@@ -1,0 +1,66 @@
+
+
+                               Applications
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           ^      ^                                 |         |
+           |      |                                 |         |
+           |      |                                 V         V
+      udp_recv icmp_recv                       icmp_send  udp_send
+           |    ^                                   |         |
+           |    |                       -------     |         |
+           |    |  ---->ip_enqueue....>| ipout |--------------------
+           |    | |       ^    ^        -------     |         |     |
+           |    | |       |    |           |        |         |     |
+       udp_in icmp_in     |    |           |        |    -----      |
+           ^    ^         |     --------------      |   |           |
+           |    |         |                |  |     |   |           |
+           |    |         |                |  |     |   |           |
+           |    |         |                V  |     V   V           |
+          ip_local<--------------------------------ip_send--------->|
+           ^   ^          |                   |                     |
+           |   |          |                   |                     |
+           |    ----------------------        |                     |
+           |              |           |       |                     |
+           |       -------            |       |                     |
+           |      |                   |       |                     |
+           |<--   |                   |<--    |                     |
+           |   |  |                   |   |   |                     |
+           |  nat_in                  |  nat_out                    |
+           |   ^                      |   ^      On input, all of   |
+           |   |                      |   |      IP, UDP, and ICMP  |
+	   |   |                      |   |      are all in host    |
+	   |   |                      |   |      host byte order    |
+=========================================================================================
+           |   |                      |   |                         | On output, the MAC
+           |   |                      |   |                         | address and iface
+   arp_in  ip_in              arp_in  ip_in                         | are filled in;
+      ^     ^      same as       ^     ^    On input the Ethernet   | headers are in HBO
+      |     |     Othernet2      |     |    header is converted;    | and checksums must
+      |     |         |          |     |    all other headers       | be computed
+      |     |         |          |     |    must be converted       V 
+      |     |         |          |     |    to host byte order    ip_out
+========================================================================================
+      |     |         |          |     |                            |
+      -------      -------       -------                            |
+     | netin |    | netin |     | netin |                           |
+      -------      -------       -------                            |
+         ^            ^             ^                               |
+         |            |             |                               |
+         |            |             |                               |
+**********************************************                      |
+* 0 (Ethernet) | 1 (Othernet) | 2 (Othernet) *   interfaces         |
+**********************************************                      |
+         ^            ^             ^                               |
+         |            |             |                               |
+          ---------   |   ----------                                |
+                   |  |  |                                          |
+                   |  |  |                                          |
+                 ----------                                         |
+                |  raw_in  |                                        |
+                 ----------                                         |
+                      ^                                             |
+                      |                                             |
+                    ETHER<------------------------------------------
+
+A box denotes a process. Interfaces are surrounded by stars.
+Both ipout and ip_send call arp_resolve to resolve a next-hop address.

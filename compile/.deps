@@ -1,0 +1,2100 @@
+start.o: ../system/start.S
+ctxsw.o: ../system/ctxsw.S ../include/icu.s
+clkint.o: ../system/clkint.S ../include/icu.s
+intr.o: ../system/intr.S ../include/icu.s ../system/../system/xint.s
+ascdate.o: ../system/ascdate.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdio.h
+bufinit.o: ../system/bufinit.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+chprio.o: ../system/chprio.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+clkinit.o: ../system/clkinit.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+close.o: ../system/close.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+conf.o: ../system/conf.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+control.o: ../system/control.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+create.o: ../system/create.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+freebuf.o: ../system/freebuf.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+freemem.o: ../system/freemem.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+getbuf.o: ../system/getbuf.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+getc.o: ../system/getc.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+getdev.o: ../system/getdev.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/string.h
+getitem.o: ../system/getitem.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+getmem.o: ../system/getmem.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+getpid.o: ../system/getpid.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+getprio.o: ../system/getprio.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+getstk.o: ../system/getstk.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+gettime.o: ../system/gettime.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+getutime.o: ../system/getutime.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+initialize.o: ../system/initialize.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/string.h
+i386.o: ../system/i386.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/icu.h ../include/stdio.h
+insert.o: ../system/insert.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+insertd.o: ../system/insertd.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+ioerr.o: ../system/ioerr.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+ionull.o: ../system/ionull.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+kill.o: ../system/kill.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+kprintf.o: ../system/kprintf.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdarg.h
+main.o: ../system/main.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/ramdisk.h ../include/stdio.h
+mkbufpool.o: ../system/mkbufpool.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+newqueue.o: ../system/newqueue.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+open.o: ../system/open.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+pci.o: ../system/pci.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/pci.h
+putc.o: ../system/putc.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+queue.o: ../system/queue.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+read.o: ../system/read.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+ready.o: ../system/ready.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+receive.o: ../system/receive.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+recvclr.o: ../system/recvclr.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+recvtime.o: ../system/recvtime.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+resched.o: ../system/resched.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+resume.o: ../system/resume.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+sched_cntl.o: ../system/sched_cntl.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+seek.o: ../system/seek.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+semcount.o: ../system/semcount.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+semcreate.o: ../system/semcreate.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+semdelete.o: ../system/semdelete.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+semreset.o: ../system/semreset.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+send.o: ../system/send.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+signal.o: ../system/signal.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+signaln.o: ../system/signaln.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+sleep.o: ../system/sleep.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+suspend.o: ../system/suspend.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+unsleep.o: ../system/unsleep.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+userret.o: ../system/userret.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+wait.o: ../system/wait.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+wakeup.o: ../system/wakeup.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+write.o: ../system/write.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+xdone.o: ../system/xdone.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+yield.o: ../system/yield.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+evec.o: ../system/evec.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdio.h
+lfdballoc.o: ../device/lfs/lfdballoc.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+lfdbfree.o: ../device/lfs/lfdbfree.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+lfflush.o: ../device/lfs/lfflush.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+lfgetmode.o: ../device/lfs/lfgetmode.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+lfiballoc.o: ../device/lfs/lfiballoc.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+lfibclear.o: ../device/lfs/lfibclear.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+lfibget.o: ../device/lfs/lfibget.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+lfibput.o: ../device/lfs/lfibput.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+lflClose.o: ../device/lfs/lflClose.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+lflControl.o: ../device/lfs/lflControl.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+lflGetc.o: ../device/lfs/lflGetc.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+lflInit.o: ../device/lfs/lflInit.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+lflPutc.o: ../device/lfs/lflPutc.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+lflRead.o: ../device/lfs/lflRead.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+lflSeek.o: ../device/lfs/lflSeek.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+lflWrite.o: ../device/lfs/lflWrite.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+lfsInit.o: ../device/lfs/lfsInit.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+lfsOpen.o: ../device/lfs/lfsOpen.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+lfsckfmt.o: ../device/lfs/lfsckfmt.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/ramdisk.h
+lfscreate.o: ../device/lfs/lfscreate.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/ramdisk.h
+lfsetup.o: ../device/lfs/lfsetup.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+lftruncate.o: ../device/lfs/lftruncate.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+mount.o: ../device/nam/mount.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+namInit.o: ../device/nam/namInit.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+namOpen.o: ../device/nam/namOpen.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+nammap.o: ../device/nam/nammap.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+ramClose.o: ../device/ram/ramClose.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+ramInit.o: ../device/ram/ramInit.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/ramdisk.h
+ramOpen.o: ../device/ram/ramOpen.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+ramRead.o: ../device/ram/ramRead.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/ramdisk.h
+ramWrite.o: ../device/ram/ramWrite.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/ramdisk.h
+rdsClose.o: ../device/rds/rdsClose.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rdsControl.o: ../device/rds/rdsControl.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rdsInit.o: ../device/rds/rdsInit.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rdsOpen.o: ../device/rds/rdsOpen.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rdsRead.o: ../device/rds/rdsRead.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rdsWrite.o: ../device/rds/rdsWrite.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rdsbufalloc.o: ../device/rds/rdsbufalloc.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rdscomm.o: ../device/rds/rdscomm.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rdsprocess.o: ../device/rds/rdsprocess.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+dot2ip.o: ../device/rfs/dot2ip.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+panic.o: ../device/rfs/panic.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rflClose.o: ../device/rfs/rflClose.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rflGetc.o: ../device/rfs/rflGetc.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rflInit.o: ../device/rfs/rflInit.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rflPutc.o: ../device/rfs/rflPutc.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rflRead.o: ../device/rfs/rflRead.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rflSeek.o: ../device/rfs/rflSeek.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rflWrite.o: ../device/rfs/rflWrite.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rfsControl.o: ../device/rfs/rfsControl.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rfsInit.o: ../device/rfs/rfsInit.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rfsOpen.o: ../device/rfs/rfsOpen.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rfscomm.o: ../device/rfs/rfscomm.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rfsgetmode.o: ../device/rfs/rfsgetmode.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+rfsndmsg.o: ../device/rfs/rfsndmsg.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+ttyControl.o: ../device/tty/ttyControl.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+ttyGetc.o: ../device/tty/ttyGetc.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+ttyInit.o: ../device/tty/ttyInit.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+ttyInter_in.o: ../device/tty/ttyInter_in.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+ttyInter_out.o: ../device/tty/ttyInter_out.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+ttyInterrupt.o: ../device/tty/ttyInterrupt.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+ttyKickOut.o: ../device/tty/ttyKickOut.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+ttyPutc.o: ../device/tty/ttyPutc.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+ttyRead.o: ../device/tty/ttyRead.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+ttyWrite.o: ../device/tty/ttyWrite.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+arp.o: ../net/arp.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+dhcp.o: ../net/dhcp.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+icmp.o: ../net/icmp.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+netin.o: ../net/netin.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+pdump.o: ../net/pdump.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+udp.o: ../net/udp.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+addargs.o: ../shell/addargs.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../shell/shprototypes.h
+lexan.o: ../shell/lexan.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+shell.o: ../shell/shell.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdio.h ../shell/shprototypes.h
+xsh_argecho.o: ../shell/xsh_argecho.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdio.h
+xsh_arp.o: ../shell/xsh_arp.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdio.h ../include/string.h
+xsh_cat.o: ../shell/xsh_cat.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdio.h ../include/string.h
+xsh_clear.o: ../shell/xsh_clear.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdio.h
+xsh_date.o: ../shell/xsh_date.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/string.h ../include/stdio.h
+xsh_devdump.o: ../shell/xsh_devdump.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdio.h
+xsh_echo.o: ../shell/xsh_echo.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdio.h
+xsh_exit.o: ../shell/xsh_exit.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h
+xsh_help.o: ../shell/xsh_help.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdio.h ../include/string.h
+xsh_ipaddr.o: ../shell/xsh_ipaddr.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/string.h ../include/stdio.h
+xsh_kill.o: ../shell/xsh_kill.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/string.h ../include/stdio.h
+xsh_led.o: ../shell/xsh_led.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdio.h ../include/string.h
+xsh_memdump.o: ../shell/xsh_memdump.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/string.h ../include/stdio.h
+xsh_memstat.o: ../shell/xsh_memstat.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdio.h ../include/string.h
+xsh_ping.o: ../shell/xsh_ping.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdio.h ../include/string.h
+xsh_ps.o: ../shell/xsh_ps.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdio.h ../include/string.h
+xsh_sleep.o: ../shell/xsh_sleep.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdio.h ../include/string.h
+xsh_udpdump.o: ../shell/xsh_udpdump.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdio.h ../include/string.h
+xsh_udpecho.o: ../shell/xsh_udpecho.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdio.h ../include/string.h
+xsh_udpeserver.o: ../shell/xsh_udpeserver.c ../include/xinu.h \
+ ../include/kernel.h ../include/conf.h ../include/process.h \
+ ../include/queue.h ../include/sched.h ../include/semaphore.h \
+ ../include/memory.h ../include/bufpool.h ../include/clock.h \
+ ../include/mark.h ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdio.h ../include/string.h
+xsh_uptime.o: ../shell/xsh_uptime.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/stdio.h ../include/string.h
+ethint.o: ../mon/ethint.S ../include/icu.s
+moncksum.o: ../mon/moncksum.S
+monclkint.o: ../mon/monclkint.S ../include/icu.s
+ethcmd.o: ../mon/ethcmd.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/mon/monnetwork.h ../include/./mon/monsystypes.h \
+ ../include/./mon/monconf.h ../include/./mon/monip.h \
+ ../include/./mon/monether.h ../include/./mon/monudp.h \
+ ../include/./mon/monbootp.h ../include/./mon/monarp.h \
+ ../include/./mon/monnetif.h ../include/mon/moneepro.h ../include/stdio.h
+ethdemux.o: ../mon/ethdemux.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/mon/monnetwork.h ../include/./mon/monsystypes.h \
+ ../include/./mon/monconf.h ../include/./mon/monip.h \
+ ../include/./mon/monether.h ../include/./mon/monudp.h \
+ ../include/./mon/monbootp.h ../include/./mon/monarp.h \
+ ../include/./mon/monnetif.h ../include/mon/monitor.h \
+ ../include/./mon/monnetwork.h ../include/./mon/monitor.h \
+ ../include/mon/moneepro.h ../include/stdio.h
+ethinit.o: ../mon/ethinit.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/mon/monnetwork.h ../include/./mon/monsystypes.h \
+ ../include/./mon/monconf.h ../include/./mon/monip.h \
+ ../include/./mon/monether.h ../include/./mon/monudp.h \
+ ../include/./mon/monbootp.h ../include/./mon/monarp.h \
+ ../include/./mon/monnetif.h ../include/mon/monitor.h \
+ ../include/./mon/monnetwork.h ../include/./mon/monitor.h \
+ ../include/mon/moneepro.h ../include/mon/mon3com.h \
+ ../include/mon/monintel.h ../include/mon/monpci.h ../include/stdio.h
+ethintr.o: ../mon/ethintr.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/mon/monnetwork.h ../include/./mon/monsystypes.h \
+ ../include/./mon/monconf.h ../include/./mon/monip.h \
+ ../include/./mon/monether.h ../include/./mon/monudp.h \
+ ../include/./mon/monbootp.h ../include/./mon/monarp.h \
+ ../include/./mon/monnetif.h ../include/mon/monitor.h \
+ ../include/./mon/monnetwork.h ../include/./mon/monitor.h \
+ ../include/mon/moneepro.h ../include/stdio.h
+ethrom.o: ../mon/ethrom.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/mon/monnetwork.h ../include/./mon/monsystypes.h \
+ ../include/./mon/monconf.h ../include/./mon/monip.h \
+ ../include/./mon/monether.h ../include/./mon/monudp.h \
+ ../include/./mon/monbootp.h ../include/./mon/monarp.h \
+ ../include/./mon/monnetif.h ../include/mon/monitor.h \
+ ../include/./mon/monnetwork.h ../include/./mon/monitor.h \
+ ../include/mon/moneepro.h ../include/stdio.h
+ethwrite.o: ../mon/ethwrite.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/mon/monnetwork.h ../include/./mon/monsystypes.h \
+ ../include/./mon/monconf.h ../include/./mon/monip.h \
+ ../include/./mon/monether.h ../include/./mon/monudp.h \
+ ../include/./mon/monbootp.h ../include/./mon/monarp.h \
+ ../include/./mon/monnetif.h ../include/mon/monitor.h \
+ ../include/./mon/monnetwork.h ../include/./mon/monitor.h \
+ ../include/stdio.h
+ethwstrt.o: ../mon/ethwstrt.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/mon/monnetwork.h ../include/./mon/monsystypes.h \
+ ../include/./mon/monconf.h ../include/./mon/monip.h \
+ ../include/./mon/monether.h ../include/./mon/monudp.h \
+ ../include/./mon/monbootp.h ../include/./mon/monarp.h \
+ ../include/./mon/monnetif.h ../include/mon/monitor.h \
+ ../include/./mon/monnetwork.h ../include/./mon/monitor.h \
+ ../include/mon/moneepro.h ../include/stdio.h
+mon3com.o: ../mon/mon3com.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/mon/monnetwork.h ../include/./mon/monsystypes.h \
+ ../include/./mon/monconf.h ../include/./mon/monip.h \
+ ../include/./mon/monether.h ../include/./mon/monudp.h \
+ ../include/./mon/monbootp.h ../include/./mon/monarp.h \
+ ../include/./mon/monnetif.h ../include/mon/mon3com.h \
+ ../include/mon/monpci.h ../include/mon/monitor.h \
+ ../include/./mon/monnetwork.h ../include/./mon/monitor.h \
+ ../include/stdio.h
+monarp.o: ../mon/monarp.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/mon/monnetwork.h ../include/./mon/monsystypes.h \
+ ../include/./mon/monconf.h ../include/./mon/monip.h \
+ ../include/./mon/monether.h ../include/./mon/monudp.h \
+ ../include/./mon/monbootp.h ../include/./mon/monarp.h \
+ ../include/./mon/monnetif.h ../include/mon/monitor.h \
+ ../include/./mon/monnetwork.h ../include/./mon/monitor.h \
+ ../include/stdio.h
+monboot.o: ../mon/monboot.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/mon/monnetwork.h ../include/./mon/monsystypes.h \
+ ../include/./mon/monconf.h ../include/./mon/monip.h \
+ ../include/./mon/monether.h ../include/./mon/monudp.h \
+ ../include/./mon/monbootp.h ../include/./mon/monarp.h \
+ ../include/./mon/monnetif.h ../include/mon/monitor.h \
+ ../include/./mon/monnetwork.h ../include/./mon/monitor.h \
+ ../include/stdio.h
+monbootp.o: ../mon/monbootp.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/mon/monnetwork.h ../include/./mon/monsystypes.h \
+ ../include/./mon/monconf.h ../include/./mon/monip.h \
+ ../include/./mon/monether.h ../include/./mon/monudp.h \
+ ../include/./mon/monbootp.h ../include/./mon/monarp.h \
+ ../include/./mon/monnetif.h ../include/mon/monitor.h \
+ ../include/./mon/monnetwork.h ../include/./mon/monitor.h \
+ ../include/mon/monbootp.h ../include/stdio.h
+mongpq.o: ../mon/mongpq.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/mon/monitor.h ../include/./mon/monnetwork.h \
+ ../include/./mon/monsystypes.h ../include/./mon/monconf.h \
+ ../include/./mon/monip.h ../include/./mon/monether.h \
+ ../include/./mon/monudp.h ../include/./mon/monbootp.h \
+ ../include/./mon/monarp.h ../include/./mon/monnetif.h \
+ ../include/./mon/monitor.h ../include/stdio.h
+monip.o: ../mon/monip.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/mon/monnetwork.h ../include/./mon/monsystypes.h \
+ ../include/./mon/monconf.h ../include/./mon/monip.h \
+ ../include/./mon/monether.h ../include/./mon/monudp.h \
+ ../include/./mon/monbootp.h ../include/./mon/monarp.h \
+ ../include/./mon/monnetif.h ../include/mon/monitor.h \
+ ../include/./mon/monnetwork.h ../include/./mon/monitor.h \
+ ../include/stdio.h
+monitor.o: ../mon/monitor.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/mon/monnetwork.h ../include/./mon/monsystypes.h \
+ ../include/./mon/monconf.h ../include/./mon/monip.h \
+ ../include/./mon/monether.h ../include/./mon/monudp.h \
+ ../include/./mon/monbootp.h ../include/./mon/monarp.h \
+ ../include/./mon/monnetif.h ../include/mon/monitor.h \
+ ../include/./mon/monnetwork.h ../include/./mon/monitor.h \
+ ../include/stdio.h
+monnet.o: ../mon/monnet.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/mon/monnetwork.h ../include/./mon/monsystypes.h \
+ ../include/./mon/monconf.h ../include/./mon/monip.h \
+ ../include/./mon/monether.h ../include/./mon/monudp.h \
+ ../include/./mon/monbootp.h ../include/./mon/monarp.h \
+ ../include/./mon/monnetif.h ../include/mon/monitor.h \
+ ../include/./mon/monnetwork.h ../include/./mon/monitor.h \
+ ../include/stdio.h
+monpci.o: ../mon/monpci.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/mon/monnetwork.h ../include/./mon/monsystypes.h \
+ ../include/./mon/monconf.h ../include/./mon/monip.h \
+ ../include/./mon/monether.h ../include/./mon/monudp.h \
+ ../include/./mon/monbootp.h ../include/./mon/monarp.h \
+ ../include/./mon/monnetif.h ../include/mon/mon3com.h \
+ ../include/mon/monpci.h ../include/mon/monitor.h \
+ ../include/./mon/monnetwork.h ../include/./mon/monitor.h \
+ ../include/stdio.h
+montftp.o: ../mon/montftp.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/mon/monnetwork.h ../include/./mon/monsystypes.h \
+ ../include/./mon/monconf.h ../include/./mon/monip.h \
+ ../include/./mon/monether.h ../include/./mon/monudp.h \
+ ../include/./mon/monbootp.h ../include/./mon/monarp.h \
+ ../include/./mon/monnetif.h ../include/mon/monitor.h \
+ ../include/./mon/monnetwork.h ../include/./mon/monitor.h \
+ ../include/mon/montftp.h ../include/mon/monbootp.h ../include/stdio.h
+montimer.o: ../mon/montimer.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/mon/monnetwork.h ../include/./mon/monsystypes.h \
+ ../include/./mon/monconf.h ../include/./mon/monip.h \
+ ../include/./mon/monether.h ../include/./mon/monudp.h \
+ ../include/./mon/monbootp.h ../include/./mon/monarp.h \
+ ../include/./mon/monnetif.h ../include/mon/monitor.h \
+ ../include/./mon/monnetwork.h ../include/./mon/monitor.h \
+ ../include/stdio.h
+monudp.o: ../mon/monudp.c ../include/xinu.h ../include/kernel.h \
+ ../include/conf.h ../include/process.h ../include/queue.h \
+ ../include/sched.h ../include/semaphore.h ../include/memory.h \
+ ../include/bufpool.h ../include/clock.h ../include/mark.h \
+ ../include/ports.h ../include/uart.h ../include/tty.h \
+ ../include/device.h ../include/interrupt.h ../include/file.h \
+ ../include/rfilesys.h ../include/rdisksys.h ../include/lfilesys.h \
+ ../include/ag71xx.h ../include/ether.h ../include/gpio.h \
+ ../include/net.h ../include/arp.h ../include/udp.h ../include/dhcp.h \
+ ../include/icmp.h ../include/name.h ../include/shell.h ../include/date.h \
+ ../include/prototypes.h ../include/com.h ../include/i386.h \
+ ../include/mon/monnetwork.h ../include/./mon/monsystypes.h \
+ ../include/./mon/monconf.h ../include/./mon/monip.h \
+ ../include/./mon/monether.h ../include/./mon/monudp.h \
+ ../include/./mon/monbootp.h ../include/./mon/monarp.h \
+ ../include/./mon/monnetif.h ../include/mon/monitor.h \
+ ../include/./mon/monnetwork.h ../include/./mon/monitor.h \
+ ../include/mon/montftp.h ../include/mon/monbootp.h ../include/stdio.h
