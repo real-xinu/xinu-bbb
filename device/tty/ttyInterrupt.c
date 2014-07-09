@@ -54,7 +54,6 @@ void ttyInterrupt(uint32 xnum) {
 		if(lsr & UART_LSR_BI) { /* Break Interrupt */
 			lsr = csrptr->buffer; /* Read the RHR register to acknowledge */
 		}
-		lsr = inb( (int)&csrptr->lsr );
 		return;
 
 	    /* Receiver data available or timed out */

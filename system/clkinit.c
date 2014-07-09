@@ -1,8 +1,6 @@
-/* clkinit.c - clkinit */
+/* clkinit.c - clkinit, clkint */
 
 #include <xinu.h>
-//#include <interrupt.h>
-//#include <clock.h>
 
 uint32	clktime;		/* seconds since boot			*/
 uint32	ctr1000 = 0;		/* milliseconds since boot		*/
@@ -19,24 +17,24 @@ uint32	preempt;		/* preemption counter			*/
  */
 void	clkinit(void)
 {
-	uint16	intv;			/* clock rate in KHz		*/
 	volatile struct am335x_timer1ms *csrptr = 0x44E31000;
+			/* Pointer to timer CSR in BBoneBlack	*/
 	volatile uint32 *clkctrl = AM335X_TIMER1MS_CLKCTRL_ADDR;
 
 	*clkctrl = AM335X_TIMER1MS_CLKCTRL_EN;
 	while((*clkctrl) != 0x2);
 
-	//kprintf("timer1ms reset...\n");
+	/* Reset the timer module */
+
 	csrptr->tiocp_cfg |= AM335X_TIMER1MS_TIOCP_CFG_SOFTRESET;
+
+	/* Wait until the reset os complete */
+
 	while((csrptr->tistat & AM335X_TIMER1MS_TISTAT_RESETDONE) == 0);
-	//kprintf("timer1ms reset done\n");
+
 	/* Set interrupt vector for clock to invoke clkint */
 
 	set_evec(67, (uint32)clkint);
-
-	/* clock rate is 1.190 Mhz; this is 1 ms interrupt rate */
-
-	//intv = 1193;	/* using 1193 instead of 1190 to fix clock skew	*/
 
 	sleepq = newqueue();	/* allocate a queue to hold the delta	*/
 				/* list of sleeping processes		*/
@@ -48,52 +46,87 @@ void	clkinit(void)
 
 	clktime = 0;		/* start counting seconds		*/
 
+	/* The following values are calculated for a timer */
+	/* that generates 1ms tick			   */
 	csrptr->tpir = 1000000;
 	csrptr->tnir = 0;
 	csrptr->tldr = 0xFFFFFFFF - 26000;
 
+	/* Set the timer to auto reload */
+
 	csrptr->tclr = AM335X_TIMER1MS_TCLR_AR;
+
+	/* Start the timer */
+
 	csrptr->tclr |= AM335X_TIMER1MS_TCLR_ST;
+
+	/* Enable overflow interrupt which will generate */
+	/* an interrupt every 1 ms			 */
+
 	csrptr->tier = AM335X_TIMER1MS_TIER_OVF_IT_ENA;
 
-	csrptr->ttgr = 1;
-	/*  set to: timer 0, 16-bit counter, rate generator mode,
-		counter is binary */
-	//outb(CLKCNTL, 0x34);
+	/* Kickstart the timer */
 
-	/* must write LSB first, then MSB */
-	//outb(CLOCK0, (char) (0xff & intv) );
-	//outb(CLOCK0, (char) (0xff & (intv>>8)));
+	csrptr->ttgr = 1;
+
 	return;
 }
 
-void clkint() {
+/*-----------------------------------------------------------------------
+ * clkint - clock interrupt handler
+ *-----------------------------------------------------------------------
+ */
+void clkint()
+{
 
-	static uint32 count1000 = 1000;
+	static uint32 count1000 = 1000;	/* variable to count 1000ms */
 	volatile struct am335x_timer1ms *csrptr = 0x44E31000;
+					/* Pointer to timer CSR	    */
 
-	//kprintf("clkint\n");
+	/* If there is no interrupt, return */
+
 	if((csrptr->tisr & AM335X_TIMER1MS_TISR_OVF_IT_FLAG) == 0) {
 		return;
 	}
+
+	/* Acknowledge the interrupt */
+
 	csrptr->tisr = AM335X_TIMER1MS_TISR_OVF_IT_FLAG;
 
+	/* Decrement 1000ms counter */
+
 	count1000--;
+
+	/* After 1 sec, increment clktime */
+
 	if(count1000 == 0) {
 		clktime++;
-		//kprintf("clktime %d\n", clktime);
 		count1000 = 1000;
 	}
 
+	/* check if sleep queue is empty */
+
 	if(slnonempty) {
 
+		/* sleepq nonempty, decrement the key of */
+		/* topmost process on sleepq		 */
+
 		(*sltop)--;
+
+		/* If key of topmost process is zero,	*/
+		/* wakeup the process			*/
+
 		if((*sltop) == 0) {
 			wakeup();
 		}
 	}
 
+	/* Decrement the preemption counter */
+
 	preempt--;
+
+	/* if counter zero, call resched */
+
 	if(preempt == 0) {
 		resched();
 	}

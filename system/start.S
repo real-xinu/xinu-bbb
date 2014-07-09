@@ -2,7 +2,11 @@
 .globl	start
 
 start:
+	/* Load the stack pointer with end of memory */
+
 	ldr	sp, =0x84000000
+
+	/* Zero out the BSS area */
 
 	ldr	r0, =edata
 	ldr	r1, =end
@@ -23,6 +27,8 @@ start:
 	ldr	r0, =0x4030CE38
 	ldr	r1, =irq_handler
 	str	r1, [r0]
+
+	/* Start system initialization */
 
 	bl	nulluser
 

@@ -1,4 +1,4 @@
-/* evec.c -- initevec, doevec */
+/* evec.c -- initevec, set_evec, irq_dispatch */
 
 #include <xinu.h>
 #include <stdio.h>
@@ -6,21 +6,10 @@
 /*#define STKTRACE*/
 /*#define REGDUMP*/
 
-/*
- * The girmask is used as a mask for interrupts that don't have a
- * handler set. disable() & restore() are OR-ed with it to get the
- * mask actually used.
- */
-uint16	girmask;
-
-extern	void	setirmask(void);
-extern	struct	idt idt[NID];
-extern	struct	segtr idtr;
-extern	long	defevec[];
 extern	void	userret(void);
-extern	void	init8259();
-extern	int	lidt();
-uint32	intc_vector[128];
+
+uint32	intc_vector[128];	/* Interrupt vector	*/
+
 /*------------------------------------------------------------------------
  * initevec - initialize exception vectors to a default handler
  *------------------------------------------------------------------------
@@ -29,7 +18,12 @@ int32	initevec()
 {
 	struct	intc_csreg *csrptr = (struct intc_csreg *)0x48200000;
 
+	/* Reset the interrupt controller */
+
 	csrptr->sysconfig |= (INTC_SYSCONFIG_SOFTRESET);
+
+	/* Wait until reset is complete */
+
 	while((csrptr->sysstatus & INTC_SYSSTATUS_RESETDONE) == 0);
 
 	return OK;
@@ -42,59 +36,61 @@ int32	initevec()
 int32	set_evec(uint32 xnum, uint32 handler)
 {
 	struct	intc_csreg *csrptr = (struct intc_csreg *)0x48200000;
-	uint32	bank;
-	uint32	mask;
+	uint32	bank;	/* bank number in int controller	*/
+	uint32	mask;	/* used to set bits in bank		*/
+
+	/* There are only 127 interrupts allowed 0-126 */
 
 	if(xnum > 127) {
 		return SYSERR;
 	}
 
+	/* Install the handler */
+
 	intc_vector[xnum] = handler;
 
+	/* Get the bank number based on interrupt number */
+
 	bank = (xnum/32);
+
+	/* Get the bit inside the bank */
+
 	mask = (0x00000001 << (xnum%32));
+
+	/* Reset the bit to enable that interrupt number */
 
 	csrptr->banks[bank].mir &= (~mask);
 
 	return OK;
 }
 
+/*-------------------------------------------------------------------------
+ * irq_dispatch - call the handler for specific interrupt
+ *-------------------------------------------------------------------------
+ */
 void	irq_dispatch()
 {
-	//kprintf("irq_dispatch\n");
 	struct	intc_csreg *csrptr = (struct intc_csreg *)0x48200000;
-	uint32	xnum;
-	interrupt (*handler)();
+	uint32	xnum;		/* Interrupt number of device	*/
+	interrupt (*handler)(); /* Pointer to handler function	*/
+
+	/* Get the interrupt number from the Interrupt controller */
 
 	xnum = csrptr->sir_irq & 0x7F;
-	//kprintf("irq_dispatch xnum %d\n", xnum);
+
+	/* If a handler is set for the interrupt, call it */
+
 	if(intc_vector[xnum]) {
 		handler = intc_vector[xnum];
 		handler(xnum);
 	}
 
+	/* Acknowledge the interrupt */
+
 	csrptr->control |= (INTC_CONTROL_NEWIRQAGR);
 }
 
-char *inames[] = {
-	"divided by zero",
-	"debug exception",
-	"NMI interrupt",
-	"breakpoint",
-	"overflow",
-	"bounds check failed",
-	"invalid opcode",
-	"coprocessor not available",
-	"double fault",
-	"coprocessor segment overrun",
-	"invalid TSS",
-	"segment not present",
-	"stack fault",
-	"general protection violation",
-	"page fault",
-	"coprocessor error"
-};
-
+#if 0
 static long *fp;
 /*------------------------------------------------------------------------
  * trap -- print some debugging info when a trap occurred 
@@ -154,3 +150,4 @@ void trap(int inum)
 
 	panic("Trap processing complete...\n");
 }
+#endif
