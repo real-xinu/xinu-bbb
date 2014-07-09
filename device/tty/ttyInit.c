@@ -48,16 +48,31 @@ devcall	ttyInit(
 	typtr->tyifullc = TY_FULLCH;		/* send ^G when buffer	*/
 						/*   is full		*/
 
+	/* RADIOTTY specific initialization */
+
 	if(devptr->dvminor == 1) {
+
 		volatile uint32 *clkctrl = (uint32 *)UART1_CLKCTRL_ADDR;
+				/* Clock control register pointer */
+
+		/* Enable the UART clock */
+
 		*clkctrl = UART1_CLKCTRL_EN;
+
+		/* Wait until the clock is enabled */
+
 		while((*clkctrl) != 0x2);
+
+		/* Select the proper mode for UART Tx and Rx */
+
 		*((uint32 *)UART1_PADRX_ADDR) &= UART1_PADRX_MODE;
 		*((uint32 *)UART1_PADTX_ADDR) &= UART1_PADTX_MODE;
-		kprintf("radio tty init csr %x\n", devptr->dvcsr);
+
+		/* RADIOTTY will be run in raw mode */
+
 		typtr->tyimode = TY_IMRAW;
-		//return OK;
 	}
+
 	/* Initialize the UART */
 
 	uptr = (struct uart_csreg *)devptr->dvcsr;
@@ -65,55 +80,47 @@ devcall	ttyInit(
 	/* Reset the UART module */
 	uptr->sysc |= UART_SYSC_SOFTRESET;
 	while((uptr->syss & UART_SYSS_RESETDONE) == 0);
-	if(devptr->dvminor == 1) {
-		kprintf("reset done uart1\n");
-	}
 
 	/* Set baud rate */
-	//outb((int)&uptr->lcr, UART_LCR_DLAB);
-	//outb((int)&uptr->dlm, 0x00);
-	//outb((int)&uptr->dll, 0x0c);
+
 	uptr->lcr = UART_LCR_DLAB;
 	if(devptr->dvminor == 0) {
+
+		/* Baud rate for CONSOLE is 115200 */
+
 		uptr->dlm = 0;
 		uptr->dll = 26;
 	}
 	else if(devptr->dvminor == 1) {
+
+		/* Baud rate for RADIOTTY is 9600 */
+
 		uptr->dlm = 0x1;
 		uptr->dll = 0x38;
-		//return OK;
 	}
 
-	//outb((int)&uptr->lcr, UART_LCR_8N1);	/* 8 bit char, No Parity, 1 Stop*/
-	//outb((int)&uptr->fcr, 0x00);		/* Disable FIFO for now		*/
-	uptr->lcr = UART_LCR_8N1;
-	uptr->fcr = 0;
+	uptr->lcr = UART_LCR_8N1;	/* 8 bit char, No Parity, 1 Stop*/
+	uptr->fcr = 0;			/* Disable FIFO for now		*/
 
-	/* OUT2 value is used to control the onboard interrupt tri-state*/
-	/* buffer. It should be set high to generate interrupts		*/
-	//outb((int)&uptr->mcr, UART_MCR_DTR | 
-	//		      UART_MCR_RTS | 
-	//		      UART_MCR_OUT2);	/* Turn on user-defined OUT2	*/
+	/* Set DTR and RTS for the UART */
 
 	uptr->mcr = (UART_MCR_DTR | UART_MCR_RTS);
+
 	/* Register the interrupt dispatcher for the tty device */
 
 	set_evec( devptr->dvirq, (uint32)devptr->dvintr );
 
-	/* Enable interrupts on the device */
-
 	/* Enable UART FIFOs, clear and set interrupt trigger level	*/
-	//outb((int)&uptr->fcr, UART_FCR_EFIFO | UART_FCR_RRESET |
-	//		      UART_FCR_TRESET | UART_FCR_TRIG2);
+
 	uptr->fcr = (UART_FCR_EFIFO | UART_FCR_TRESET | UART_FCR_RRESET);
+
 	/* Start the UART module in 16x mode */
+
 	uptr->mdr1 = UART_MDR1_16X;
 
+	/* Enable interrupts for the device */
+
 	ttyKickOut(typtr, uptr);
-	//(void)inb((int)&uptr->iir);
-	//(void)inb((int)&uptr->lsr);
-	//(void)inb((int)&uptr->msr);
-	//(void)inb((int)&uptr->buffer);
 
 	return OK;
 }

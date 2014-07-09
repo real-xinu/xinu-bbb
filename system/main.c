@@ -2,6 +2,7 @@
 
 #include <xinu.h>
 #include <stdio.h>
+/*
 void radputc(char c) {
 
 	struct uart_csreg *csrptr = devtab[RADIO].dvcsr;
@@ -20,7 +21,7 @@ char radgetc() {
 	buffer = csrptr->buffer;
 	kprintf("%x", buffer);
 	return (char)buffer;
-}
+}*/
 void radio_read();
 void radio_write();
 int32	main(void)
@@ -130,20 +131,20 @@ int32	main(void)
 	//resume(create(radio_read, 8*1024, 100, "radio_read", 0, NULL));
 	//resume(create(radio_write, 8*1024, 101, "radio_write", 0, NULL));
 	//while(1);
-	write(RADIO, "+++", 3);
+	write(RADIOTTY, "+++", 3);
 	while(1) {
 		char buf[100];
 		int count;
 		count = 0;
 		while(count == 0) {
-			count = read(RADIO, buf, 0);
+			count = read(RADIOTTY, buf, 0);
 		}
 		buf[count] = '\0';
 		kprintf("%s\n", buf);
 		count = read(CONSOLE, buf, 99);
 		kprintf("read %d\n", count);
 		//buf[count-1] = '\r';
-		write(RADIO, buf, count);
+		write(RADIOTTY, buf, count);
 		//count = read(RADIO, buf, 3);
 		//buf[count] = '\0';
 		//kprintf("%s\n", buf);
@@ -186,7 +187,7 @@ int32	main(void)
 	}
 	return OK;
 }
-
+/*
 void radio_read() {
 
 	char c;
@@ -212,4 +213,4 @@ void radio_write() {
 		}
 		write(RADIO, buf, count);
 	}
-}
+}*/

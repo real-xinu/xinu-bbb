@@ -47,8 +47,8 @@ struct	dentry	devtab[NDEVS] =
 	  (void *)ioerr, (void *)ioerr, (void *)ioerr,
 	  (void *)0x0, (void *)ioerr, 0 },
 
-/* RADIO is tty */
-	{ 4, 1, "RADIO",
+/* RADIOTTY is tty */
+	{ 4, 1, "RADIOTTY",
 	  (void *)ttyInit, (void *)ionull, (void *)ionull,
 	  (void *)ttyRead, (void *)ttyWrite, (void *)ioerr,
 	  (void *)ttyGetc, (void *)ttyPutc, (void *)ttyControl,

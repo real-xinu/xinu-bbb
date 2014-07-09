@@ -16,7 +16,6 @@ void	ttyKickOut(
 	/*   the device to generate an output interrupt    */
 
 	csrptr->ier = (UART_IER_ERBFI | UART_IER_ETBEI | UART_IER_ELSI );
-	//csrptr->ier = 0x00000001;
 
 	return;
 }

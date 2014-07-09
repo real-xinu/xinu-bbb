@@ -19,11 +19,10 @@ void	ttyInter_out(
 	int32	uspace;			/* space left in onboard UART	*/
 					/*   output FIFO		*/
 	uint32 	ier = 0;
-	//kprintf("ttyinter_out\n");
+
 	/* If output is currently held, simply ignore the call */
 
 	if (typtr->tyoheld) {
-		//inb( (int)&csrptr->lsr ); /* Clear the interrupt */
 		return;
 	}
 

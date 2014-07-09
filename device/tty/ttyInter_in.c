@@ -18,9 +18,8 @@ void	ttyInter_in (
 	char	ch;			/* next char from device	*/
 	int32	avail;			/* chars available in buffer	*/
 
-	//ch = inb( (int)&csrptr->buffer ); /* extract char. from device	*/
+	/* extract char. from device	*/
 	ch = csrptr->buffer;
-	//kprintf("ttyinter_in %x\n", ch);
 
 	/* Compute chars available */
 

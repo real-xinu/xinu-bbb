@@ -85,8 +85,8 @@ SRC_FILES += $(SYSTEM_CFULL)
 # Files for ../device/tty						#
 #------------------------------------------------------------------------
 
-TTY_SFILES =								\
-	ttyDispatch.S
+#TTY_SFILES =								\
+#	ttyDispatch.S
 
 
 TTY_CFILES =								\
@@ -94,10 +94,10 @@ TTY_CFILES =								\
 	ttyInter_out.c	ttyInterrupt.c	ttyKickOut.c	ttyPutc.c	\
 	ttyRead.c	ttyWrite.c
 
-TTY_SFULL = ${TTY_SFILES:%=../device/tty/%}
+#TTY_SFULL = ${TTY_SFILES:%=../device/tty/%}
 TTY_CFULL = ${TTY_CFILES:%=../device/tty/%}
 
-SRC_FILES += $(TTY_SFULL)
+#SRC_FILES += $(TTY_SFULL)
 SRC_FILES += $(TTY_CFULL)
 
 #------------------------------------------------------------------------

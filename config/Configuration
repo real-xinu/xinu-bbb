@@ -49,13 +49,6 @@ nam:
 		-w ioerr 	-s ioerr 	-n ioerr
 		-intr ioerr
 
-rad:
-	on uart
-		-i ttyInit	-o ionull	-c ionull
-		-r ttyRead	-g ttyGetc	-p ttyPutc
-		-w ttyWrite	-s ioerr	-n ttyControl
-		-intr ttyInterrupt
-
 %%
 
 /* Actual device declarations that each give the name of a device that	*/
@@ -74,7 +67,7 @@ rad:
    NAMESPACE is nam on top
 
    /* Define a radio device */
-   RADIO is tty	on uart csr 0x48022000 -irq 73
+   RADIOTTY is tty	on uart csr 0x48022000 -irq 73
 %%
 
 /* Configuration and Size Constants */
