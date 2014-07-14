@@ -2,7 +2,7 @@
 
 #include <xinu.h>
 
-struct qentry	queuetab[NQENT];	/* table of process queues	*/
+struct qentry	queuetab[NQENT];	/* Table of process queues	*/
 
 /*------------------------------------------------------------------------
  *  enqueue  -  Insert a process at the tail of a queue
@@ -13,7 +13,7 @@ pid32	enqueue(
 	  qid16		q		/* ID of queue to use		*/
 	)
 {
-	int	tail, prev;		/* tail & previous node indexes	*/
+	int	tail, prev;		/* Tail & previous node indexes	*/
 
 	if (isbadqid(q) || isbadpid(pid)) {
 		return SYSERR;
@@ -22,7 +22,7 @@ pid32	enqueue(
 	tail = queuetail(q);
 	prev = queuetab[tail].qprev;
 
-	queuetab[pid].qnext  = tail;	/* insert just before tail node	*/
+	queuetab[pid].qnext  = tail;	/* Insert just before tail node	*/
 	queuetab[pid].qprev  = prev;
 	queuetab[prev].qnext = pid;
 	queuetab[tail].qprev = pid;

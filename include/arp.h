@@ -47,4 +47,4 @@ struct	arpentry {			/* entry in the ARP cache	*/
 	byte	arhaddr[ARP_HALEN];	/* Ethernet address of the entry*/
 };
 
-
+extern	struct	arpentry arpcache[];

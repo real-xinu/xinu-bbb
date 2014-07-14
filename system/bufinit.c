@@ -2,11 +2,11 @@
 
 #include <xinu.h>
 
-struct	bpentry	buftab[NBPOOLS];		/* buffer pool table		*/
+struct	bpentry	buftab[NBPOOLS];		/* Buffer pool table		*/
 bpid32	nbpools;
 
 /*------------------------------------------------------------------------
- *  bufinit  --  initialize the buffer pool data structure
+ *  bufinit  --  Initialize the buffer pool data structure
  *------------------------------------------------------------------------
  */
 status	bufinit(void)

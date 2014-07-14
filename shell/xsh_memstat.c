@@ -8,7 +8,7 @@ static	void	printMemUse(void);
 static	void	printFreeList(void);
 
 /*------------------------------------------------------------------------
- * xsh_memstat - print statistics about memory use and dump the free list
+ * xsh_memstat - Print statistics about memory use and dump the free list
  *------------------------------------------------------------------------
  */
 shellcmd xsh_memstat(int nargs, char *args[])
@@ -43,7 +43,7 @@ shellcmd xsh_memstat(int nargs, char *args[])
 
 
 /*------------------------------------------------------------------------
- * printFreeList - walk the list of free memory blocks and print the
+ * printFreeList - Walk the list of free memory blocks and print the
  *			location and size of each
  *------------------------------------------------------------------------
  */
@@ -53,7 +53,7 @@ static void printFreeList(void)
 
 	/* Output a heading for the free list */
 
-	printf("Free List:\n\n");
+	printf("Free List:\n");
 	printf("Block address  Length (dec)  Length (hex)\n");
 	printf("-------------  ------------  ------------\n");
 	
@@ -68,36 +68,26 @@ extern void start(void);
 extern void *_end;
 
 /*------------------------------------------------------------------------
- * printMemUse - print statistics about memory use
+ * printMemUse - Print statistics about memory use
  *------------------------------------------------------------------------
  */
 static void printMemUse(void)
 {
-	int i;				/* index into tpcoess table	*/
-	uint32 phys = 0;		/* total physical memory	*/
-	uint32 resrv = 0;		/* total reserved system memory	*/
-	uint32 code = 0;		/* total Xinu code memory	*/
-	uint32 stack = 0;		/* total stack memory		*/
-	uint32 kheap = 0;		/* total kernel heap memory	*/
-	uint32 kused = 0;		/* total used kernel heap memory*/
-	uint32 kfree = 0;		/* total free memory		*/
-	struct memblk *block;	 	/* ptr to memory block		*/
-
-	/* Calculate the amount of physical memory */
-
-	phys = (uint32)maxheap;
-
-	/* Calculate amount of reserved system memory */
-
-	resrv = (uint32)start;
+	int i;				/* Index into process table	*/
+	uint32 code = 0;		/* Total Xinu code memory	*/
+	uint32 stack = 0;		/* Total used stack memory	*/
+	uint32 kheap = 0;		/* Free kernel heap memory	*/
+	uint32 kfree = 0;		/* Total free memory		*/
+	struct memblk *block;	 	/* Ptr to memory block		*/
 
 	/* Calculate amount of text memory */
 
 	code = (uint32)&_end - (uint32)start;
 
-	/* Caculate amount of allocated stack memory */
+	/* Calculate amount of allocated stack memory */
+	/*  Skip the NULL process since it has a private stack */
 
-	for (i = 0; i < NPROC; i++) {
+	for (i = 1; i < NPROC; i++) {
 		if (proctab[i].prstate != PR_FREE) {
 			stack += (uint32)proctab[i].prstklen;
 		}
@@ -109,23 +99,15 @@ static void printMemUse(void)
 		kfree += block->mlength;
 	}
 
-	/* Caculate the amount of kernel heap memory */
+	/* Calculate the amount of free kernel heap memory */
 
-	kheap = phys - resrv - code - stack;
-	kused = kheap - kfree;
+	kheap = kfree - stack;
 
-	/* Ouput statistics on current memory use */
+	/* Output statistics on current memory use */
 
 	printf("Current system memory statistics:\n");
 	printf("---------------------------------\n");
-	printf("%10d bytes (0x%08x) in the system area\n",
-							resrv, resrv);
-	printf("%10d bytes (0x%08x) of Xinu code\n",
-							code, code);
-	printf("%10d bytes (0x%08x) of allocated stack space\n",
-							stack, stack);
-	printf("%10d bytes (0x%08x) of kernel heap space (%d used)\n",
-						 kheap, kheap, kused);
-	printf("%10d bytes (0x%08x) of physical memory\n\n",
-							phys, phys);
+	printf("%10d bytes (0x%08x) of Xinu code\n", code, code);
+	printf("%10d bytes (0x%08x) of allocated stack space\n", stack, stack);
+	printf("%10d bytes (0x%08x) of available kernel heap space\n\n", kheap, kheap);
 }

@@ -16,7 +16,6 @@ shellcmd xsh_udpdump(int nargs, char *args[])
 	struct	udpentry *uptr;		/* ptr to entry in udptab	*/
 	uint32	remip;			/* variables to hold the info	*/
 	int32	r1,r2,r3,r4;		/* from an entry for printing	*/
-	int32	iface;
 	int32	remprt, locprt;
 	int32	state;
 	pid32	pid;
@@ -58,13 +57,6 @@ shellcmd xsh_udpdump(int nargs, char *args[])
 		printf("%3d   ---- slot is free ---\n", i);
 		continue;
 	    }
-	    iface = uptr->udiface;
-	    if (iface == UDP_ANYIF) {
-		printf("%3d  -any-", i);
-	    } else {
-		printf("%3d  %3d  ", i, iface);
-	    }
-		
 	    remip = uptr->udremip;
 	    r1 = (remip >> 24) & 0xff;
 	    r2 = (remip >> 16) & 0xff;

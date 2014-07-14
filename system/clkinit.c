@@ -5,10 +5,6 @@
 uint32	clktime;		/* seconds since boot			*/
 uint32	ctr1000 = 0;		/* milliseconds since boot		*/
 qid16	sleepq;			/* queue of sleeping processes		*/
-int32	slnempty;		/* zero if the sleep queue is empty;	*/
-				/*   non-zero otherwise			*/
-int32	*sltop;			/* ptr to key in first entry of sleepq	*/
-				/*   if sleepq is not empty		*/
 uint32	preempt;		/* preemption counter			*/
    
 /*------------------------------------------------------------------------
@@ -34,15 +30,11 @@ void	clkinit(void)
 
 	/* Set interrupt vector for clock to invoke clkint */
 
-	set_evec(67, (uint32)clkint);
+	set_evec(67, (uint32)clkhandler);
 
 	sleepq = newqueue();	/* allocate a queue to hold the delta	*/
 				/* list of sleeping processes		*/
 	preempt = QUANTUM;	/* initial time quantum			*/
-
-	/* Specify that seepq is initially empty */
-
-	slnonempty = FALSE;
 
 	clktime = 0;		/* start counting seconds		*/
 
@@ -71,7 +63,7 @@ void	clkinit(void)
 
 	return;
 }
-
+#if 0
 /*-----------------------------------------------------------------------
  * clkint - clock interrupt handler
  *-----------------------------------------------------------------------
@@ -131,3 +123,4 @@ void clkint()
 		resched();
 	}
 }
+#endif

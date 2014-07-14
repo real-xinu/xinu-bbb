@@ -3,16 +3,16 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  getbuf  --  get a buffer from a preestablished buffer pool
+ *  getbuf  -  Get a buffer from a preestablished buffer pool
  *------------------------------------------------------------------------
  */
 char    *getbuf(
-          bpid32        poolid          /* index of pool in buftab       */
+          bpid32        poolid          /* Index of pool in buftab       */
         )
 {
-	intmask	mask;			/* saved interrupt mask		*/
-	struct	bpentry	*bpptr;		/* pointer to entry in buftab	*/
-	struct	bpentry	*bufptr;	/* pointer to a buffer		*/
+	intmask	mask;			/* Saved interrupt mask		*/
+	struct	bpentry	*bpptr;		/* Pointer to entry in buftab	*/
+	struct	bpentry	*bufptr;	/* Pointer to a buffer		*/
 
 	mask = disable();
 
@@ -43,11 +43,11 @@ char    *getbuf(
 }
 
 /*------------------------------------------------------------------------
- * nbgetbuf - a non-blocking version of getbuf
+ * nbgetbuf - A non-blocking version of getbuf
  *------------------------------------------------------------------------
  */
 char	*nbgetbuf(
-          bpid32        poolid          /* index of pool in buftab       */
+          bpid32        poolid          /* Index of pool in buftab       */
 	)
 {
 	intmask	mask;

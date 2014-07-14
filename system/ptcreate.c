@@ -3,28 +3,28 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  ptcreate  --  create a port that allows "count" outstanding messages
+ *  ptcreate  -  Create a port that allows "count" outstanding messages
  *------------------------------------------------------------------------
  */
 syscall	ptcreate(
-	  int32		count
+	  int32		count		/* Size of port			*/
 	)
 {
-	intmask	mask;			/* saved interrupt mask		*/
-	int32	i;			/* counts all possible ports	*/
-	int32	ptnum;			/* candidate port number to try	*/
-	struct	ptentry	*ptptr;		/* pointer to port table entry	*/
+	intmask	mask;			/* Saved interrupt mask		*/
+	int32	i;			/* Counts all possible ports	*/
+	int32	ptnum;			/* Candidate port number to try	*/
+	struct	ptentry	*ptptr;		/* Pointer to port table entry	*/
 
 	mask = disable();
 	if (count < 0) {
 		restore(mask);
-		return(SYSERR);
+		return SYSERR;
 	}
 
-	for (i=0 ; i<NPORTS ; i++) {	/* count all table entries	*/
-		ptnum = ptnextid;	/* get an entry to check	*/
+	for (i=0 ; i<NPORTS ; i++) {	/* Count all table entries	*/
+		ptnum = ptnextid;	/* Get an entry to check	*/
 		if (++ptnextid >= NPORTS) {
-			ptnextid = 0;	/* reset for next iteration	*/
+			ptnextid = 0;	/* Reset for next iteration	*/
 		}
 
 		/* Check table entry that corresponds to ID ptnum */
@@ -38,9 +38,9 @@ syscall	ptcreate(
 			ptptr->ptseq++;
 			ptptr->ptmaxcnt = count;
 			restore(mask);
-			return(ptnum);
+			return ptnum;
 		}
 	}
 	restore(mask);
-	return(SYSERR);
+	return SYSERR;
 }

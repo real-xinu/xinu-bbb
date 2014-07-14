@@ -2,20 +2,22 @@
 
 #include <xinu.h>
 
-struct	ptnode	*ptfree;		/* list of free message nodes	*/
-struct	ptentry	porttab[NPORTS];	/* port table			*/
-int32	ptnextid;			/* next table entry to try	*/
+struct	ptnode	*ptfree;		/* List of free message nodes	*/
+struct	ptentry	porttab[NPORTS];	/* Port table			*/
+int32	ptnextid;			/* Next table entry to try	*/
 
 /*------------------------------------------------------------------------
- *  ptinit  --  initialize all ports
+ *  ptinit  -  Initialize all ports
  *------------------------------------------------------------------------
  */
 syscall	ptinit(
-	  int32		maxmsgs		/* total messages in all ports	*/
+	  int32	maxmsgs			/* Total messages in all ports	*/
 	)
 {
-	int32	i;			/* runs through port table	*/
-	struct	ptnode	*next, *prev;	/* used to build free list	*/
+	int32	i;			/* Runs through the port table	*/
+	struct	ptnode	*next, *curr;	/* Used to build a free list	*/
+
+	/* Allocate memory for all messages on all ports */
 
 	ptfree = (struct ptnode *)getmem(maxmsgs*sizeof(struct ptnode));
 	if (ptfree == (struct ptnode *)SYSERR) {
@@ -30,10 +32,14 @@ syscall	ptinit(
 	}
 	ptnextid = 0;
 
-	/* Create free list of message pointer nodes */
+	/* Create a free list of message nodes linked together */
 
-	for ( prev=next=ptfree ;  --maxmsgs > 0  ; prev=next )
-		prev->ptnext = ++next;
-	prev->ptnext = NULL;
-	return(OK);
+	for ( curr=next=ptfree ;  --maxmsgs > 0  ; curr=next ) {
+		curr->ptnext = ++next;
+	}
+
+	/* Set the pointer in the final node to NULL */
+
+	curr->ptnext = NULL;
+	return OK;
 }

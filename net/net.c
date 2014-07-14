@@ -1,8 +1,10 @@
-/* net.c - net_init, netin, rawin, eth_hton */
+/* net.c - net_init, netin, eth_hton */
 
 #include <xinu.h>
 #include <stdio.h>
 
+struct	network	NetData;
+bpid32	netbufpool;
 /*------------------------------------------------------------------------
  * net_init - initialize network data structures and processes
  *------------------------------------------------------------------------
@@ -10,19 +12,18 @@
 
 void	net_init (void)
 {
-	int32	iface;			/* index into interface table	*/
-	char	str[16];		/* string to hold process name	*/
 
 	/* Initialize interface data structures */
 
-	netiface_init();
+	memset((char *)&NetData, NULLCH, sizeof(struct network));
 
-	/* Initialize ARP cache for each interface */
+	control(ETHER0, ETH_CTRL_GET_MAC, (int32)NetData.ethucast, 0);
 
-	for (iface=0; iface<NIFACES; iface++) {
-		arp_init(iface);
+	memset((char *)NetData.ethbcast, 0xFF, ETH_ADDR_LEN);
+	
+	/* Initialize ARP cache for interface */
 
-	}
+	arp_init();
 
 	/* Initialize UDP */
 
@@ -32,26 +33,23 @@ void	net_init (void)
 
 	icmp_init();
 
-	/* Create a network input process for each interface */
-
-	for (iface=0; iface<NIFACES; iface++) {
-		sprintf(str, "net%d_input", iface);
-		resume(create(netin, 4196, 5000, str, 1, iface));
-	}
-
 	/* Initialize the IP output queue */
 
-	ipoqueue.iqtail = ipoqueue.iqhead = 0;
+	ipoqueue.iqhead = 0;
+	ipoqueue.iqtail = 0;
 	ipoqueue.iqsem = semcreate(0);
+	if((int32)ipoqueue.iqsem == SYSERR) {
+		panic("Cannot create ip output queue semaphore");
+		return;
+	}
 
-	/* Create an IP output process  */
+	/* Create the IP output process */
 
-	resume(create(ipout, 2048, 6000, "ip_output", 0));
+	resume(create(ipout, NETSTK, NETPRIO, "ipout", 0, NULL));
 
-	/* Create a low-level input process that reads raw frames and	*/
-	/*	demultiplexes them to the correct interface		*/
+	/* Create a network input process for each interface */
 
-	resume(create(rawin, 2048, 8000, "raw_input", 0));
+	resume(create(netin, NETSTK, NETPRIO, "netin", 0, NULL));
 }
 
 
@@ -60,29 +58,27 @@ void	net_init (void)
  *------------------------------------------------------------------------
  */
 
-process	netin (
-	  int32	iface			/* Interface for this process	*/
-	)
+process	netin ()
 {
-	struct	ifentry	*ifptr;		/* ptr to interface table entry	*/
-	struct	netpacket *pkt;		/* ptr to current packet	*/
+	struct	netpacket *pkt;	/* ptr to current packet	*/
+	int32	nbufs;		/* total no of buffers		*/
+	int32	retval;		/* return value from read	*/
+
+	nbufs = UDP_SLOTS * UDP_QSIZ + ICMP_SLOTS * ICMP_QSIZ + 1;
+
+	netbufpool = mkbufpool(PACKLEN, nbufs);
 
 	/* Do forever: read packets from the network and process */
 
-	ifptr = &if_tab[iface];
+	pkt = (struct netpacket *)getbuf(netbufpool);
 	while(1) {
 
 		/* Obtain next packet arriving on an interface */
 
-		wait(ifptr->if_sem);
-		pkt = ifptr->if_queue[ifptr->if_head++];
-		if (ifptr->if_head >= IF_QUEUESIZE) {
-			ifptr->if_head = 0;
+		retval = read(ETHER0, (char *)pkt, PACKLEN);
+		if(retval == SYSERR) {
+			panic("Cannot read from Ethernet\n");
 		}
-
-		/* Store interface number in packet buffer */
-
-		pkt->net_iface = iface;
 
 		/* Convert Ethernet Type to host order */
 
@@ -93,7 +89,7 @@ process	netin (
 		switch (pkt->net_ethtype) {
 
 		    case ETH_ARP:			/* Handle ARP	*/
-			arp_in(iface,(struct arppacket *)pkt);
+			arp_in((struct arppacket *)pkt);
 			continue;
 
 		    case ETH_IP:			/* Handle IP	*/
@@ -108,9 +104,11 @@ process	netin (
 			freebuf((char *)pkt);
 			continue;
 		}
+
+		pkt = (struct netpacket *)getbuf(netbufpool);
 	}
 }
-
+#if 0
 /*------------------------------------------------------------------------
  * rawin - continuously read the next incoming frame, examine the MAC
  *		address, and enqueue on the appropriate interface queue
@@ -135,8 +133,6 @@ process	rawin (void) {
 		kprintf("Cannot allocate network buffer pool\n");
 		kill(getpid());
 	}
-
-	open(ETHER0, NULL, NULL);
 
 	pkt = (struct netpacket *)getbuf(netbufpool);
 	while(1) {
@@ -182,8 +178,7 @@ process	rawin (void) {
 		}
 	}
 }
-
-
+#endif
 /*------------------------------------------------------------------------
  * eth_hton - convert Ethernet type field to network byte order
  *------------------------------------------------------------------------

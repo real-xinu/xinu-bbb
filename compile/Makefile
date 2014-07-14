@@ -1,267 +1,156 @@
-#
-#  Makefile for the x86 version of the Xinu operating system
-#
+#########################################################################
+#									#
+#									#
+#  Makefile for the Intel Galileo version of the Xinu operating system	#
+#									#
+#  includes: .deps and .defs						#
+#									#
+#									#
+#########################################################################
 
-COMPILER_ROOT = ../arm-2013.11/bin/arm-none-eabi-
+COMPILER_ROOT	=	../arm-2013.11/bin/arm-none-eabi-
+PNAME		=	galileo
+PLAT		=	Platform_$(PNAME)
+TOPDIR		=	..
 
-CC 	=	${COMPILER_ROOT}gcc
-cPP	=	${COMPILER_ROOT}gcc -E
-AS  	=	${COMPILER_ROOT}as
-LD	=	${COMPILER_ROOT}ld
-OBJCOPY	=	${COMPILER_ROOT}objcopy
-LIB	= 	../lib/libxc
-XINU	=	./xinu
+CC		=	${COMPILER_ROOT}gcc
+LD		=	${COMPILER_ROOT}ld
+OBJCOPY		=	${COMPILER_ROOT}objcopy
+XINU		=	$(TOPDIR)/compile/xinu
+XINUBIN		=	$(TOPDIR)/compile/xinu.bin
+XINUBOOT	=	$(TOPDIR)/compile/xinu.boot
+BUILDMAKE	=	$(TOPDIR)/compile/bin/build-make
+MKVERS		=	$(TOPDIR)/compile/bin/mkvers
 
-MAKEDEP	= gcc -M -MG
+MAKEDEP		=	$(CC) -M -MG
 
-DEFS	= -DBSDURG
-CFLAGS_EXTRA =
-INCLUDE = -I../include
-
-# Amount to move loaded image down in memory
-
-BRELOC  =	0x150000
-BOOTPLOC=	0x150000
+DEFS		=	-DBSDURG -DVERSION=\""`cat version`"\"
+INCLUDE		=	-I$(TOPDIR)/include
 
 # Compiler flags
-SDEFS	= -I../include
-CFLAGS	= -mcpu=cortex-a8 -marm -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O ${DEFS} ${INCLUDE} ${CFLAGS_EXTRA}
+CFLAGS  = -mcpu=cortex-a8 -marm -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O ${DEFS} ${INCLUDE}
+SFLAGS  = ${INCLUDE}
 
 # Loader flags
 
-LDFLAGS = -m armelf -L../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1/
-
-TOPDIR	= ..
-
-# Components (files for each are listed below) 
-
-COMPS	=	system 							\
-		device/tty						\
-		device/nam						\
-		device/eth						\
-		net 							\
-		shell 							
-
-# Start with empty source file list and add files for each directory
-#
-
-SRC_FILES =
-
-#------------------------------------------------------------------------
-# Files for ../system							#
-#------------------------------------------------------------------------
-
-SYSTEM_SFILES =								\
-	start.S		ctxsw.S		clkint.S	intr.S
-
-SYSTEM_CFILES =								\
-	ascdate.c	bufinit.c	chprio.c	panic.c		\
-	clkinit.c	close.c		conf.c		control.c	\
-	create.c	freebuf.c	freemem.c	getbuf.c	\
-	getc.c		getdev.c	getitem.c	getmem.c	\
-	getpid.c	getprio.c 	getstk.c	init.c		\
-	initialize.c 							\
-			insert.c	insertd.c	ioerr.c		\
-	ionull.c	kill.c		kprintf.c	main.c		\
-	mkbufpool.c	newqueue.c	open.c				\
-	ptclear.c	ptcount.c	ptcreate.c	ptdelete.c	\
-	ptinit.c	ptrecv.c	ptreset.c	ptsend.c	\
-	putc.c		queue.c		read.c		ready.c		\
-	receive.c	recvclr.c	recvtime.c	resched.c	\
-	resume.c	sched_cntl.c 	seek.c		semcount.c	\
-	semcreate.c	semdelete.c	semreset.c	send.c		\
-	signal.c	signaln.c	sleep.c		suspend.c	\
-	unsleep.c	userret.c	wait.c		wakeup.c	\
-	write.c		xdone.c		yield.c		evec.c		\
-	gettime.c	getutime.c	
-
-SYSTEM_SFULL = ${SYSTEM_SFILES:%=../system/%}
-SYSTEM_CFULL = ${SYSTEM_CFILES:%=../system/%}
-
-SRC_FILES += $(SYSTEM_SFULL)
-SRC_FILES += $(SYSTEM_CFULL)
-
-#------------------------------------------------------------------------
-# Files for ../device/tty						#
-#------------------------------------------------------------------------
-
-#TTY_SFILES =								\
-#	ttyDispatch.S
-
-
-TTY_CFILES =								\
-	ttyControl.c	ttyGetc.c	ttyInit.c	ttyInter_in.c	\
-	ttyInter_out.c	ttyInterrupt.c	ttyKickOut.c	ttyPutc.c	\
-	ttyRead.c	ttyWrite.c
-
-#TTY_SFULL = ${TTY_SFILES:%=../device/tty/%}
-TTY_CFULL = ${TTY_CFILES:%=../device/tty/%}
-
-#SRC_FILES += $(TTY_SFULL)
-SRC_FILES += $(TTY_CFULL)
-
-#------------------------------------------------------------------------
-# Files for ../device/nam                                                                                                                                                                        
-#------------------------------------------------------------------------
-
-NAM_CFILES =                                                            \
-	mount.c         namInit.c       namOpen.c       nammap.c
-	
-NAM_CFULL  = ${NAM_CFILES:%=../device/nam/%}
-
-SRC_FILES += $(NAM_CFULL)
-
-#------------------------------------------------------------------------
-# Files in directory ../device/eth
-#------------------------------------------------------------------------
-
-ETH_SFILES =								\
-	ethDispatch.S
-
-ETH_CFILES =								\
-	ethInit.c 	ethInterrupt.c 	ethControl.c	ethRead.c 	\
-	ethWrite.c 	e1000e_init.c 	e1000e_open.c 	e1000e_read.c 	\
-	e1000e_write.c 	e1000e_cntl.c 	e1000e_intr.c 	e1000e_cmd.c 	\
-	3c905C_init.c 	3c905C_open.c 	3c905C_read.c 	3c905C_write.c 	\
-	3c905C_cntl.c 	3c905C_intr.c 	3c905C_cmd.c	e1000e_rar_set.c
-
-ETH_SFULL = ${ETH_SFILES:%=../device/eth/%}
-ETH_CFULL = ${ETH_CFILES:%=../device/eth/%}
-
-#SRC_FILES += $(ETH_SFULL)
-#SRC_FILES += $(ETH_CFULL)
-
-
-#------------------------------------------------------------------------
-# Files for ../net
-#------------------------------------------------------------------------
-
-NET_CFILES =								\
-	net.c	 	arp.c 		udp.c 		pdump.c 	\
-	dhcp.c		ip.c		icmp.c		nat.c		\
-	netiface.c	netstart.c	dot2ip.c	hexdump.c
-
-NET_CFULL  = ${NET_CFILES:%=../net/%}
-
-SRC_FILES += $(NET_CFULL)
-
-#------------------------------------------------------------------------
-# Files for ../shell
-#------------------------------------------------------------------------
-
-SHELL_CFILES =								\
-	addargs.c	lexan.c		shell.c
-
-SHELL_CFILES +=								\
-	xsh_argecho.c	xsh_cat.c	xsh_clear.c 	xsh_uptime.c	\
-	xsh_echo.c	xsh_exit.c	xsh_devdump.c	xsh_help.c	\
-	xsh_kill.c	xsh_led.c	xsh_memdump.c	xsh_ps.c 	\
-	xsh_ping.c	xsh_sleep.c 	xsh_memstat.c	xsh_date.c	\
-	xsh_arp.c	xsh_ipaddr.c 	xsh_udpecho.c	xsh_udpdump.c	\
-	xsh_bingid.c	xsh_udpeserver.c
-
-SHELL_CFULL  = ${SHELL_CFILES:%=../shell/%}
-
-SRC_FILES += $(SHELL_CFULL)
-
-#######################################
-# Generate a list of all object files
-#######################################
-
-OBJ_TMP	= $(patsubst %.c,%.o,$(SRC_FILES)) 	# substitute .c => .o
-OBJ_FILES  = $(patsubst %.S,%.o,$(OBJ_TMP)) 	# substitute .S => .o
-
-
-# Export variables for recursive make calls (such as the library)
-export
-
-#------------------------------------------------------------------------
-# make targets
-#------------------------------------------------------------------------
+LDFLAGS = -dn -m armelf -Map xinu.map -T ld.script
 
 all:	xinu
 
-xinu: 	Makefile ../config/Configuration xinu.mapfile configure 	\
-		$(OBJ_FILES) $(LIB)/libxc.a
-		@echo;echo Now Loading all object files to produce GRUB bootable xinu: 
-		@echo;echo ${OBJ_FILES} 
-		$(LD) $(LDFLAGS) -dn -Ttext 0x81000000 -e start ${OBJ_FILES}	\
-			${LIB}/libxc.a	-o ${XINU} -lgcc
-		$(OBJCOPY) -O binary xinu xinu.bin
-		mkimage -A arm -O linux -T kernel -C none -a 0x81000000 -e 0x81000000 -n 'Xinu' -d xinu.bin xinu.boot
-		@echo
+#--------------------------------------------------------------------------------
+# Handle generation of a new version string when initialize is recompiled
+#--------------------------------------------------------------------------------
 
-${LIB}/libxc.a:
-		@(cd ${LIB}; make libxc.a)
+newversion:
+	@echo creating new version
+	@$(MKVERS) $(PNAME) > version
 
-objects: $(OBJ_FILES)
+#--------------------------------------------------------------------------------
+# Include generic make targets and rules from the file generated by build-make
+#--------------------------------------------------------------------------------
+include .defs
 
-configure: ../include/conf.h 	../system/conf.c	
-	
-../include/conf.h ../system/conf.c: ../config/config ../config/Configuration
-	@echo making conf.h and conf.c
-	@(cd ../config; make install)
+#--------------------------------------------------------------------------------
+# Add files that require special rules and place start.o at the front
+#--------------------------------------------------------------------------------
+LD_LIST = binaries/start.o $(filter-out binaries/start.o,$(OBJ_FILES))
+XINU_LD_LIST = $(filter-out binaries/xbootjmp.o binaries/xboot.o,$(LD_LIST))
+XBOOT_LD_LIST = $(filter-out binaries/main.o binaries/xsh_%.o binaries/shell.o,$(LD_LIST))
 
-../config/config:
-	make -C ../config/ -f ../config/Makefile clean all install
-	
+
+#------------------------------------------------------------
+# Rules for files that need special handling
+#------------------------------------------------------------
+
+# Define variables for the Configuration file and generated files
+
+CONFFILE	= $(TOPDIR)/config/Configuration
+CONFH		= $(TOPDIR)/include/conf.h
+CONFC		= $(TOPDIR)/system/conf.c
+
+# Define variables for the config program and its sources
+
+CONFPGM		= $(TOPDIR)/config/config
+CONFL		= $(TOPDIR)/config/config.l
+CONFY		= $(TOPDIR)/config/config.y
+
+# Set up the required build directory structure
+
+BLDDIRS	= binaries
+export
+
+#--------------------------------------------------------------------------------
+# Specific additional rules and exceptions
+#--------------------------------------------------------------------------------
+
+xinu:	Makefile $(BLDDIRS) $(CONFH) $(CONFC) $(XINU_LD_LIST)
+	@echo;echo 'Loading object files to produce GRUB bootable xinu'
+	@$(LD) $(LDFLAGS) $(XINU_LD_LIST) -o $(XINU) -L../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1/ -lgcc
+	@echo;echo 'Building $(XINUBIN)'
+	@$(OBJCOPY) -O binary $(XINU) $(XINUBIN)
+	@echo;echo 'Building $(XINUXBIN)'
+	@mkimage -A arm -O linux -T kernel -C none -a 0x81000000 -e 0x81000000 -d xinu.bin xinu.boot
+
+$(BLDDIRS): 
+	@mkdir -p $(BLDDIRS)
+
+objects: $(LD_LIST)
+
+$(CONFH): $(CONFFILE) $(CONFPGM)
+	@echo making $(CONFH)
+	@make configure
+
+$(CONFC): $(CONFFILE) $(CONFPGM)
+	@echo making $(CONFC)
+	@make configure
+
+$(CONFPGM): $(CONFL) $(CONFY)
+	@echo making the config program
+	@make -C $(TOPDIR)/config clean all install
+
+configure:
+	@echo forcing a rebuild of conf.h and conf.c
+	@make newversion
+	@(cd $(TOPDIR)/config; make install)
+
 clean:
-	@echo removing .o files in directories
-	@echo $(COMPS)
-	@rm -f ${OBJ_FILES} ${LIB}/*.a ${LIB}/*.o
-	@echo removing lib ...
-	@(cd ${LIB}; make clean)
+	@echo removing .o files
+	@rm -f ${LD_LIST}
 	@echo   removing configuration files ...
-	@rm -f ../include/conf.h ../system/conf.c
-	@(cd ../config; make clean)
+	@rm -f $(TOPDIR)/include/conf.h $(TOPDIR)/system/conf.c
+	@(cd $(TOPDIR)/config; make clean)
 	@echo removing xinu ...
-	@rm -f xinu
+	@rm -f $(XBOOT)
+	@rm -f $(XINU)
+	@rm -f $(XINUBIN)
+	@rm -f $(XINUBOOT)
 
+#--------------------------------------------------------------------------------
+# Locations of source directories and exceptions (.c and .[sS] files to exclude)
+#--------------------------------------------------------------------------------
 
-depend:
+rebuild: $(CONFC)
+	@echo Rebuilding the .defs file
+	@$(BUILDMAKE)							\
+		-s $(TOPDIR)/system  debug.c	 			\
+		-s $(TOPDIR)/lib					\
+		-s $(TOPDIR)/device/tty					\
+		-s $(TOPDIR)/device/nam					\
+		-s $(TOPDIR)/device/eth					\
+		-s $(TOPDIR)/net  'arp_dump*' 'netiface*' 'nat*'				\
+		-s $(TOPDIR)/shell  'xsh_rdstest*' 'xsh_udpecho*' 'xsh_ipaddr*' 'xsh_bingid*' > .defs
+
+defclean:
+	rm -f .defs
+	touch .defs
+
+depend: rebuild
 	@echo;echo Making all dependencies in .deps
-	@$(MAKEDEP) ${INCLUDE} ${SRC_FILES} > .deps
+	@$(MAKEDEP) ${INCLUDE} ${SRC_FULL} > .deps
 	@echo;echo Finished making dependencies
 
 depclean:
 	rm -f .deps
 	touch .deps
-
-###################
-# Special targets #
-###################
-${COMPS}:
-	$(MAKE) COMPS="$@" objects
-
-# Special rules for special files
-
-../system/intr.o: ../system/intr.S
-	${CPP} ${SDEFS} ../system/intr.S | ${AS} -o ../system/intr.o
-
-../system/clkint.o: ../system/clkint.S
-	${CPP} ${SDEFS} ../system/clkint.S | ${AS} -o ../system/clkint.o
-
-../system/ctxsw.o: ../system/ctxsw.S
-	${CPP} ${SDEFS} ../system/ctxsw.S | ${AS} -o ../system/ctxsw.o
-
-../system/start.o: ../system/start.S Makefile
-	${CPP} ${SDEFS} -DBRELOC=${BRELOC} -DBOOTPLOC=${BOOTPLOC} 	\
-			../system/start.S | ${AS} -o ../system/start.o
-
-../device/tty/ttyDispatch.o: ../device/tty/ttyDispatch.S
-	${CPP} ${SDEFS} ../device/tty/ttyDispatch.S | ${AS} -o 		\
-	../device/tty/ttyDispatch.o
-
-../device/eth/ethDispatch.o: ../device/eth/ethDispatch.S Makefile
-	${CPP} ${SDEFS} ../device/eth/ethDispatch.S | ${AS} -o 		\
-	../device/eth/ethDispatch.o
-
-head.o: head.S
-	${CPP} ${SDEFS} head.S | ${AS} -o head.o
-
-../system/initialize.o: ../system/initialize.c
-	sh mkvers.sh
-	${CC} -c ${CFLAGS} -DVERSION=\""`cat version`"\" 		\
-		../system/initialize.c -o ../system/initialize.o
 
 include .deps

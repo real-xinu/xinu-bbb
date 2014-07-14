@@ -3,18 +3,18 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  read  -  read one or more bytes from a device
+ *  read  -  Read one or more bytes from a device
  *------------------------------------------------------------------------
  */
 syscall	read(
-	  did32		descrp,		/* descriptor for device	*/
-	  char		*buffer,	/* address of buffer		*/
-	  uint32	count		/* length of buffer		*/
+	  did32		descrp,		/* Descriptor for device	*/
+	  char		*buffer,	/* Address of buffer		*/
+	  uint32	count		/* Length of buffer		*/
 	)
 {
-	intmask		mask;		/* saved interrupt mask		*/
-	struct dentry	*devptr;	/* entry in device switch table	*/
-	int32		retval;		/* value to return to caller	*/
+	intmask		mask;		/* Saved interrupt mask		*/
+	struct dentry	*devptr;	/* Entry in device switch table	*/
+	int32		retval;		/* Value to return to caller	*/
 
 	mask = disable();
 	if (isbaddev(descrp)) {

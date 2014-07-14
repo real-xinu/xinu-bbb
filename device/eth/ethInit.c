@@ -27,7 +27,7 @@ devcall	ethInit (
 	ethptr->addrLen = ETH_ADDR_LEN;
 	ethptr->rxHead = ethptr->rxTail = 0;
 	ethptr->txHead = ethptr->txTail = 0;
-
+#if 0
 	if ((dinfo = find_pci_device(_3COM_3C905C_DEVICE_ID,
 					_3COM_VENDOR_ID, 0))
 			!= SYSERR) {
@@ -67,7 +67,7 @@ devcall	ethInit (
 		kprintf("No recognized PCI Ethernet NIC found\n");
 		return SYSERR;
 	}
-	
+#endif
 	/* Initialize control block */
 		
 	ethptr->ethInit(ethptr);

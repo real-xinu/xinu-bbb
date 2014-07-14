@@ -7,11 +7,11 @@
  *------------------------------------------------------------------------
  */
 syscall	signal(
-	  sid32		sem		/* id of semaphore to signal	*/
+	  sid32		sem		/* ID of semaphore to signal	*/
 	)
 {
-	intmask mask;			/* saved interrupt mask		*/
-	struct	sentry *semptr;		/* ptr to sempahore table entry	*/
+	intmask mask;			/* Saved interrupt mask		*/
+	struct	sentry *semptr;		/* Ptr to sempahore table entry	*/
 
 	mask = disable();
 	if (isbadsem(sem)) {
@@ -23,8 +23,8 @@ syscall	signal(
 		restore(mask);
 		return SYSERR;
 	}
-	if ((semptr->scount++) < 0) {	/* release a waiting process */
-		ready(dequeue(semptr->squeue), RESCHED_YES);
+	if ((semptr->scount++) < 0) {	/* Release a waiting process */
+		ready(dequeue(semptr->squeue));
 	}
 	restore(mask);
 	return OK;

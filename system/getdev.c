@@ -4,15 +4,15 @@
 #include <string.h>
 
 /*------------------------------------------------------------------------
- *  getdev  -  convert a device name to a device ID
+ *  getdev  -  Convert a device name to a device ID
  *------------------------------------------------------------------------
  */
 did32	getdev(
-	  char		*devname	/* name of the device		*/
+	  char		*devname	/* Name of the device		*/
 	)
 {
-	intmask		mask;		/* saved interrupt mask		*/
-	did32		id;		/* value to return to caller	*/
+	intmask		mask;		/* Saved interrupt mask		*/
+	did32		id;		/* Value to return to caller	*/
 
 	mask = disable();
 	for (id = 0; id < NDEVS; id++) {

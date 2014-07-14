@@ -35,5 +35,9 @@ extern	void	*minheap;		/* address beyond loaded memory	*/
 /* added by linker */
 
 extern	int	end;			/* end of program		*/
+extern	int	data;
 extern	int	edata;			/* end of data segment		*/
+extern	int	text;
 extern	int	etext;			/* end of text segment		*/
+extern	int	bss;
+extern	int	ebss;

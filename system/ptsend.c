@@ -3,19 +3,19 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  ptsend  --  send a message to a port by adding it to the queue
+ *  ptsend  --  Send a message to a port by adding it to the queue
  *------------------------------------------------------------------------
  */
 syscall	ptsend(
 	  int32		portid,		/* ID of port to use		*/
-	  umsg32	msg		/* message to send		*/
+	  umsg32	msg		/* Message to send		*/
 	)
 {
-	intmask	mask;			/* saved interrupt mask		*/
-	struct	ptentry	*ptptr;		/* pointer to table entry	*/
-	int32	seq;			/* local copy of sequence num.	*/
-	struct	ptnode	*msgnode;	/* allocated message node 	*/
-	struct	ptnode	*tailnode;	/* last node in port or NULL	*/
+	intmask	mask;			/* Saved interrupt mask		*/
+	struct	ptentry	*ptptr;		/* Pointer to table entry	*/
+	int32	seq;			/* Local copy of sequence num.	*/
+	struct	ptnode	*msgnode;	/* Allocated message node 	*/
+	struct	ptnode	*tailnode;	/* Last node in port or NULL	*/
 
 	mask = disable();
 	if ( isbadport(portid) ||
@@ -26,7 +26,7 @@ syscall	ptsend(
 
 	/* Wait for space and verify port has not been reset */
 
-	seq = ptptr->ptseq;		/* record orignal sequence	*/
+	seq = ptptr->ptseq;		/* Record orignal sequence	*/
 	if (wait(ptptr->ptssem) == SYSERR
 	    || ptptr->ptstate != PT_ALLOC
 	    || ptptr->ptseq != seq) {
@@ -39,17 +39,17 @@ syscall	ptsend(
 
 	/* Obtain node from free list by unlinking */
 
-	msgnode = ptfree;		/* point to first free node */
-	ptfree  = msgnode->ptnext;	/* unlink from the free list*/
-	msgnode->ptnext = NULL;		/* set fields in the node   */
+	msgnode = ptfree;		/* Point to first free node	*/
+	ptfree  = msgnode->ptnext;	/* Unlink from the free list	*/
+	msgnode->ptnext = NULL;		/* Set fields in the node	*/
 	msgnode->ptmsg  = msg;
 
 	/* Link into queue for the specified port */
 
 	tailnode = ptptr->pttail;
-	if (tailnode == NULL) {		/* queue for port was empty */
+	if (tailnode == NULL) {		/* Queue for port was empty	*/
 		ptptr->pttail = ptptr->pthead = msgnode;
-	} else {			/* insert new node at tail  */
+	} else {			/* Insert new node at tail	*/
 		tailnode->ptnext = msgnode;
 		ptptr->pttail = msgnode;
 	}

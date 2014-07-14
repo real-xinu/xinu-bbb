@@ -1,5 +1,0 @@
-# Xinu mapfile for Solaris ld
-#-----------------------------
-
-text    = LOAD ?RX V0x000;
-text    : $PROGBITS ?A!W;

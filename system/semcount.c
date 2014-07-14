@@ -3,7 +3,7 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  semcount  --  return the count of a semaphore (because any integer is
+ *  semcount  --  Return the count of a semaphore (because any integer is
  *			possible, return of SYSERR may be ambiguous)
  *------------------------------------------------------------------------
  */
@@ -11,8 +11,8 @@ syscall semcount(
 	  sid32		semid		/* ID of semaphore to use	*/
 	)
 {
-	intmask	mask;			/* saved interrupt mask		*/
-	int32	count;			/* current sempahore count	*/
+	intmask	mask;			/* Saved interrupt mask		*/
+	int32	count;			/* Current sempahore count	*/
 
 	mask = disable();
 	

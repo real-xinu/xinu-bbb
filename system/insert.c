@@ -9,11 +9,11 @@
 status	insert(
 	  pid32		pid,		/* ID of process to insert	*/
 	  qid16		q,		/* ID of queue to use		*/
-	  int32		key		/* key for the inserted process	*/
+	  int32		key		/* Key for the inserted process	*/
 	)
 {
-	int16	curr;			/* runs through items in a queue*/
-	int16	prev;			/* holds previous node index	*/
+	int16	curr;			/* Runs through items in a queue*/
+	int16	prev;			/* Holds previous node index	*/
 
 	if (isbadqid(q) || isbadpid(pid)) {
 		return SYSERR;
@@ -24,9 +24,9 @@ status	insert(
 		curr = queuetab[curr].qnext;
 	}
 
-	/* insert process between curr node and previous node */
+	/* Insert process between curr node and previous node */
 
-	prev = queuetab[curr].qprev;	/* get index of previous node	*/
+	prev = queuetab[curr].qprev;	/* Get index of previous node	*/
 	queuetab[pid].qnext = curr;
 	queuetab[pid].qprev = prev;
 	queuetab[pid].qkey = key;

@@ -7,11 +7,11 @@
  *------------------------------------------------------------------------
  */
 syscall	freemem(
-	  char		*blkaddr,	/* pointer to memory block	*/
-	  uint32	nbytes		/* size of block in bytes	*/
+	  char		*blkaddr,	/* Pointer to memory block	*/
+	  uint32	nbytes		/* Size of block in bytes	*/
 	)
 {
-	intmask	mask;			/* saved interrupt mask		*/
+	intmask	mask;			/* Saved interrupt mask		*/
 	struct	memblk	*next, *prev, *block;
 	uint32	top;
 
@@ -22,17 +22,17 @@ syscall	freemem(
 		return SYSERR;
 	}
 
-	nbytes = (uint32) roundmb(nbytes);	/* use memblk multiples	*/
+	nbytes = (uint32) roundmb(nbytes);	/* Use memblk multiples	*/
 	block = (struct memblk *)blkaddr;
 
-	prev = &memlist;			/* walk along free list	*/
+	prev = &memlist;			/* Walk along free list	*/
 	next = memlist.mnext;
 	while ((next != NULL) && (next < block)) {
 		prev = next;
 		next = next->mnext;
 	}
 
-	if (prev == &memlist) {		/* compute top of previous block*/
+	if (prev == &memlist) {		/* Compute top of previous block*/
 		top = (uint32) NULL;
 	} else {
 		top = (uint32) prev + prev->mlength;
@@ -50,10 +50,10 @@ syscall	freemem(
 
 	/* Either coalesce with previous block or add to free list */
 
-	if (top == (uint32) block) { 	/* coalesce with previous block	*/
+	if (top == (uint32) block) { 	/* Coalesce with previous block	*/
 		prev->mlength += nbytes;
 		block = prev;
-	} else {			/* link into list as new node	*/
+	} else {			/* Link into list as new node	*/
 		block->mnext = next;
 		block->mlength = nbytes;
 		prev->mnext = block;

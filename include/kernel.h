@@ -60,7 +60,7 @@ extern	qid16	readylist;	/* global ID for list of ready processes*/
 
 #define	CONTEXT	64		/* bytes in a function call context on	*/
 				/* the run-time stack			*/
-#define	QUANTUM	2		/* time slice in milliseconds		*/
+#define	QUANTUM	20000		/* time slice in milliseconds		*/
 
 /* Size of the stack for the null process */
 

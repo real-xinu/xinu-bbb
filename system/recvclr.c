@@ -3,20 +3,20 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  recvclr  -  clear incoming message, and return message if one waiting
+ *  recvclr  -  Clear incoming message, and return message if one waiting
  *------------------------------------------------------------------------
  */
 umsg32	recvclr(void)
 {
-	intmask	mask;			/* saved interrupt mask		*/
-	struct	procent *prptr;		/* ptr to process' table entry	*/
-	umsg32	msg;			/* message to return		*/
+	intmask	mask;			/* Saved interrupt mask		*/
+	struct	procent *prptr;		/* Ptr to process' table entry	*/
+	umsg32	msg;			/* Message to return		*/
 
 	mask = disable();
 	prptr = &proctab[currpid];
 	if (prptr->prhasmsg == TRUE) {
-		msg = prptr->prmsg;	/* retrieve message		*/
-		prptr->prhasmsg = FALSE;/* reset message flag		*/
+		msg = prptr->prmsg;	/* Retrieve message		*/
+		prptr->prhasmsg = FALSE;/* Reset message flag		*/
 	} else {
 		msg = OK;
 	}

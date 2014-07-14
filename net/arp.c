@@ -12,12 +12,10 @@ void	arp_init(
 	  int32	iface			/* interface to use		*/
 	)
 {
-	struct	ifentry  *ifptr;	/* ptr to interface entry	*/
 	int32	i;			/* ARP cache index		*/
 
-	ifptr = &if_tab[iface];
 	for (i=1; i<ARP_SIZ; i++) {	/* initialize cache to empty	*/
-		ifptr->if_arptab[i].arstate = AR_FREE;
+		arpcache[i].arstate = AR_FREE;
 	}
 }
 
@@ -26,7 +24,6 @@ void	arp_init(
  *------------------------------------------------------------------------
  */
 status	arp_resolve (
-	 int32	iface,			/* Interface to use		*/			
 	 uint32	nxthop,			/* nex-hop address to resolve	*/
 	 byte	mac[ETH_ADDR_LEN]	/* array into which Ethernet	*/
 	)				/*  address should be placed	*/
@@ -35,26 +32,20 @@ status	arp_resolve (
 	struct	arppacket apkt;		/* local packet buffer		*/
 	int32	i;			/* index into arpcache		*/
 	int32	slot;			/* ARP table slot to use	*/
-	struct	ifentry	*ifptr;		/* ptr to interface entry	*/
 	struct	arpentry  *arptr;	/* ptr to ARP cache entry	*/
 	int32	msg;			/* message returned by recvtime	*/
-
-	if ((iface < 0) || (iface >= NIFACES)) {
-		return SYSERR;
-	}
-	ifptr = &if_tab[iface];
 
 	/* Use MAC broadcast address for IP limited broadcast */
 
 	if (nxthop == IP_BCAST) {
-		memcpy(mac, ifptr->if_macbcast, ETH_ADDR_LEN);
+		memcpy(mac, NetData.ethbcast, ETH_ADDR_LEN);
 		return OK;
 	}
 
 	/* Use MAC broadcast address for IP network broadcast */
 
-	if (nxthop == ifptr->if_ipbcast) {/* set mac address to b-cast*/
-		memcpy(mac, ifptr->if_macbcast, ETH_ADDR_LEN);
+	if (nxthop == NetData.ipbcast) {/* set mac address to b-cast*/
+		memcpy(mac, NetData.ethbcast, ETH_ADDR_LEN);
 		return OK;
 	}
 
@@ -63,7 +54,7 @@ status	arp_resolve (
 	mask = disable();
 
 	for (i=0; i<ARP_SIZ; i++) {
-		arptr = &ifptr->if_arptab[i];
+		arptr = &arpcache[i];
 		if (arptr->arstate == AR_FREE) {
 			continue;
 		}
@@ -94,29 +85,29 @@ status	arp_resolve (
 	/* IP address not in cache -  allocate a new cache entry and	*/
 	/*	send an ARP request to obtain the answer		*/
 
-	slot = arp_alloc(iface);
+	slot = arp_alloc();
 	if (slot == SYSERR) {
 		restore(mask);
 		return SYSERR;
 	}
 
-	arptr = &ifptr->if_arptab[slot];
+	arptr = &arpcache[slot];
 	arptr->arstate = AR_PENDING;
 	arptr->arpaddr = nxthop;
 	arptr->arpid = currpid;
 
 	/* Hand-craft an ARP Request packet */
 
-	memcpy(apkt.arp_ethdst, ifptr->if_macbcast, ETH_ADDR_LEN);
-	memcpy(apkt.arp_ethsrc, if_tab[0].if_macucast, ETH_ADDR_LEN);
+	memcpy(apkt.arp_ethdst, NetData.ethbcast, ETH_ADDR_LEN);
+	memcpy(apkt.arp_ethsrc, NetData.ethucast, ETH_ADDR_LEN);
 	apkt.arp_ethtype = ETH_ARP;	  /* Packet type is ARP		*/
 	apkt.arp_htype = ARP_HTYPE;	  /* Hardware type is Ethernet	*/
 	apkt.arp_ptype = ARP_PTYPE;	  /* Protocol type is IP	*/
 	apkt.arp_hlen = 0xff & ARP_HALEN; /* Ethernet MAC size in bytes	*/
 	apkt.arp_plen = 0xff & ARP_PALEN; /* IP address size in bytes	*/
 	apkt.arp_op = 0xffff & ARP_OP_REQ;/* ARP type is Request	*/
-	memcpy(apkt.arp_sndha, ifptr->if_macucast, ARP_HALEN);
-	apkt.arp_sndpa = ifptr->if_ipucast; /* IP address of interface	*/
+	memcpy(apkt.arp_sndha, NetData.ethucast, ARP_HALEN);
+	apkt.arp_sndpa = NetData.ipucast; /* IP address of interface	*/
 	memset(apkt.arp_tarha, '\0', ARP_HALEN); /* Target HA is unknown*/
 	apkt.arp_tarpa = nxthop;	  /* Target protocol address	*/
 
@@ -132,8 +123,7 @@ status	arp_resolve (
 
 	msg = recvclr();
 	for (i=0; i<ARP_RETRY; i++) {
-		write(ifptr->if_dev, (char *)&apkt,
-						sizeof(struct arppacket));
+		write(ETHER0, (char *)&apkt, sizeof(struct arppacket));
 		msg = recvtime(ARP_TIMEOUT);
 		if (msg == TIMEOUT) {
 			continue;
@@ -166,12 +156,10 @@ status	arp_resolve (
  *------------------------------------------------------------------------
  */
 void	arp_in (
-	  int32	iface,			/* interface to use		*/
 	  struct arppacket *pktptr	/* ptr to incoming packet	*/
 	)
 {
 	intmask	mask;			/* saved interrupt mask		*/
-	struct	ifentry   *ifptr;	/* ptr to interface		*/
 	struct	arppacket apkt;		/* Local packet buffer		*/
 	int32	slot;			/* slot in cache		*/
 	struct	arpentry  *arptr;	/* ptr to ARP cache entry	*/
@@ -190,24 +178,16 @@ void	arp_in (
 		return;
 	}
 
-	/* Eliminate 192.168.0.0/16 packets from local net */
-
-	if ((iface==0)&&(((pktptr->arp_sndpa)&0xffff0000)==0xc0a80000)) {
-		freebuf((char *)pktptr);
-		return;
-	}
-
 	/* Insure only one process uses ARP at a time */
 
 	mask = disable();
 
 	/* Search cache for sender's IP address */
 
-	ifptr = &if_tab[iface];
 	found = FALSE;
 
 	for (slot=0; slot < ARP_SIZ; slot++) {
-		arptr = &ifptr->if_arptab[slot];
+		arptr = &arpcache[slot];
 
 		/* Skip table entries that are unused */
 
@@ -250,8 +230,8 @@ void	arp_in (
 	/* machine is not the target or	the local IP address is not	*/
 	/* yet known, ignore the request (i.e., processing is complete)	*/
 
-	if ((!ifptr->if_ipvalid) ||
-			(pktptr->arp_tarpa != ifptr->if_ipucast)) {
+	if ((!NetData.ipvalid) ||
+			(pktptr->arp_tarpa != NetData.ipucast)) {
 		freebuf((char *)pktptr);
 		restore(mask);
 		return;
@@ -261,15 +241,14 @@ void	arp_in (
 	/*	Add sender's info to cache, if not already present	*/
 
 	if (!found) {
-		slot = arp_alloc(iface);
+		slot = arp_alloc();
 		if (slot == SYSERR) {	/* cache full */
-			kprintf(" ARP cache overflow on interface %d\n",
-								iface);
+			kprintf("ARP cache overflow on interface\n");
 			freebuf((char *)pktptr);
 			restore(mask);
 			return;
 		}
-		arptr = &ifptr->if_arptab[slot];
+		arptr = &arpcache[slot];
 		arptr->arpaddr = pktptr->arp_sndpa;
 		memcpy(arptr->arhaddr, pktptr->arp_sndha, ARP_HALEN);
 		arptr->arstate = AR_RESOLVED;
@@ -278,7 +257,7 @@ void	arp_in (
 	/* Hand-craft an ARP reply packet and send back to requester	*/
 
 	memcpy(apkt.arp_ethdst, pktptr->arp_sndha, ARP_HALEN);
-	memcpy(apkt.arp_ethsrc, if_tab[0].if_macucast, ARP_HALEN);
+	memcpy(apkt.arp_ethsrc, NetData.ethucast, ARP_HALEN);
 	apkt.arp_ethtype= ETH_ARP;		/* Frame carries ARP	*/
 	apkt.arp_htype	= ARP_HTYPE;		/* Hardware is Ethernet	*/
 	apkt.arp_ptype	= ARP_PTYPE;		/* Protocol is IP	*/
@@ -288,8 +267,8 @@ void	arp_in (
 
 	/* Insert local Ethernet and IP address in sender fields	*/
 
-	memcpy(apkt.arp_sndha, ifptr->if_macucast, ARP_HALEN);
-	apkt.arp_sndpa = ifptr->if_ipucast;
+	memcpy(apkt.arp_sndha, NetData.ethucast, ARP_HALEN);
+	apkt.arp_sndpa = NetData.ipucast;
 
 	/* Copy target Ethernet and IP addresses from request packet */
 
@@ -306,7 +285,7 @@ void	arp_in (
 
 	/* Send the reply */
 
-	write(ifptr->if_dev, (char *)&apkt, sizeof(struct arppacket));
+	write(ETHER0, (char *)&apkt, sizeof(struct arppacket));
 	freebuf((char *)pktptr);
 	restore(mask);
 	return;
@@ -316,19 +295,15 @@ void	arp_in (
  * arp_alloc - find a free slot or kick out an entry to create one
  *------------------------------------------------------------------------
  */
-int32	arp_alloc (
-		  int32	iface		/* interface to use		*/
-	)
+int32	arp_alloc ()
 {
 	int32	slot;			/* slot in ARP cache		*/
-	struct	ifentry  *ifptr;	/* ptr to interface entry	*/
 
 	/* Search for free slot */
 
-	ifptr = &if_tab[iface];
 	for (slot=0; slot < ARP_SIZ; slot++) {
-		if (ifptr->if_arptab[slot].arstate == AR_FREE) {
-			memset((char *)&ifptr->if_arptab[slot],
+		if (arpcache[slot].arstate == AR_FREE) {
+			memset((char *)&arpcache[slot],
 					NULLCH, sizeof(struct arpentry));
 			return slot;
 		}
@@ -337,8 +312,8 @@ int32	arp_alloc (
 	/* Search for resolved entry */
 
 	for (slot=0; slot < ARP_SIZ; slot++) {
-		if (ifptr->if_arptab[slot].arstate == AR_RESOLVED) {
-			memset((char *)&ifptr->if_arptab[slot],
+		if (arpcache[slot].arstate == AR_RESOLVED) {
+			memset((char *)&arpcache[slot],
 					NULLCH, sizeof(struct arpentry));
 			return slot;
 		}
@@ -346,7 +321,7 @@ int32	arp_alloc (
 
 	/* All slots are pending */
 
-	kprintf("ARP cache size exceeded on interface %d\n\r", iface);
+	kprintf("ARP cache size exceeded\n");
 
 	return SYSERR;
 }

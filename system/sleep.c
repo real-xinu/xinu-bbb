@@ -2,20 +2,18 @@
 
 #include <xinu.h>
 
-#define	MAXSECONDS	4294967		/* max seconds per 32-bit msec	*/
-int32	slnonempty;			/* is sleepq empty?		*/
-int32	*sltop;				/* ptr to first key on sleepq	*/
+#define	MAXSECONDS	4294967		/* Max seconds per 32-bit msec	*/
 
 /*------------------------------------------------------------------------
  *  sleep  -  Delay the calling process n seconds
  *------------------------------------------------------------------------
  */
 syscall	sleep(
-	  uint32	delay		/* time to delay in seconds	*/
+	  uint32	delay		/* Time to delay in seconds	*/
 	)
 {
 	if (delay > MAXSECONDS) {
-		return(SYSERR);
+		return SYSERR;
 	}
 	sleepms(1000*delay);
 	return OK;
@@ -26,10 +24,10 @@ syscall	sleep(
  *------------------------------------------------------------------------
  */
 syscall	sleepms(
-	  uint32	delay		/* time to delay in msec.	*/
+	  uint32	delay		/* Time to delay in msec.	*/
 	)
 {
-	intmask	mask;			/* saved interrupt mask		*/
+	intmask	mask;			/* Saved interrupt mask		*/
 
 	mask = disable();
 	if (delay == 0) {
@@ -44,8 +42,7 @@ syscall	sleepms(
 		restore(mask);
 		return SYSERR;
 	}
-	sltop = &queuetab[firstid(sleepq)].qkey;
-	slnonempty = TRUE;
+
 	proctab[currpid].prstate = PR_SLEEP;
 	resched();
 	restore(mask);

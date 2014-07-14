@@ -4,21 +4,21 @@
 #include <stdio.h>
 
 /*------------------------------------------------------------------------
- * getutime  --  obtain time in seconds past Jan 1, 1970, UCT (GMT)
+ * getutime  --  Obtain time in seconds past Jan 1, 1970, UCT (GMT)
  *------------------------------------------------------------------------
  */
 status	getutime(
-	  uint32  *timvar		/* location to store the result	*/
+	  uint32  *timvar		/* Location to store the result	*/
 	)
 {
-	uint32	nnow;			/* current time in network fmt	*/
-	uint32	now;			/* current time in xinu format	*/
-	int32	retval;			/* return value from call	*/
-	uid32	slot;			/* slot in UDP table		*/
+	uint32	nnow;			/* Current time in network fmt	*/
+	uint32	now;			/* Current time in xinu format	*/
+	int32	retval;			/* Return value from call	*/
+	uid32	slot;			/* Slot in UDP table		*/
 	uint32	serverip;		/* IP address of a time server	*/
-	char	prompt[2] = "xx";	/* message to prompt time server*/
+	char	prompt[2] = "xx";	/* Message to prompt time server*/
 
-	if (Date.dt_bootvalid) {	/* return time from local info	*/
+	if (Date.dt_bootvalid) {	/* Return time from local info	*/
 		*timvar = Date.dt_boot + clktime;
 		return OK;
 	}
@@ -31,14 +31,14 @@ status	getutime(
 
 	/* Contact the time server to get the date and time */
 
-	slot = udp_register(ifprime, serverip, TIMERPORT, TIMELPORT);
+	slot = udp_register(serverip, TIMERPORT, TIMELPORT);
 	if (slot == SYSERR) {
 		fprintf(stderr,"getutime: cannot register a udp port %d\n",
 					TIMERPORT);
 		return SYSERR;
 	}
 
-	/* send arbitrary message to prompt time server */
+	/* Send arbitrary message to prompt time server */
 
 	if (getlocalip() == SYSERR) {
 		return SYSERR;

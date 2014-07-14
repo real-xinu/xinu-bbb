@@ -10,9 +10,9 @@ syscall	kill(
 	  pid32		pid		/* ID of process to kill	*/
 	)
 {
-	intmask	mask;			/* saved interrupt mask		*/
-	struct	procent *prptr;		/* ptr to process' table entry	*/
-	int32	i;			/* index into descriptors	*/
+	intmask	mask;			/* Saved interrupt mask		*/
+	struct	procent *prptr;		/* Ptr to process' table entry	*/
+	int32	i;			/* Index into descriptors	*/
 
 	mask = disable();
 	if (isbadpid(pid) || (pid == NULLPROC)
@@ -21,7 +21,7 @@ syscall	kill(
 		return SYSERR;
 	}
 
-	if (--prcount <= 1) {		/* last user process completes	*/
+	if (--prcount <= 1) {		/* Last user process completes	*/
 		xdone();
 	}
 
@@ -33,7 +33,7 @@ syscall	kill(
 
 	switch (prptr->prstate) {
 	case PR_CURR:
-		prptr->prstate = PR_FREE;	/* suicide */
+		prptr->prstate = PR_FREE;	/* Suicide */
 		resched();
 
 	case PR_SLEEP:
@@ -44,11 +44,11 @@ syscall	kill(
 
 	case PR_WAIT:
 		semtab[prptr->prsem].scount++;
-		/* fall through */
+		/* Fall through */
 
 	case PR_READY:
-		getitem(pid);		/* remove from queue */
-		/* fall through */
+		getitem(pid);		/* Remove from queue */
+		/* Fall through */
 
 	default:
 		prptr->prstate = PR_FREE;

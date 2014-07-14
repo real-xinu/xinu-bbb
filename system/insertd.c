@@ -6,14 +6,14 @@
  *  insertd  -  Insert a process in delta list using delay as the key
  *------------------------------------------------------------------------
  */
-status	insertd(			/* assumes interrupts disabled	*/
+status	insertd(			/* Assumes interrupts disabled	*/
 	  pid32		pid,		/* ID of process to insert	*/
 	  qid16		q,		/* ID of queue to use		*/
-	  int32		key		/* delay from "now" (in ms.)	*/
+	  int32		key		/* Delay from "now" (in ms.)	*/
 	)
 {
-	int	next;			/* runs through the delta list	*/
-	int	prev;			/* follows next through the list*/
+	int32	next;			/* Runs through the delta list	*/
+	int32	prev;			/* Follows next through the list*/
 
 	if (isbadqid(q) || isbadpid(pid)) {
 		return SYSERR;

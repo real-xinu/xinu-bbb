@@ -43,11 +43,6 @@ struct	netpacket	{
 	  byte		net_icdata[1500-28];/* ICMP payload (1500-above)*/
 	 };
 	};
-	int16	net_iface;		/* Interface over which packet	*/
-					/*  arrived (placed here beyond	*/
-					/*  the actual packet so we can	*/
-					/*  pass the packet address to	*/
-					/*  write			*/
 };
 #pragma pack()
 
@@ -55,5 +50,15 @@ struct	netpacket	{
 
 extern	bpid32	netbufpool;		/* ID of net packet buffer pool	*/
 
-extern	bool8	host;			/* is this system a host?	*/
-extern	int32	bingid;			/* Bing ID in use		*/
+struct	network	{
+	uint32	ipucast;
+	uint32	ipbcast;
+	uint32	ipmask;
+	uint32	ipprefix;
+	uint32	iprouter;
+	bool8	ipvalid;
+	byte	ethucast[ETH_ADDR_LEN];
+	byte	ethbcast[ETH_ADDR_LEN];
+};
+
+extern	struct	network NetData;	/* Local Network Interface	*/

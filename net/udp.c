@@ -32,8 +32,6 @@ void	udp_in(
 {
 	intmask	mask;			/* saved interrupt mask		*/
 	int32	i;			/* index into udptab		*/
-	int32	iface;			/* interface over which the	*/
-					/*   packet arrived		*/
 	struct	udpentry *udptr;	/* ptr to udptab entry	*/
 
 
@@ -41,16 +39,12 @@ void	udp_in(
 
 	mask = disable();
 
-	iface = pktptr->net_iface;
 	for (i=0; i<UDP_SLOTS; i++) {
 	    udptr = &udptab[i];
 	    if (udptr->udstate == UDP_FREE) {
 			continue;
 	    }
-	    if	( (udptr->udiface != UDP_ANYIF) &&
-		  (udptr->udiface != iface)) {
-			continue;
-	    }
+
 	    if ((pktptr->net_udpdport == udptr->udlocport)  &&
                     ((udptr->udremport == 0) ||
                         (pktptr->net_udpsport == udptr->udremport)) &&
@@ -89,7 +83,6 @@ void	udp_in(
  *------------------------------------------------------------------------
  */
 uid32	udp_register (
-	 int32	iface,			/* interface to use or UDP_ANYIF*/
 	 uint32	remip,			/* remote IP address or zero	*/
 	 uint16	remport,		/* remote UDP protocol port	*/
 	 uint16	locport			/* local UDP protocol port	*/
@@ -102,17 +95,6 @@ uid32	udp_register (
 	/* Insure only one process can access the UDP table at a time	*/
 
 	mask = disable();
-
-	/* Verify that specified interface is available */
-
-	if (iface != UDP_ANYIF) {
-
-		if ((iface < 0) || (iface > NIFACES) ||
-				(if_tab[iface].if_state != IF_UP)) {
-			restore(mask);
-			return SYSERR;
-		}
-	}
 
 	/* See if request already registered */
 
@@ -128,20 +110,10 @@ uid32	udp_register (
 		     (locport == udptr->udlocport) &&
 		     (remip   == udptr->udremip  ) ) {
 
-			/* All the above matched, so see if the		*/
-			/*	interface matches (count a wildcard	*/
-			/*	in the request or in the table entry	*/
-			/*	as a match)				*/
+			/* Request already in the table */
 
-			if ((iface          == UDP_ANYIF) ||
-			    (udptr->udiface == UDP_ANYIF) ||
-			    (udptr->udiface == iface)     ) {
-
-				/* Request already in the table */
-
-				restore(mask);
-				return SYSERR;
-			}
+			restore(mask);
+			return SYSERR;
 		}
 	}
 
@@ -152,7 +124,6 @@ uid32	udp_register (
 		if (udptr->udstate != UDP_FREE) {
 			continue;
 		}
-		udptr->udiface = iface;
 		udptr->udlocport = locport;
 		udptr->udremport = remport;
 		udptr->udremip = remip;
@@ -353,13 +324,11 @@ status	udp_send (
 	int32	pktlen;			/* total packet length		*/
 	static	uint16 ident = 1;	/* datagram IDENT field		*/
 	char	*udataptr;		/* pointer to UDP data		*/
-	struct	ifentry	*ifptr;		/* ptr to interface entry	*/
 	uint32	remip;			/* remote IP address to use	*/
 	uint16	remport;		/* remote protocol port to use	*/
 	uint16	locport;		/* local protocol port to use	*/
 	uint32	locip;			/* local IP address taken from	*/
 					/*   the interface		*/
-	int32	iface;			/* the interface being used	*/
 	struct	udpentry *udptr;	/* ptr to table entry		*/
 
 	/* Insure only one process can access the UDP table at a time */
@@ -392,16 +361,7 @@ status	udp_send (
 		return SYSERR;
 	}
 
-	/* verify that the slot has a specified local interface */
-
-	iface = udptr->udiface;
-	if (iface == UDP_ANYIF) {
-		restore(mask);
-		return SYSERR;
-	} else {
-		ifptr = &if_tab[iface];
-	}
-	locip = ifptr->if_ipucast;
+	locip = NetData.ipucast;
 	remport = udptr->udremport;
 	locport = udptr->udlocport;
 
@@ -414,17 +374,13 @@ status	udp_send (
 		return SYSERR;
 	}
 
-	/* Set interface in packet buffer */
-
-	pkt->net_iface = iface;
-
 	/* Compute packet length as UDP data size + fixed header size	*/
 
 	pktlen = ((char *)&pkt->net_udpdata - (char *)pkt) + len;
 
 	/* Create UDP packet in pkt */
 
-	memcpy((char *)pkt->net_ethsrc,if_tab[0].if_macucast,ETH_ADDR_LEN);
+	memcpy((char *)pkt->net_ethsrc,NetData.ethucast,ETH_ADDR_LEN);
 	pkt->net_ethtype = 0x0800;	/* Type is IP */
 	pkt->net_ipvh = 0x45;		/* IP version and hdr length	*/
 	pkt->net_iptos = 0x00;		/* Type of service		*/
@@ -472,8 +428,6 @@ status	udp_sendto (
 	static	uint16 ident = 1;	/* datagram IDENT field		*/
 	struct	udpentry *udptr;	/* prt to UDP table entry	*/
 	char	*udataptr;		/* pointer to UDP data		*/
-	int32	iface;			/* the interface being used	*/
-	struct	ifentry	*ifptr;		/* ptr to interface entry	*/
 
 	/* Insure only one process can access the UDP table at a time */
 
@@ -497,18 +451,6 @@ status	udp_sendto (
 		return SYSERR;
 	}
 
-	/* See if the slot has a specified local interface */
-
-	iface = udptr->udiface;
-	if (iface == UDP_ANYIF) {
-		iface = ip_route(remip);
-		if (iface == SYSERR) {
-			restore(mask);
-			return SYSERR;
-		}
-	}
-	ifptr = &if_tab[iface];
-
 	/* Allocate a network buffer to hold the packet */
 
 	pkt = (struct netpacket *)getbuf(netbufpool);
@@ -518,17 +460,13 @@ status	udp_sendto (
 		return SYSERR;
 	}
 
-	/* Set interface in packet buffer */
-
-	pkt->net_iface = iface;
-
 	/* Compute packet length as UDP data size + fixed header size	*/
 
 	pktlen = ((char *)&pkt->net_udpdata - (char *)pkt) + len;
 
 	/* Create UDP packet in pkt */
 
-	memcpy((char *)pkt->net_ethsrc,if_tab[0].if_macucast,ETH_ADDR_LEN);
+	memcpy((char *)pkt->net_ethsrc,NetData.ethucast,ETH_ADDR_LEN);
         pkt->net_ethtype = 0x0800;	/* Type is IP */
 	pkt->net_ipvh = 0x45;		/* IP version and hdr length	*/
 	pkt->net_iptos = 0x00;		/* Type of service		*/
@@ -538,7 +476,7 @@ status	udp_sendto (
 	pkt->net_ipttl = 0xff;		/* IP time-to-live		*/
 	pkt->net_ipproto = IP_UDP;	/* datagram carries UDP		*/
 	pkt->net_ipcksum = 0x0000;	/* initial checksum		*/
-	pkt->net_ipsrc = ifptr->if_ipucast;/* IP source address		*/
+	pkt->net_ipsrc = NetData.ipucast;/* IP source address		*/
 	pkt->net_ipdst = remip;		/* IP destination address	*/
 	pkt->net_udpsport = udptr->udlocport;/* local UDP protocol port	*/
 	pkt->net_udpdport = remport;	/* remote UDP protocol port	*/
@@ -591,7 +529,7 @@ status	udp_release (
 		return SYSERR;
 	}
 
-	sched_cntl(DEFER_START);
+	resched_cntl(DEFER_START);
 	while (udptr->udcount > 0) {
 		pkt = udptr->udqueue[udptr->udhead++];
 		if (udptr->udhead >= UDP_QSIZ) {
@@ -601,7 +539,7 @@ status	udp_release (
 		udptr->udcount--;
 	}
 	udptr->udstate = UDP_FREE;
-	sched_cntl(DEFER_STOP);
+	resched_cntl(DEFER_STOP);
 	restore(mask);
 	return OK;
 }

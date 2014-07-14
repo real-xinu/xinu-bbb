@@ -7,10 +7,10 @@
  *------------------------------------------------------------------------
  */
 char  	*getmem(
-	  uint32	nbytes		/* size of memory requested	*/
+	  uint32	nbytes		/* Size of memory requested	*/
 	)
 {
-	intmask	mask;			/* saved interrupt mask		*/
+	intmask	mask;			/* Saved interrupt mask		*/
 	struct	memblk	*prev, *curr, *leftover;
 
 	mask = disable();
@@ -19,19 +19,19 @@ char  	*getmem(
 		return (char *)SYSERR;
 	}
 
-	nbytes = (uint32) roundmb(nbytes);	/* use memblk multiples	*/
+	nbytes = (uint32) roundmb(nbytes);	/* Use memblk multiples	*/
 
 	prev = &memlist;
 	curr = memlist.mnext;
-	while (curr != NULL) {			/* search free list	*/
+	while (curr != NULL) {			/* Search free list	*/
 
-		if (curr->mlength == nbytes) {	/* block is exact match	*/
+		if (curr->mlength == nbytes) {	/* Block is exact match	*/
 			prev->mnext = curr->mnext;
 			memlist.mlength -= nbytes;
 			restore(mask);
 			return (char *)(curr);
 
-		} else if (curr->mlength > nbytes) { /* split big block	*/
+		} else if (curr->mlength > nbytes) { /* Split big block	*/
 			leftover = (struct memblk *)((uint32) curr +
 					nbytes);
 			prev->mnext = leftover;
@@ -40,7 +40,7 @@ char  	*getmem(
 			memlist.mlength -= nbytes;
 			restore(mask);
 			return (char *)(curr);
-		} else {			/* move to next block	*/
+		} else {			/* Move to next block	*/
 			prev = curr;
 			curr = curr->mnext;
 		}

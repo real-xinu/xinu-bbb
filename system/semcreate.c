@@ -5,15 +5,15 @@
 local	sid32	newsem(void);
 
 /*------------------------------------------------------------------------
- *  semcreate  -  create a new semaphore and return the ID to the caller
+ *  semcreate  -  Create a new semaphore and return the ID to the caller
  *------------------------------------------------------------------------
  */
 sid32	semcreate(
-	  int32		count		/* initial semaphore count	*/
+	  int32		count		/* Initial semaphore count	*/
 	)
 {
-	intmask	mask;			/* saved interrupt mask		*/
-	sid32	sem;			/* semaphore ID to return	*/
+	intmask	mask;			/* Saved interrupt mask		*/
+	sid32	sem;			/* Semaphore ID to return	*/
 
 	mask = disable();
 
@@ -21,21 +21,21 @@ sid32	semcreate(
 		restore(mask);
 		return SYSERR;
 	}
-	semtab[sem].scount = count;	/* initialize table entry	*/
+	semtab[sem].scount = count;	/* Initialize table entry	*/
 
 	restore(mask);
 	return sem;
 }
 
 /*------------------------------------------------------------------------
- *  newsem  -  allocate an unused semaphore and return its index
+ *  newsem  -  Allocate an unused semaphore and return its index
  *------------------------------------------------------------------------
  */
 local	sid32	newsem(void)
 {
-	static	sid32	nextsem = 0;	/* next semaphore index to try	*/
-	sid32	sem;			/* semaphore ID to return	*/
-	int32	i;			/* iterate through # entries	*/
+	static	sid32	nextsem = 0;	/* Next semaphore index to try	*/
+	sid32	sem;			/* Semaphore ID to return	*/
+	int32	i;			/* Iterate through # entries	*/
 
 	for (i=0 ; i<NSEM ; i++) {
 		sem = nextsem++;

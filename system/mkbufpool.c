@@ -3,18 +3,18 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  mkbufpool  --  allocate memory for a buffer pool and link the buffers
+ *  mkbufpool  --  Allocate memory for a buffer pool and link the buffers
  *------------------------------------------------------------------------
  */
 bpid32	mkbufpool(
-	  int32		bufsiz,		/* size of a buffer in the pool	*/
-	  int32		numbufs		/* number of buffers in the pool*/
+	  int32		bufsiz,		/* Size of a buffer in the pool	*/
+	  int32		numbufs		/* Number of buffers in the pool*/
 	)
 {
-	intmask	mask;			/* saved interrupt mask		*/
+	intmask	mask;			/* Saved interrupt mask		*/
 	bpid32	poolid;			/* ID of pool that is created	*/
-	struct	bpentry	*bpptr;		/* pointer to entry in buftab	*/
-	char	*buf;			/* pointer to memory for buffer	*/
+	struct	bpentry	*bpptr;		/* Pointer to entry in buftab	*/
+	char	*buf;			/* Pointer to memory for buffer	*/
 
 	mask = disable();
 	if (bufsiz<BP_MINB || bufsiz>BP_MAXB

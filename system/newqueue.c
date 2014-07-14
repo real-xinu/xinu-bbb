@@ -8,17 +8,17 @@
  */
 qid16	newqueue(void)
 {
-	static qid16	nextqid=NPROC;/* next list in queuetab to use	*/
+	static qid16	nextqid=NPROC;	/* Next list in queuetab to use	*/
 	qid16		q;		/* ID of allocated queue 	*/
 
 	q = nextqid;
-	if (q > NQENT) {		/* check for table overflow	*/
+	if (q > NQENT) {		/* Check for table overflow	*/
 		return SYSERR;
 	}
 
-	nextqid += 2;			/* increment index for next call*/
+	nextqid += 2;			/* Increment index for next call*/
 
-	/* initialize head and tail nodes to form an empty queue */
+	/* Initialize head and tail nodes to form an empty queue */
 
 	queuetab[queuehead(q)].qnext = queuetail(q);
 	queuetab[queuehead(q)].qprev = EMPTY;

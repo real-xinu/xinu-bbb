@@ -3,17 +3,17 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  ptreset  --  reset a port, freeing waiting processes and messages and
+ *  ptreset  -  Reset a port, freeing waiting processes and messages and
 			leaving the port ready for further use
  *------------------------------------------------------------------------
  */
 syscall	ptreset(
 	  int32		portid,		/* ID of port to reset		*/
-	  int32		(*dispose)(int32)/* function to call to dispose	*/
+	  int32		(*disp)(int32)	/* Function to call to dispose	*/
 	)				/*   of waiting messages	*/
 {
-	intmask	mask;			/* saved interrupt mask		*/
-	struct	ptentry	*ptptr;		/* pointer to port table entry	*/
+	intmask	mask;			/* Saved interrupt mask		*/
+	struct	ptentry	*ptptr;		/* Pointer to port table entry	*/
 
 	mask = disable();
 	if ( isbadport(portid) ||
@@ -21,7 +21,7 @@ syscall	ptreset(
 		restore(mask);
 		return SYSERR;
 	}
-	_ptclear(ptptr, PT_ALLOC, dispose);
+	_ptclear(ptptr, PT_ALLOC, disp);
 	restore(mask);
 	return OK;
 }

@@ -3,16 +3,16 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  recvtime  -  wait specified time to receive a message and return
+ *  recvtime  -  Wait specified time to receive a message and return
  *------------------------------------------------------------------------
  */
 umsg32	recvtime(
-	  int32		maxwait		/* ticks to wait before timeout */
+	  int32		maxwait		/* Ticks to wait before timeout */
         )
 {
-	intmask	mask;			/* saved interrupt mask		*/
-	struct	procent	*prptr;		/* tbl entry of current process	*/
-	umsg32	msg;			/* message to return		*/
+	intmask	mask;			/* Saved interrupt mask		*/
+	struct	procent	*prptr;		/* Tbl entry of current process	*/
+	umsg32	msg;			/* Message to return		*/
 
 	if (maxwait < 0) {
 		return SYSERR;
@@ -22,13 +22,11 @@ umsg32	recvtime(
 	/* Schedule wakeup and place process in timed-receive state */
 
 	prptr = &proctab[currpid];
-	if (prptr->prhasmsg == FALSE) {	/* if message waiting, no delay	*/
+	if (prptr->prhasmsg == FALSE) {	/* If message waiting, no delay	*/
 		if (insertd(currpid,sleepq,maxwait) == SYSERR) {
 			restore(mask);
 			return SYSERR;
 		}
-		sltop = &queuetab[firstid(sleepq)].qkey;
-		slnonempty = TRUE;
 		prptr->prstate = PR_RECTIM;
 		resched();
 	}
@@ -36,8 +34,8 @@ umsg32	recvtime(
 	/* Either message arrived or timer expired */
 
 	if (prptr->prhasmsg) {
-		msg = prptr->prmsg;	/* retrieve message		*/
-		prptr->prhasmsg = FALSE;/* reset message indicator	*/
+		msg = prptr->prmsg;	/* Retrieve message		*/
+		prptr->prhasmsg = FALSE;/* Reset message indicator	*/
 	} else {
 		msg = TIMEOUT;
 	}

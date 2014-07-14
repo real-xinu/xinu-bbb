@@ -7,12 +7,12 @@
  *------------------------------------------------------------------------
  */
 char  	*getstk(
-	  uint32	nbytes		/* size of memory requested	*/
+	  uint32	nbytes		/* Size of memory requested	*/
 	)
 {
-	intmask	mask;			/* saved interrupt mask		*/
-	struct	memblk	*prev, *curr;	/* walk through memory list	*/
-	struct	memblk	*fits, *fitsprev; /* record block that fits	*/
+	intmask	mask;			/* Saved interrupt mask		*/
+	struct	memblk	*prev, *curr;	/* Walk through memory list	*/
+	struct	memblk	*fits, *fitsprev; /* Record block that fits	*/
 
 	mask = disable();
 	if (nbytes == 0) {
@@ -20,15 +20,15 @@ char  	*getstk(
 		return (char *)SYSERR;
 	}
 
-	nbytes = (uint32) roundmb(nbytes);	/* use mblock multiples	*/
+	nbytes = (uint32) roundmb(nbytes);	/* Use mblock multiples	*/
 
 	prev = &memlist;
 	curr = memlist.mnext;
 	fits = NULL;
-	fitsprev = NULL;  /* to avoid a compiler warning */
+	fitsprev = NULL;  /* Just to avoid a compiler warning */
 
-	while (curr != NULL) {			/* scan entire list	*/
-		if (curr->mlength >= nbytes) {	/* record block address	*/
+	while (curr != NULL) {			/* Scan entire list	*/
+		if (curr->mlength >= nbytes) {	/* Record block address	*/
 			fits = curr;		/*   when request fits	*/
 			fitsprev = prev;
 		}
@@ -36,13 +36,13 @@ char  	*getstk(
 		curr = curr->mnext;
 	}
 
-	if (fits == NULL) {			/* no block was found	*/
+	if (fits == NULL) {			/* No block was found	*/
 		restore(mask);
 		return (char *)SYSERR;
 	}
-	if (nbytes == fits->mlength) {		/* block is exact match	*/
+	if (nbytes == fits->mlength) {		/* Block is exact match	*/
 		fitsprev->mnext = fits->mnext;
-	} else {				/* remove top section	*/
+	} else {				/* Remove top section	*/
 		fits->mlength -= nbytes;
 		fits = (struct memblk *)((uint32)fits + fits->mlength);
 	}

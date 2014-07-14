@@ -3,17 +3,17 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  putc  -  send one character of data (byte) to a device
+ *  putc  -  Send one character of data (byte) to a device
  *------------------------------------------------------------------------
  */
 syscall	putc(
-	  did32		descrp,		/* descriptor for device	*/
-	  char		ch		/* character to send		*/
+	  did32		descrp,		/* Descriptor for device	*/
+	  char		ch		/* Character to send		*/
 	)
 {
-	intmask		mask;		/* saved interrupt mask		*/
-	struct dentry	*devptr;	/* entry in device switch table	*/
-	int32		retval;		/* value to return to caller	*/
+	intmask		mask;		/* Saved interrupt mask		*/
+	struct dentry	*devptr;	/* Entry in device switch table	*/
+	int32		retval;		/* Value to return to caller	*/
 
 	mask = disable();
 	if (isbaddev(descrp)) {

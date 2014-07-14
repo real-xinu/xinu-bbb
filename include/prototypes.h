@@ -3,10 +3,10 @@ extern	status	addargs(pid32, int32, int32[], int32,char *, void *);
 
 /* in file arp.c */
 
-extern	void	arp_init(int32);
-extern	status	arp_resolve(int32, uint32, byte[]);
-extern	void	arp_in(int32, struct arppacket *);
-extern	int32	arp_alloc(int32);
+extern	void	arp_init();
+extern	status	arp_resolve(uint32, byte[]);
+extern	void	arp_in(struct arppacket *);
+extern	int32	arp_alloc();
 extern	void	arp_ntoh(struct arppacket *);
 extern	void	arp_hton(struct arppacket *);
 
@@ -57,6 +57,8 @@ extern	void	ctxsw(void *, void *);
 /* in file dhcp.c */
 
 extern	uint32	getlocalip(void);
+
+extern	uint32	getlocalip_boot(uint32 *, char *, uint32 *);
 
 /* in file dot2ip.c */
 
@@ -206,8 +208,8 @@ extern	void	icmp_init(void);
 extern	void	icmp_in(struct netpacket *);
 extern	int32	icmp_register(uint32);
 extern	int32	icmp_recv(int32, char *, int32, uint32);
-extern	status	icmp_send(int32, uint32, uint16, uint16, uint16, char *, int32);
-extern	struct	netpacket *icmp_mkpkt(int32, uint32, uint16, uint16, uint16, char *, int32);
+extern	status	icmp_send(uint32, uint16, uint16, uint16, char *, int32);
+extern	struct	netpacket *icmp_mkpkt(uint32, uint16, uint16, uint16, char *, int32);
 extern	status	icmp_release(int32);
 extern	uint16	icmp_cksum(char *, int32);
 extern	void	icmp_hton(struct netpacket *);
@@ -239,7 +241,7 @@ extern	devcall	ionull(void);
 extern	void	ip_in(struct netpacket *);
 extern	status	ip_send(struct netpacket *);
 extern	void	ip_local(struct netpacket *);
-extern	status	ip_out(int32, struct netpacket *);
+extern	status	ip_out(struct netpacket *);
 extern	int32	ip_route(uint32);
 extern	uint16	ipcksum(struct netpacket *);
 extern	void	ip_ntoh(struct netpacket *);
@@ -247,30 +249,14 @@ extern	void	ip_hton(struct netpacket *);
 extern	process	ipout(void);
 extern	status	ip_enqueue(struct netpacket *);
 
-/* in file nat.c */
-
-extern	void	nat_init(void);
-extern	void	nat_in(struct netpacket *);
-extern	void	nat_out(struct netpacket *);
-extern	void	nat_in_udp(struct netpacket *);
-extern	void	nat_out_udp(struct netpacket *);
-extern	uint16	nat_genuport(struct nuentry *);
-extern	void	nat_in_icmp(struct netpacket *);
-extern	void	nat_out_icmp(struct netpacket *);
-extern	uint16	nat_genicmpid(struct nientry *);
-
 /* in file net.c */
 
 extern	void	net_init(void);
-extern	process	netin(int32);
+extern	process	netin();
 extern	process	netout(void);
 extern	process	rawin(void);
 extern	void	eth_hton(struct netpacket *);
 extern	void	eth_ntoh(struct netpacket *);
-
-/* in file netiface.c */
-
-extern	void	netiface_init(void);
 
 /* in file netstart.c */
 
@@ -488,7 +474,7 @@ extern	void	rdsprocess(struct rdscblk *);
 extern	syscall	read(did32, char *, uint32);
 
 /* in file ready.c */
-extern	status	ready(pid32, bool8);
+extern	status	ready(pid32);
 
 /* in file receive.c */
 extern	umsg32	receive(void);
@@ -658,7 +644,7 @@ extern	devcall	ttyWrite(struct dentry *, char *, int32);
 
 extern	void	udp_init(void);
 extern	void	udp_in(struct netpacket *);
-extern	uid32	udp_register(int32, uint32, uint16, uint16);
+extern	uid32	udp_register(uint32, uint16, uint16);
 extern	int32	udp_recv(uid32, char *, int32, uint32);
 extern	int32	udp_recvaddr(uid32, uint32 *, uint16 *, char *, int32, uint32);
 extern	status	udp_send(uid32, char *, int32);

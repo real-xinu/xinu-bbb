@@ -5,14 +5,17 @@
 #include <xinu.h>
 #include <string.h>
 
-extern	void	start(void);	/* start of Xinu code */
-extern	void	*_end;		/* end of Xinu code */
+extern	void	start(void);	/* Start of Xinu code			*/
+extern	void	*_end;		/* End of Xinu code			*/
 
 /* Function prototypes */
 
-extern	void main(void);	/* main is the first process created	*/
-extern	void xdone(void);	/* system "shutdown" procedure		*/
-static	void sysinit(void);	/* initializes system structures	*/
+extern	void main(void);	/* Main is the first process created	*/
+extern	void xdone(void);	/* System "shutdown" procedure		*/
+static	void sysinit(); 	/* Internal system initialization	*/
+extern	void meminit(void);	/* Initializes the free memory list	*/
+extern	int32 acpi_scan(void);	/* Scans BIOS-provided ACPI data	*/
+extern	int quark_irq_routing();
 
 /* Declarations of major kernel variables */
 
@@ -24,11 +27,6 @@ struct	memblk	memlist;	/* List of free memory blocks		*/
 
 int	prcount;		/* Total number of live processes	*/
 pid32	currpid;		/* ID of currently executing process	*/
-
-/* Memory bounds set by start.S */
-
-void	*minheap;		/* start of heap			*/
-void	*maxheap;		/* highest valid memory address		*/
 
 /*------------------------------------------------------------------------
  * nulluser - initialize the system and become the null process
@@ -43,58 +41,56 @@ void	*maxheap;		/* highest valid memory address		*/
  * such as kprintf.
  *------------------------------------------------------------------------
  */
-
-void	nulluser(void)
-{
+ 
+void	nulluser()
+{	
+	struct	memblk	*memptr;	/* Ptr to memory block		*/
+	uint32	free_mem;		/* Total amount of free memory	*/
+	
+	/* Initialize the system */
+		
 	sysinit();
 
 	kprintf("\n\r%s\n\n\r", VERSION);
-
+	
 	/* Output Xinu memory layout */
+	free_mem = 0;
+	for (memptr = memlist.mnext; memptr != NULL;
+						memptr = memptr->mnext) {
+		free_mem += memptr->mlength;
+	}
+	kprintf("%10d bytes of free memory.  Free list:\n", free_mem);
+	for (memptr=memlist.mnext; memptr!=NULL;memptr = memptr->mnext) {
+	    kprintf("           [0x%08X to 0x%08X]\r\n",
+		(uint32)memptr, ((uint32)memptr) + memptr->mlength - 1);
+	}
 
-	kprintf("%10d bytes physical memory.\n",
-		(uint32)maxheap - (uint32)0);
-	kprintf("           [0x%08X to 0x%08X]\r\n",
-		(uint32)0, (uint32)maxheap - 1);
 	kprintf("%10d bytes of Xinu code.\n",
-		(uint32)&etext - (uint32)0);
+		(uint32)&etext - (uint32)&text);
 	kprintf("           [0x%08X to 0x%08X]\n",
-		(uint32)0, (uint32)&etext - 1);
+		(uint32)&text, (uint32)&etext - 1);
 	kprintf("%10d bytes of data.\n",
-		(uint32)&end - (uint32)&etext);
-	kprintf("           [0x%08X to 0x%08X]\n",
-		(uint32)&etext, (uint32)&end - 1);
-	if ( (char *)minheap < HOLESTART) {
-	    kprintf("%10d bytes of heap space below 640K.\n",
-		(uint32)HOLESTART - (uint32)roundmb(minheap));
-	}
-	if ( (char *)maxheap > HOLEEND ) {
-	    kprintf("%10d bytes of heap space above 1M.\n",
-		(uint32)maxheap - (uint32)HOLEEND);
-	    kprintf("           [0x%08X to 0x%08X]\n",
-		(uint32)HOLEEND, (uint32)truncmb(maxheap) - 1);
-	}
+		(uint32)&ebss - (uint32)&data);
+	kprintf("           [0x%08X to 0x%08X]\n\n",
+		(uint32)&data, (uint32)&ebss - 1);
 
 	/* Enable interrupts */
-	
-	enable();
 
-	/* Start the network */
-	
-/*DEBUG*/ // netstart();
+	enable();
 
 	/* Create a process to execute function main() */
 
 	resume (
-	   create((void *)main, INITSTK, INITPRIO, "Main process", 20, 0,
+	   create((void *)main, INITSTK, INITPRIO, "Main process", 0,
            NULL));
 
 	/* Become the Null process (i.e., guarantee that the CPU has	*/
 	/*  something to run when no other process is ready to execute)	*/
 
 	while (TRUE) {
-		;		/* do nothing */
+		;		/* Do nothing */
 	}
+
 }
 
 /*------------------------------------------------------------------------
@@ -103,17 +99,19 @@ void	nulluser(void)
  *
  *------------------------------------------------------------------------
  */
-
-static	void	sysinit(void)
+static	void	sysinit()
 {
 	int32	i;
-	struct	procent	*prptr;		/* ptr to process table entry	*/
-	struct	sentry	*semptr;	/* prr to semaphore table entry	*/
-	struct	memblk	*memptr;	/* ptr to memory block		*/
+	struct	procent	*prptr;		/* Ptr to process table entry	*/
+	struct	sentry	*semptr;	/* Prr to semaphore table entry	*/
 
 	/* Initialize the interrupt vectors */
 
 	initevec();
+	
+	/* Initialize free memory list */
+	
+	meminit();
 
 	/* Initialize system variables */
 
@@ -125,32 +123,6 @@ static	void	sysinit(void)
 
 	Defer.ndefers = 0;
 
-	/* Initialize the free memory list */
-
-	/* Note: PC version has to pre-allocate 640K-1024K "hole" */
-
-	//maxheap = (void *)MAXADDR;
-	maxheap = (void *)0x84000000;
-	minheap = &end;
-
-	memptr = memlist.mnext = (struct memblk *)roundmb(minheap);
-	//if ((char *)(maxheap+1) > HOLESTART) {
-		/* create two blocks that straddle the hole */
-	//	memptr->mnext = (struct memblk *)HOLEEND;
-	//	memptr->mlength = (int) truncmb((unsigned) HOLESTART -
-	//     		 (unsigned)&end - 4);
-	//	memptr = (struct memblk *) HOLEEND;
-	//	memptr->mnext = (struct memblk *) NULL;
-	//	memptr->mlength = (int) truncmb( (uint32)maxheap - 
-	//			(uint32)HOLEEND - NULLSTK);
-	//} else {
-		/* initialize free memory list to one block */
-		memlist.mnext = memptr = (struct memblk *) roundmb(&end);
-		memptr->mnext = (struct memblk *) NULL;
-		memptr->mlength = (uint32) truncmb((uint32)maxheap -
-				(uint32)&end - NULLSTK);
-	//}
-
 	/* Initialize process table entries free */
 
 	for (i = 0; i < NPROC; i++) {
@@ -161,7 +133,7 @@ static	void	sysinit(void)
 		prptr->prprio = 0;
 	}
 
-	/* Initialize the Null process entry */
+	/* Initialize the Null process entry */	
 
 	prptr = &proctab[NULLPROC];
 	prptr->prstate = PR_CURR;
@@ -171,7 +143,7 @@ static	void	sysinit(void)
 	prptr->prstklen = NULLSTK;
 	prptr->prstkptr = 0;
 	currpid = NULLPROC;
-
+	
 	/* Initialize semaphores */
 
 	for (i = 0; i < NSEM; i++) {
@@ -184,14 +156,11 @@ static	void	sysinit(void)
 	/* Initialize buffer pools */
 
 	bufinit();
+
 	/* Create a ready list for processes */
 
 	readylist = newqueue();
-
-	/* Initialize the PCI bus */
-
-	//pci_init();
-
+	
 	/* Initialize the real time clock */
 
 	clkinit();
@@ -202,46 +171,17 @@ static	void	sysinit(void)
 	return;
 }
 
-#define	NBPG		4096		/* number of bytes per page	*/
-
-/*------------------------------------------------------------------------
- * sizmem - return memory size (in pages)
- *------------------------------------------------------------------------
- */
-int32	sizmem(void) {
-
-	unsigned char	*ptr, *start, stmp, tmp;
-	int32		npages;
-
-        return 4096;	/* 16M for now */
-	start = ptr = 0;
-	npages = 0;
-	stmp = *start;
-	while (1) {
-		tmp = *ptr;
-		*ptr = 0xA5;
-		if (*ptr != 0xA5)
-			break;
-		*ptr = tmp;
-		++npages;
-		ptr += NBPG;
-		if ((uint32)ptr == (uint32)HOLESTART) {	/* skip I/O pages */
-			npages += (1024-640)/4;
-			ptr = (unsigned char *)HOLEEND;
-		}
-	}
-	return npages;
-}
+#define	NBPG		4096		/* Number of bytes per page	*/
 
 int32	stop(char *s)
 {
 	kprintf("%s\n", s);
 	kprintf("looping... press reset\n");
 	while(1)
-		/* empty */;
+		/* Empty */;
 }
-
-/*int32	delay(int n)
+/*
+int32	delay(int n)
 {
 	DELAY(n);
 	return OK;

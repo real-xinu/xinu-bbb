@@ -3,15 +3,15 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  freebuf  --  free a buffer that was allocated from a pool by getbuf
+ *  freebuf  --  Free a buffer that was allocated from a pool by getbuf
  *------------------------------------------------------------------------
  */
 syscall	freebuf(
-	  char		*bufaddr	/* address of buffer to return	*/
+	  char		*bufaddr	/* Address of buffer to return	*/
 	)
 {
-	intmask	mask;			/* saved interrupt mask		*/
-	struct	bpentry	*bpptr;		/* pointer to entry in buftab	*/
+	intmask	mask;			/* Saved interrupt mask		*/
+	struct	bpentry	*bpptr;		/* Pointer to entry in buftab	*/
 	bpid32	poolid;			/* ID of buffer's pool		*/
 
 	mask = disable();

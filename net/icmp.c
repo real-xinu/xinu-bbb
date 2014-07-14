@@ -30,13 +30,9 @@ void	icmp_in(
 	intmask	mask;			/* saved interrupt mask		*/
 	int32	slot;			/* slot in ICMP table		*/
 	struct	icmpentry *icmptr;	/* pointer to icmptab entry	*/
-	int32	iface;			/* interface over which to send	*/
 	struct	netpacket *replypkt;	/* ptr to reply packet		*/
-	int32	len;			/* ICMP length			*/
 
 	mask = disable();
-
-	len = pkt->net_iplen - IP_HDR_LEN;
 
 	/* Discard all ICMP messages except ping */
 
@@ -47,15 +43,13 @@ void	icmp_in(
 		return;
 	}
 
-	iface = pkt->net_iface;
-
 	/* Handle Echo Request message */
 
 	if (pkt->net_ictype == ICMP_ECHOREQST) {
 
 		/* Send echo reply message */
 
-		replypkt = icmp_mkpkt(iface,pkt->net_ipsrc,ICMP_ECHOREPLY,
+		replypkt = icmp_mkpkt(pkt->net_ipsrc,ICMP_ECHOREPLY,
 				pkt->net_icident, pkt->net_icseq,
 				(char *) &pkt->net_icdata,
 				pkt->net_iplen-IP_HDR_LEN-ICMP_HDR_LEN);
@@ -226,7 +220,6 @@ int32	icmp_recv (
  *------------------------------------------------------------------------
  */
 status	icmp_send (
-	 int32	iface,			/* interface to use		*/
 	 uint32	remip,			/* remote IP address to use	*/
 	 uint16	type,			/* ICMP type (req. or reply)	*/
 	 uint16	ident,			/* ICMP identifier value	*/
@@ -237,20 +230,13 @@ status	icmp_send (
 {
 	intmask	mask;			/* saved interrupt mask		*/
 	struct	netpacket *pkt;		/* packet returned by icmp_mkpkt*/
-	struct	ifentry *ifptr;		/* ptr to outgoing interface	*/
 	int32	retval;			/* valued returned by ip_send	*/
 
 	mask = disable();
 
-	if ((iface<0) || (iface>=NIFACES)) {
-		return SYSERR;
-	}
-
-	ifptr = &if_tab[iface];
-
 	/* Form a packet to send */
 
-	pkt = icmp_mkpkt(iface, remip, type, ident, seq, buf, len);
+	pkt = icmp_mkpkt(remip, type, ident, seq, buf, len);
 	if ((int32)pkt == SYSERR) {
 		return SYSERR;
 	}
@@ -268,7 +254,6 @@ status	icmp_send (
  *------------------------------------------------------------------------
  */
 struct	netpacket *icmp_mkpkt (
-	 int32	iface,			/* interface to use		*/
 	 uint32	remip,			/* remote IP address to use	*/
 	 uint16	type,			/* ICMP type (req. or reply)	*/
 	 uint16	ident,			/* ICMP identifier value	*/
@@ -277,15 +262,8 @@ struct	netpacket *icmp_mkpkt (
 	 int32	len			/* length of data in buffer	*/
 	)
 {
-	intmask	mask;			/* saved interrupt mask		*/
 	struct	netpacket *pkt;		/* ptr to packet buffer		*/
-	int32	pktlen;			/* total packet length		*/
-	struct	ifentry *ifptr;		/* ptr to outgoing interface	*/
 	static	uint32	ipident=32767;	/* IP ident field		*/
-
-	mask = disable();
-
-	ifptr = &if_tab[iface];
 
 	/* Allocate packet */
 
@@ -295,14 +273,9 @@ struct	netpacket *icmp_mkpkt (
 		panic("icmp_mkpkt: cannot get a network buffer\n");
 	}
 
-	/* compute packet length as size of headers + icmp data length	*/
-
-	pktlen = ((char *) &pkt->net_icdata - (char *) pkt) + len;
-
 	/* create icmp packet in pkt */
 
-	pkt->net_iface = iface;
-	memcpy(pkt->net_ethsrc, if_tab[0].if_macucast, ETH_ADDR_LEN);
+	memcpy(pkt->net_ethsrc, NetData.ethucast, ETH_ADDR_LEN);
         pkt->net_ethtype = 0x800;	/* Type is IP */
 	pkt->net_ipvh = 0x45;		/* IP version and hdr length	*/
 	pkt->net_iptos = 0x00;		/* Type of service		*/
@@ -312,7 +285,7 @@ struct	netpacket *icmp_mkpkt (
 	pkt->net_ipttl = 0xff;		/* IP time-to-live		*/
 	pkt->net_ipproto = IP_ICMP;	/* datagram carries icmp	*/
 	pkt->net_ipcksum = 0x0000;	/* initial checksum		*/
-	pkt->net_ipsrc = ifptr->if_ipucast; /* IP source address	*/
+	pkt->net_ipsrc = NetData.ipucast; /* IP source address	*/
 	pkt->net_ipdst = remip;		/* IP destination address	*/
 
 
@@ -357,7 +330,7 @@ status	icmp_release (
 
 	/* Remove each packet from the queue and free the buffer */
 
-	sched_cntl(DEFER_START);
+	resched_cntl(DEFER_START);
 	while (icmptr->iccount > 0) {
 		pkt = icmptr->icqueue[icmptr->ichead++];
 		if (icmptr->ichead >= ICMP_SLOTS) {
@@ -371,7 +344,7 @@ status	icmp_release (
 	/* mark the entry free */
 
 	icmptr->icstate = ICMP_FREE;
-	sched_cntl(DEFER_STOP);
+	resched_cntl(DEFER_STOP);
 	restore(mask);
 	return OK;
 }

@@ -3,15 +3,15 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- * semdelete  --  Delete a semaphore by releasing its table entry
+ * semdelete  -  Delete a semaphore by releasing its table entry
  *------------------------------------------------------------------------
  */
 syscall	semdelete(
 	  sid32		sem		/* ID of semaphore to delete	*/
 	)
 {
-	intmask mask;			/* saved interrupt mask		*/
-	struct	sentry *semptr;		/* ptr to semaphore table entry	*/
+	intmask mask;			/* Saved interrupt mask		*/
+	struct	sentry *semptr;		/* Ptr to semaphore table entry	*/
 
 	mask = disable();
 	if (isbadsem(sem)) {
@@ -26,10 +26,11 @@ syscall	semdelete(
 	}
 	semptr->sstate = S_FREE;
 
-	while (semptr->scount++ < 0) {	/* free all waiting processes	*/
-		ready(getfirst(semptr->squeue), RESCHED_NO);
+	resched_cntl(DEFER_START);
+	while (semptr->scount++ < 0) {	/* Free all waiting processes	*/
+		ready(getfirst(semptr->squeue));
 	}
-	resched();
+	resched_cntl(DEFER_STOP);
 	restore(mask);
 	return OK;
 }

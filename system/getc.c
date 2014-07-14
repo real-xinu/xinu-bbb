@@ -3,16 +3,16 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  getc  -  obtain one byte from a device
+ *  getc  -  Obtain one byte from a device
  *------------------------------------------------------------------------
  */
 syscall	getc(
-	  did32		descrp		/* descriptor for device	*/
+	  did32		descrp		/* Descriptor for device	*/
 	)
 {
-	intmask		mask;		/* saved interrupt mask		*/
-	struct dentry	*devptr;	/* entry in device switch table	*/
-	int32		retval;		/* value to return to caller	*/
+	intmask		mask;		/* Saved interrupt mask		*/
+	struct dentry	*devptr;	/* Entry in device switch table	*/
+	int32		retval;		/* Value to return to caller	*/
 
 	mask = disable();
 	if (isbaddev(descrp)) {

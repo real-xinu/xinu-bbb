@@ -16,7 +16,6 @@ shellcmd xsh_ping(int nargs, char *args[])
 	static	int32	seq = 0;	/* sequence number		*/
 	char	buf[56];		/* buffer of chars		*/
 	int32	i;			/* index into buffer		*/
-	int32	iface;			/* interface to use		*/
 	int32	nextval;		/* next value to use		*/
 
 	/* For argument '--help', emit help about the 'ping' command	*/
@@ -64,14 +63,8 @@ shellcmd xsh_ping(int nargs, char *args[])
 		buf[i] = 0xff & nextval++;
 	}
 
-	iface = ip_route(ipaddr);
-	if (iface == SYSERR) {
-		fprintf(stderr, "%s: no route to host %s\n",args[0], args[1]);
-		return 1;
-	}
-
 	/* Send an ICMP Echo Request */
-	retval = icmp_send(iface, ipaddr, ICMP_ECHOREQST, slot,
+	retval = icmp_send(ipaddr, ICMP_ECHOREQST, slot,
 					seq++, buf, sizeof(buf));
 	if (retval == SYSERR) {
 		fprintf(stderr, "%s: no response from host %s\n", args[0], args[1]);

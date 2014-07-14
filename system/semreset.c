@@ -8,12 +8,12 @@
  */
 syscall	semreset(
 	  sid32		sem,		/* ID of semaphore to reset	*/
-	  int32		count		/* new count (must be >= 0)	*/
+	  int32		count		/* New count (must be >= 0)	*/
 	)
 {
-	intmask	mask;			/* saved interrupt mask		*/
-	struct	sentry *semptr;		/* ptr to semaphore table entry */
-	qid16	semqueue;		/* semaphore's process queue ID	*/
+	intmask	mask;			/* Saved interrupt mask		*/
+	struct	sentry *semptr;		/* Ptr to semaphore table entry */
+	qid16	semqueue;		/* Semaphore's process queue ID	*/
 	pid32	pid;			/* ID of a waiting process	*/
 
 	mask = disable();
@@ -24,11 +24,12 @@ syscall	semreset(
 	}
 	
 	semptr = &semtab[sem];
-	semqueue = semptr->squeue;	/* free any waiting processes */
+	semqueue = semptr->squeue;	/* Free any waiting processes */
+	resched_cntl(DEFER_START);
 	while ((pid=getfirst(semqueue)) != EMPTY)
-		ready(pid,RESCHED_NO);
-	semptr->scount = count;		/* reset count as specified */
-	resched();
+		ready(pid);
+	semptr->scount = count;		/* Reset count as specified */
+	resched_cntl(DEFER_STOP);
 	restore(mask);
-	return(OK);
+	return OK;
 }

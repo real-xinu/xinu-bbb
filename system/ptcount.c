@@ -3,7 +3,7 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  ptcount  --  return the count of messages currently waiting in a port
+ *  ptcount  --  Return the count of messages currently waiting in a port
  *			(a non-negative count K means the port contains
  *			 K messages,  including messages from senders that
  *			 are blocked waiting to send a message; a count of
@@ -15,23 +15,23 @@ int32	ptcount(
 	  int32		portid		/* ID of a port to use		*/
 	)
 {
-	intmask	mask;			/* saved interrupt mask		*/
-	int32	count;			/* count of messages available	*/
-	int32	sndcnt;			/* count of sender semaphore	*/
-	struct	ptentry	*ptptr;		/* pointer to port table entry	*/
+	intmask	mask;			/* Saved interrupt mask		*/
+	int32	count;			/* Count of messages available	*/
+	int32	sndcnt;			/* Count of sender semaphore	*/
+	struct	ptentry	*ptptr;		/* Pointer to port table entry	*/
 
 	mask = disable();
 	if ( isbadport(portid) ||
 		(ptptr= &porttab[portid])->ptstate != PT_ALLOC ) {
 			restore(mask);
-			return(SYSERR);
+			return SYSERR;
 	}
 
-	/* get count of messages available */
+	/* Get count of messages available */
 
 	count = semcount(ptptr->ptrsem);
 
-	/* if messages are waiting, check for blocked senders */
+	/* If messages are waiting, check for blocked senders */
 
 	if (count >= 0) {
 		sndcnt = semcount(ptptr->ptssem);
@@ -40,5 +40,5 @@ int32	ptcount(
 		}
 	}
 	restore(mask);
-	return(count);
+	return count;
 }

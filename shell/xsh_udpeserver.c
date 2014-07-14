@@ -50,7 +50,7 @@ shellcmd xsh_udpeserver(int nargs, char *args[])
 
 	/* register local UDP port */
 
-	slot = udp_register(UDP_ANYIF, 0, 0, echoserverport);
+	slot = udp_register(0, 0, echoserverport);
 	if (slot == SYSERR) {
 		fprintf(stderr, "%s: could not reserve UDP port %d\n",
 				args[0], echoserverport);

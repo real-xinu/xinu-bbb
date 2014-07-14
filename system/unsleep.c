@@ -13,12 +13,12 @@ status	unsleep(
 	  pid32		pid		/* ID of process to remove	*/
         )
 {
-	intmask	mask;			/* saved interrupt mask		*/
-        struct	procent	*prptr;		/* ptr to process' table entry	*/
+	intmask	mask;			/* Saved interrupt mask		*/
+        struct	procent	*prptr;		/* Ptr to process' table entry	*/
 
         pid32	pidnext;		/* ID of process on sleep queue	*/
-					/* that follows the process that*/
-					/* is being removed		*/
+					/*  that follows the process	*/
+					/*  which is being removed	*/
 
 	mask = disable();
 
@@ -42,13 +42,7 @@ status	unsleep(
 		queuetab[pidnext].qkey += queuetab[pid].qkey;
 	}
 
-	if ( nonempty(sleepq) ) {
-		sltop = &queuetab[firstid(sleepq)].qkey;
-		slnonempty = TRUE;
-	} else {
-		slnonempty = FALSE;
-	}
-	getitem(pid);			/* unlink process from queue */
+	getitem(pid);			/* Unlink process from queue */
 	restore(mask);
 	return OK;
 }

@@ -8,11 +8,11 @@
  */
 syscall	signaln(
 	  sid32		sem,		/* ID of semaphore to signal	*/
-	  int32		count		/* number of times to signal	*/
+	  int32		count		/* Number of times to signal	*/
 	)
 {
-	intmask	mask;			/* saved interrupt mask		*/
-	struct	sentry	*semptr;	/* ptr to sempahore table entry */
+	intmask	mask;			/* Saved interrupt mask		*/
+	struct	sentry	*semptr;	/* Ptr to sempahore table entry */
 
 	mask = disable();
 	if (isbadsem(sem) || (count < 0)) {
@@ -25,12 +25,13 @@ syscall	signaln(
 		return SYSERR;
 	}
 
+	resched_cntl(DEFER_START);
 	for (; count > 0; count--) {
 		if ((semptr->scount++) < 0) {
-			ready(dequeue(semptr->squeue), RESCHED_NO);
+			ready(dequeue(semptr->squeue));
 		}
 	}
-	resched();
+	resched_cntl(DEFER_STOP);
 	restore(mask);
 	return OK;
 }

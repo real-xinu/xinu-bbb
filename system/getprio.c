@@ -7,11 +7,11 @@
  *------------------------------------------------------------------------
  */
 syscall	getprio(
-	  pid32		pid		/* process ID			*/
+	  pid32		pid		/* Process ID			*/
 	)
 {
-	intmask	mask;			/* saved interrupt mask		*/
-	uint32	prio;			/* priority to return		*/
+	intmask	mask;			/* Saved interrupt mask		*/
+	uint32	prio;			/* Priority to return		*/
 
 	mask = disable();
 	if (isbadpid(pid)) {

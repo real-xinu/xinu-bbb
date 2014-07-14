@@ -3,15 +3,15 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  gettime  -  get xinu time in seconds past Jan 1, 1970
+ *  gettime  -  Get xinu time in seconds past Jan 1, 1970
  *------------------------------------------------------------------------
  */
 status	gettime(
-	  uint32  *timvar		/* location to store the result	*/
+	  uint32  *timvar		/* Location to store the result	*/
 	)
 {
-	uint32	now;			/* current time (UCT)		*/
-	int32	retval;			/* return value from call	*/
+	uint32	now;			/* Current time (UCT)		*/
+	int32	retval;			/* Return value from call	*/
 
 	/* Get current time in UCT representation (GMT) */
 

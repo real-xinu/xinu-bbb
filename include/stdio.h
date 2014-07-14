@@ -19,7 +19,6 @@ extern	int32	fscanf(int32, char *, int32);
 
 /* Prototypes for formatted output functions */
 
-extern	void	_doprnt(char *,int (*)(int), ...);
 extern	int32	fprintf(int, char *, ...);
 extern	int32	printf(const char *, ...);
 extern	int32	sprintf(char *, char *, ...);

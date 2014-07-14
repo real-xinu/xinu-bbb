@@ -3,19 +3,19 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  control  -  control a device or a driver (e.g., set the driver mode)
+ *  control  -  Control a device or a driver (e.g., set the driver mode)
  *------------------------------------------------------------------------
  */
 syscall	control(
-	  did32		descrp,		/* descriptor for device	*/
-	  int32		func,		/* specific control function	*/
-	  int32		arg1,		/* specific argument for func	*/
-	  int32		arg2		/* specific argument for func	*/
+	  did32		descrp,		/* Descriptor for device	*/
+	  int32		func,		/* Specific control function	*/
+	  int32		arg1,		/* Specific argument for func	*/
+	  int32		arg2		/* Specific argument for func	*/
 	)
 {
-	intmask		mask;		/* saved interrupt mask		*/
-	struct dentry	*devptr;	/* entry in device switch table	*/
-	int32		retval;		/* value to return to caller	*/
+	intmask		mask;		/* Saved interrupt mask		*/
+	struct dentry	*devptr;	/* Entry in device switch table	*/
+	int32		retval;		/* Value to return to caller	*/
 
 	mask = disable();
 	if (isbaddev(descrp)) {

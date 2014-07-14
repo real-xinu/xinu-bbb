@@ -3,16 +3,14 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- * panic - display a message and stop all processing
+ * panic  -  Display a message and stop all processing
  *------------------------------------------------------------------------
  */
 void	panic (
-	 char	*msg			/* message to display		*/
+	 char	*msg			/* Message to display		*/
 	)
 {
-	intmask	mask;			/* saved interrupt mask		*/
-
-	mask = disable();
+	disable();			/* Disable interrupts		*/
 	kprintf("\n\n\rpanic: %s\n\n\r", msg);
-	while(TRUE) {;}			/* busy loop forever		*/
+	while(TRUE) {;}			/* Busy loop forever		*/
 }

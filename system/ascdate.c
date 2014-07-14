@@ -10,37 +10,37 @@ struct dateinfo Date = {0, FALSE, DATE_DST_AUTO,
 		       {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"}};
 
 /*------------------------------------------------------------------------
- *  ascdate  -  format a date in ascii including day, year hours:mins:secs
+ *  ascdate  -  Format a date in ascii including day, year hours:mins:secs
  *------------------------------------------------------------------------
  */
 status	ascdate (
-	  uint32	now,		/* date and time in xinu format	*/
-	  char		*str		/* string ( >= 20 chars long)	*/
+	  uint32	now,		/* Date and time in xinu format	*/
+	  char		*str		/* String ( >= 20 chars long)	*/
 	)
 {
-	uint32	tmp;			/* counts remaining seconds	*/
+	uint32	tmp;			/* Counts remaining seconds	*/
 					/*   during computations	*/
-	int32	year, month, day,	/* values for various parts of	*/
+	int32	year, month, day,	/* Values for various parts of	*/
 		hour, minute, second;	/*   the date			*/
-	uint32	days;			/* number of days in a year	*/
-	uint32	leapyrs;		/* number of leap years between	*/
+	uint32	days;			/* Number of days in a year	*/
+	uint32	leapyrs;		/* Number of leap years between	*/
 					/*   1970 and now		*/
-	uint32	shift;			/* number of times the calendar	*/
+	uint32	shift;			/* Number of times the calendar	*/
 					/*   shifted by a day		*/
-	uint32	dayofweek;		/* day of the week (0 - 6)	*/
+	uint32	dayofweek;		/* Day of the week (0 - 6)	*/
 					/* For DST, day of the week for:*/
 	int32	jan1;			/*   January 1 this year	*/
 	int32	mar1;			/*   March 1 this year		*/
 	int32	nov1;			/*   November 1 this year	*/
-	int32	marss;			/* day of second sunday in march*/
-	int32	novfs;			/* day of second sunday in march*/
+	int32	marss;			/* Day of second sunday in march*/
+	int32	novfs;			/* Day of second sunday in march*/
 	bool8	dst;			/* Should we adjust for DST?	*/
-	int32	i;			/* indexes through months	*/
+	int32	i;			/* Indexes through months	*/
 
 	char	*zones[]  = {"EST", "CST", "MST", "PST"};
 	char	*dzones[] = {"EDT", "CDT", "MDT", "PDT"};
 
-	/* compute the year (1970-2099) */
+	/* Compute the year (1970-2099) */
 
 	for (year=1970 ; TRUE ; year++) {
 		days = isleap(year) ? 366 : 365;
@@ -50,12 +50,12 @@ status	ascdate (
 		now -= tmp;
 	}
 
-	/* compute the number of whole days that have already passed	*/
+	/* Compute the number of whole days that have already passed	*/
 	/*   during the current year (0 through 365)			*/
 
 	days = now / SECPERDY;
 
-	/* compute the month (0-11) */
+	/* Compute the month (0-11) */
 
 	for (month=0 ; month<12 ; month++) {
 		tmp = Date.dt_msize[month] * SECPERDY;
@@ -89,7 +89,7 @@ status	ascdate (
 	/*								*/
 	/*   Note: Jan 1, 1970 was a Thursday (4 on a 0 to 6 range)	*/
 	/* Add one day of the week each	full year (365%7 == 1) plus	*/
-	/* one extra day for each leap year				*/
+	/*    one extra day for each leap year				*/
 
 	/* Compute number of leap years prior to current year */
 
@@ -100,7 +100,7 @@ status	ascdate (
 
 	shift = 4 + (year - 1970) + leapyrs;
 
-	/* remember day of the week for Jan 1 this year (for DST)	*/
+	/* Remember day of the week for Jan 1 this year (for DST)	*/
 
 	jan1 = shift % 7;
 
@@ -108,7 +108,7 @@ status	ascdate (
 
 	shift += days;
 
-	/* convert to integer from 0 through 6 */
+	/* Convert to integer from 0 through 6 */
 
 	dayofweek = shift % 7;
 
@@ -223,5 +223,4 @@ status	ascdate (
 		day, hour, minute, second, dst? dzones[TIMEZONE-5]:
 			zones[TIMEZONE-5], year);
 	return OK;
-
 }

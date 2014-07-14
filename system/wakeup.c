@@ -10,14 +10,11 @@ void	wakeup(void)
 {
 	/* Awaken all processes that have no more time to sleep */
 
+	resched_cntl(DEFER_START);
 	while (nonempty(sleepq) && (firstkey(sleepq) <= 0)) {
-		ready(dequeue(sleepq), RESCHED_NO);
+		ready(dequeue(sleepq));
 	}
-	
-	if ( (slnonempty = nonempty(sleepq)) == TRUE ) {
-		sltop = &firstkey(sleepq);
-	}
-	resched();
+
+	resched_cntl(DEFER_STOP);
 	return;
 }
-

@@ -14,8 +14,6 @@ void	ip_in(
 	  struct netpacket *pktptr		/* ptr to a packet	*/
 	)
 {
-	int32	iface;			/* index into interface table	*/
-	struct	ifentry	*ifptr;		/* ptr to interface entry	*/
 	int32	icmplen;		/* length of ICMP message	*/
 
 	/* Verify checksum */
@@ -36,21 +34,6 @@ void	ip_in(
 		kprintf("IP version failed\n\r");
 		freebuf((char *)pktptr);
 		return;
-	}
-
-	/* Obtain interface from which packet arrived */
-
-	iface = pktptr->net_iface;
-	ifptr = &if_tab[iface];
-
-	/* Discard packets on lab network sent to or from 192.168.0.0/16 */
-
-	if (iface == 0) {
-		if ( ( (pktptr->net_ipsrc & 0xffff0000) == 0xc0a80000) ||
-		     ( (pktptr->net_ipdst & 0xffff0000) == 0xc0a80000) ) {
-			freebuf((char *)pktptr);
-			return;
-		}
 	}
 
 	/* Verify encapsulated prototcol checksums and then convert	*/
@@ -83,11 +66,11 @@ void	ip_in(
 		return;
 	}
 
-	/* If interface does not yet have a valid address, accept on	*/
-	/*	interface 0 (DHCP reply) and drop on others		*/
+	/* If interface does not yet have a valid address, accept	*/
+	/*	UDP packets (DHCP reply) and drop others		*/
 
-	if (!ifptr->if_ipvalid) {
-		if (iface == 0) {
+	if (!NetData.ipvalid) {
+		if (pktptr->net_ipproto == IP_UDP) {
 			ip_local(pktptr);
 			return;
 		} else {
@@ -96,27 +79,19 @@ void	ip_in(
 		}
 	}
 
-	/* For packets that arrive from the Internet, use NAT to	*/
-	/*	determine whether they should be processed locally or	*/
-	/*	translated via NAT and sent to an Othernet host		*/
-
-	if (iface == 0) {
-		nat_in(pktptr);
-		return;
-	}
-
 	/* For packets that arrive from an Othernet, send to the local	*/
 	/*	stack if they are destined for the machine's interface	*/
 	/*	and send to NAT otherwise				*/
 
-	if ( (pktptr->net_ipdst == ifptr->if_ipucast) ||
-	     (pktptr->net_ipdst == ifptr->if_ipbcast)   ) {
+	if ( (pktptr->net_ipdst == NetData.ipucast) ||
+	     (pktptr->net_ipdst == NetData.ipbcast) ||
+	     (pktptr->net_ipdst == IP_BCAST)  ) {
 		ip_local(pktptr);
 		return;
 	} else {
 
-		/* Use NAT for Othernet packets sent to the Internet */
-		nat_out(pktptr);
+		/* Drop the packet */
+		freebuf((char *)pktptr);
 		return;
 	}
 }
@@ -132,27 +107,11 @@ status	ip_send(
 	)
 {
 	intmask	mask;			/* saved interrupt mask		*/
-	int32	iface;			/* index into interface table	*/
 	uint32	dest;			/* destination of the datagram	*/
-	struct	ifentry	*ifptr;		/* ptr to interface entry	*/
 	int32	retval;			/* return value from functions	*/
 	uint32	nxthop;			/* next-hop address		*/
 
 	mask = disable();
-
-	if (ifprime < 0) {
-		restore(mask);
-		return SYSERR;		/* no interface is active	*/
-	}
-
-	/* Extract the interface number from the packet buffer */
-
-	iface = pktptr->net_iface;
-	if ( (iface<0) || (iface>NIFACES) ||
-				(if_tab[iface].if_state !=IF_UP)) {
-		panic("ip_send: bad interface number in packet\n");
-	}
-	ifptr = &if_tab[iface];
 
 	/* Pick up the packet destination */
 
@@ -168,7 +127,7 @@ status	ip_send(
 
 	/* Loop back the interface IP unicast address */
 
-	if (dest == ifptr->if_ipucast) {
+	if (dest == NetData.ipucast) {
 		ip_local(pktptr);
 		restore(mask);
 		return OK;
@@ -177,10 +136,10 @@ status	ip_send(
 	/* Broadcast destination 255.255.255.255 */
 
 	if ( (dest == IP_BCAST) ||
-	     (dest == ifptr->if_ipbcast) ) {
-		memcpy(pktptr->net_ethdst, ifptr->if_macbcast,
+	     (dest == NetData.ipbcast) ) {
+		memcpy(pktptr->net_ethdst, NetData.ethbcast,
 							ETH_ADDR_LEN);
-		retval = ip_out(iface, pktptr);
+		retval = ip_out(pktptr);
 		restore(mask);
 		return retval;
 	}
@@ -188,7 +147,7 @@ status	ip_send(
 	/* See if on local network and resolve the IP address */
 
 
-	if ( (dest & ifptr->if_ipmask) == ifptr->if_ipprefix) {
+	if ( (dest & NetData.ipmask) == NetData.ipprefix) {
 
 		/* Next hop is the destination itself */
 		nxthop = dest;
@@ -196,7 +155,7 @@ status	ip_send(
 	} else {
 
 		/* Next hop is default router on the network */
-		nxthop = ifptr->if_iprouter;
+		nxthop = NetData.iprouter;
 
 	}
 
@@ -207,13 +166,13 @@ status	ip_send(
 
 	/* Resolve the next-hop address to get a MAC address */
 
-	retval = arp_resolve(iface, nxthop, pktptr->net_ethdst);
+	retval = arp_resolve(nxthop, pktptr->net_ethdst);
 	if (retval != OK) {
 		freebuf((char *)pktptr);
 		return SYSERR;
 	}
 
-	retval = ip_out(iface, pktptr);
+	retval = ip_out(pktptr);
 	restore(mask);
 	return retval;
 }
@@ -249,21 +208,13 @@ void	ip_local(
  *------------------------------------------------------------------------
  */
 status	ip_out(
-	  int32  iface,			/* interface to use		*/
 	  struct netpacket *pktptr	/* ptr to packet		*/
 	)
 {
-	struct	ifentry	*ifptr;		/* ptr to interface entry	*/
 	uint16	cksum;			/* checksum in host byte order	*/
 	int32	len;			/* length of ICMP message	*/	
 	int32	pktlen;			/* length of entire packet	*/
 	int32	retval;			/* value returned by write	*/
-
-	ifptr = &if_tab[iface];
-	if (ifptr->if_state != IF_UP) {
-		freebuf((char *)pktptr);
-		return SYSERR;
-	}
 
 	/* Compute total packet length */
 
@@ -314,7 +265,7 @@ status	ip_out(
 
 	/* Send packet over the Ethernet */
 
-	retval = write(ifptr->if_dev, (char*)pktptr, pktlen);
+	retval = write(ETHER0, (char*)pktptr, pktlen);
 	freebuf((char *)pktptr);
 
 	if (retval == SYSERR) {
@@ -324,7 +275,7 @@ status	ip_out(
 	}
 }
 
-
+#if 0
 /*------------------------------------------------------------------------
  * ip_route - choose an interface for a given IP address
  *------------------------------------------------------------------------
@@ -383,7 +334,7 @@ int32	ip_route(
 
 	return ifprime;
 }
-
+#endif
 
 /*------------------------------------------------------------------------
  * ipcksum - compute the IP header checksum for a datagram
@@ -452,8 +403,6 @@ void 	ip_hton(
 
 process	ipout(void)
 {
-	int32	iface;			/* interface to use		*/
-	struct	ifentry	  *ifptr;	/* ptr to interface entry	*/
 	struct	netpacket *pktptr;	/* ptr to next packet		*/
 	struct	iqentry   *ipqptr;	/* ptr to IP output queue	*/
 	uint32	destip;			/* destination IP address	*/
@@ -472,18 +421,9 @@ process	ipout(void)
 			ipqptr->iqhead= 0;
 		}
 
-		/* Extract the interface number from the buffer */
-
-		iface = pktptr->net_iface;
-		if ( (iface<0) || (iface>NIFACES) ) {
-			panic("ipout: bad interface number in packet\n");
-		}
-		ifptr = &if_tab[iface];
-
 		/* Fill in the MAC source address */
 
-		memcpy(pktptr->net_ethsrc, if_tab[0].if_macucast,
-							ETH_ADDR_LEN);
+		memcpy(pktptr->net_ethsrc, NetData.ethucast, ETH_ADDR_LEN);
 
 		/* Extract destination address from packet */
 
@@ -493,7 +433,7 @@ process	ipout(void)
 		/* Sanity check: packets sent to ioout should *not*	*/
 		/*	contain	a broadcast address.			*/
 
-		if ((destip == IP_BCAST)||(destip == ifptr->if_ipbcast)) {
+		if ((destip == IP_BCAST)||(destip == NetData.ipbcast)) {
 			kprintf("ipout: encountered a broadcast\n");
 			freebuf((char *)pktptr);
 			continue;
@@ -501,14 +441,14 @@ process	ipout(void)
 
 		/* Check whether destination is the local interface */
 
-		if (destip == ifptr->if_ipucast) {
+		if (destip == NetData.ipucast) {
 			ip_local(pktptr);
 			continue;
 		}
 
 		/* Check whether destination is on the local net */
 
-		if ( (destip & ifptr->if_ipmask) == ifptr->if_ipprefix) {
+		if ( (destip & NetData.ipmask) == NetData.ipprefix) {
 
 			/* Next hop is the destination itself */
 
@@ -517,7 +457,7 @@ process	ipout(void)
 
 			/* Next hop is default router on the network */
 
-			nxthop = ifptr->if_iprouter;
+			nxthop = NetData.iprouter;
 		}
 
 		if (nxthop == 0) {  /* dest invalid or no default route */
@@ -525,13 +465,13 @@ process	ipout(void)
 			continue;
 		}
 
-		retval = arp_resolve(iface, nxthop, pktptr->net_ethdst);
+		retval = arp_resolve(nxthop, pktptr->net_ethdst);
 		if (retval != OK) {
 			freebuf((char *)pktptr);
 			continue;
 		}
 
-		ip_out(iface, pktptr);
+		ip_out(pktptr);
 	}
 }
 
@@ -545,23 +485,7 @@ status	ip_enqueue(
 	)
 {
 	intmask	mask;			/* saved interrupt mask		*/
-	int32	iface;			/* interface to use		*/
-	struct	ifentry	*ifptr;		/* ptr to interface entry	*/
 	struct	iqentry	*iptr;		/* ptr to network output queue	*/
-	
-	iface = pktptr->net_iface;
-
-	if ( (iface<0) || (iface >= NIFACES) ) {
-		kprintf("ip_enqueue encounters invalid interface\n");
-		freebuf((char *)pktptr);
-		return SYSERR;
-	}
-	ifptr = &if_tab[iface];
-	if (ifptr->if_state != IF_UP) {
-		kprintf("ip_enqueue: specified interface is down\n");
-		freebuf((char *)pktptr);
-		return SYSERR;
-	}
 
 	/* Insure only one process accesses output queue at a time */
 

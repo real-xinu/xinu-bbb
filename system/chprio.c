@@ -8,12 +8,12 @@
  */
 pri16	chprio(
 	  pid32		pid,		/* ID of process to change	*/
-	  pri16		newprio		/* new priority			*/
+	  pri16		newprio		/* New priority			*/
 	)
 {
-	intmask	mask;			/* saved interrupt mask		*/
-	struct	procent *prptr;		/* ptr to process' table entry	*/
-	pri16	oldprio;		/* priority to return		*/
+	intmask	mask;			/* Saved interrupt mask		*/
+	struct	procent *prptr;		/* Ptr to process' table entry	*/
+	pri16	oldprio;		/* Priority to return		*/
 
 	mask = disable();
 	if (isbadpid(pid)) {
