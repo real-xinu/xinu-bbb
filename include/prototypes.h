@@ -1,6 +1,9 @@
 /* in file addargs.c */
 extern	status	addargs(pid32, int32, int32[], int32,char *, void *);
 
+/* in file am335x_eth_init.c */
+extern	int32	am335x_eth_init(struct ether *);
+
 /* in file arp.c */
 
 extern	void	arp_init();

@@ -48,9 +48,17 @@ devcall	ttyInit(
 	typtr->tyifullc = TY_FULLCH;		/* send ^G when buffer	*/
 						/*   is full		*/
 
-	/* RADIOTTY specific initialization */
 
-	if(devptr->dvminor == 1) {
+	if(devptr->dvminor == 0) { /* CONSOLE uart0 init */
+
+		/* Pad control register init */
+
+		am335x_padctl(UART0_PADRX_ADDR,
+				AM335X_PADCTL_RXTX | UART0_PADRX_MODE);
+		am335x_padctl(UART0_PADTX_ADDR,
+				AM335X_PADCTL_TX | UART0_PADTX_MODE);
+	}
+	if(devptr->dvminor == 1) { /* RADIOTTY uart1 init */
 
 		volatile uint32 *clkctrl = (uint32 *)UART1_CLKCTRL_ADDR;
 				/* Clock control register pointer */
@@ -65,8 +73,10 @@ devcall	ttyInit(
 
 		/* Select the proper mode for UART Tx and Rx */
 
-		*((uint32 *)UART1_PADRX_ADDR) &= UART1_PADRX_MODE;
-		*((uint32 *)UART1_PADTX_ADDR) &= UART1_PADTX_MODE;
+		am335x_padctl(UART1_PADRX_ADDR,
+				AM335X_PADCTL_RXTX | UART1_PADRX_MODE);
+		am335x_padctl(UART1_PADTX_ADDR,
+				AM335X_PADCTL_TX | UART1_PADTX_MODE);
 
 		/* RADIOTTY will be run in raw mode */
 
@@ -112,7 +122,7 @@ devcall	ttyInit(
 
 	/* Enable UART FIFOs, clear and set interrupt trigger level	*/
 
-	uptr->fcr = (UART_FCR_EFIFO | UART_FCR_TRESET | UART_FCR_RRESET);
+	//uptr->fcr = (UART_FCR_EFIFO | UART_FCR_TRESET | UART_FCR_RRESET);
 
 	/* Start the UART module in 16x mode */
 

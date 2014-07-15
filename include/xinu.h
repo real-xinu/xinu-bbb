@@ -34,3 +34,5 @@
 #include <prototypes.h>
 #include <stdio.h>
 #include <string.h>
+#include <am335x_control.h>
+#include <am335x_eth.h>
