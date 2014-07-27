@@ -55,6 +55,18 @@ struct	etherPkt {
 #define ETH_TYPE_3C905C 	1
 #define ETH_TYPE_E1000E 	2
 
+#define ETH_PHY_CTLREG	0
+#define ETH_PHY_STATREG	1
+
+#define ETH_PHY_CTLREG_RESET	0x8000
+#define ETH_PHY_CTLREG_SM	0x2040	/* Speed Mask	*/
+#define ETH_PHY_10M		0x0000
+#define ETH_PHY_100M		0x2000
+#define ETH_PHY_1000M		0x0040
+#define ETH_PHY_CTLREG_FD	0x0100
+
+#define ETH_PHY_STATREG_LINK	0x0004
+
 struct	ether	{
 	byte	state; 		/* ETH_STATE_... as defined above 	*/
 	struct	dentry	*phy;	/* physical eth device for Tx DMA 	*/
