@@ -265,6 +265,7 @@ status	ip_out(
 
 	/* Send packet over the Ethernet */
 
+	kprintf("writing packet\n");
 	retval = write(ETHER0, (char*)pktptr, pktlen);
 	freebuf((char *)pktptr);
 

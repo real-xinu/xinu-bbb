@@ -180,9 +180,9 @@ int32	stop(char *s)
 	while(1)
 		/* Empty */;
 }
-/*
+
 int32	delay(int n)
 {
 	DELAY(n);
 	return OK;
-}*/
+}

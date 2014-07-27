@@ -436,6 +436,7 @@ status	udp_sendto (
 	/* Verify that the slot is valid */
 
 	if ( (slot < 0) || (slot >= UDP_SLOTS) ) {
+		kprintf("udp_sendto: invalid slot %d\n", slot);
 		restore(mask);
 		return SYSERR;
 	}
@@ -447,6 +448,7 @@ status	udp_sendto (
 	/* Verify that the slot has been registered and is valid */
 
 	if (udptr->udstate == UDP_FREE) {
+		kprintf("udp_sendto: slot %d free\n", slot);
 		restore(mask);
 		return SYSERR;
 	}
@@ -456,6 +458,7 @@ status	udp_sendto (
 	pkt = (struct netpacket *)getbuf(netbufpool);
 
 	if ((int32)pkt == SYSERR) {
+		kprintf("udp_sendto: cannot get packet\n");
 		restore(mask);
 		return SYSERR;
 	}
@@ -489,6 +492,7 @@ status	udp_sendto (
 
 	/* Call ipsend to send the datagram */
 
+	kprintf("udp_sendto calling ip_send\n");
 	ip_send(pkt);
 	restore(mask);
 	return OK;

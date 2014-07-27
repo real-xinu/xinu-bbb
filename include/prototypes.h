@@ -79,87 +79,17 @@ extern	intmask	disable(void);
 
 extern	void	enable(void);
 
-/* in file 3c905C_cmd.c */
+/* in file eth_a_init.c */
+extern	int32	eth_a_init(struct dentry *);
 
-status 	_3c905C_cmd(struct ether *, uint16, uint16);
-uint8 	_3c905C_win_read8(struct ether *, uint16, uint16);
-uint16 	_3c905C_win_read16(struct ether *, uint16, uint16);
-uint32 	_3c905C_win_read32(struct ether *, uint16, uint16);
-void 	_3c905C_win_write8(struct ether *, uint8, uint16, uint16);
-void 	_3c905C_win_write16(struct ether *, uint16, uint16, uint16);
-void 	_3c905C_win_write32(struct ether *, uint32, uint16, uint16);
+/* in file eth_a_intr.c */
+extern	interrupt eth_a_intr(uint32);
 
-/* in file 3c905C_cntl.c */
+/* in file eth_a_read.c */
+extern	int32	eth_a_read(struct dentry *, void *, uint32);
 
-extern 	devcall _3c905C_cntl(struct ether *, int32, int32, int32);
-
-/* in file 3c905C_init.c */
-
-extern 	void 	_3c905C_init(struct ether *ethptr);
-
-/* in file 3c905C_intr.c */
-
-extern  interrupt 	_3c905C_intr(struct ether *ethptr);
-
-/* in file 3c905C_open.c */
-
-extern 	status 	_3c905C_open(struct ether *ethptr);
-
-/* in file 3c905C_read.c */
-
-extern  devcall _3c905C_read(struct ether *ethptr, void *buf, uint32 len);
-
-/* in file 3c905C_write.c */
-
-extern 	devcall _3c905C_write(struct ether *ethptr, void *buf, uint32 len);
-
-/* in file e1000e_cmd.c */
-
-extern 	void 	e1000e_irq_enable(struct ether 	*ethptr);
-extern 	void 	e1000e_irq_disable(struct ether *ethptr);
-
-/* in file e1000e_cntl.c */
-
-extern 	devcall e1000e_cntl(struct ether *, int32, int32, int32);
-
-/* in file e1000e_init.c */
-extern 	void 	e1000e_init(struct ether *ethptr);
-
-/* in file e1000e_rar_set.c */
-extern 	void 	e1000e_rar_set(struct ether *ethptr, byte*, uint32);
-
-/* in file e1000e_intr.c */
-extern  interrupt 	e1000e_intr(struct ether *ethptr);
-
-/* in file e1000e_open.c */
-extern 	status 	e1000e_open(struct ether *ethptr);
-
-/* in file e1000e_read.c */
-extern  devcall e1000e_read(struct ether *ethptr, void *buf, uint32 len);
-
-/* in file e1000e_write.c */
-extern 	devcall e1000e_write(struct ether *ethptr, void *buf, uint32 len);
-
-/* in file ethControl.c */
-extern	devcall	ethControl(struct dentry *, int32, int32, int32);
-
-/* in file ethDispatch.S */
-extern	interrupt	ethDispatch(void);
-
-/* in file ethInit.c */
-extern	devcall	ethInit(struct dentry *);
-
-/* in file etherInterupt.c */
-extern	interrupt	ethInterrupt(void);
-
-/* in file ethRead.c */
-extern	devcall ethRead(struct dentry *, void *, uint32);
-
-/* in file ethStat.c */
-extern	void	ethStat(uint16);
-
-/* in file ethWrite.c */
-extern	devcall	ethWrite(struct dentry *, void *, uint32);
+/* in file eth_a_write.c */
+extern	int32	eth_a_write(struct dentry *, void *, uint32);
 
 /* in file evec.c */
 extern	int32	initevec(void);

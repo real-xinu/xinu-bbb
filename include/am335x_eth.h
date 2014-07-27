@@ -1,4 +1,4 @@
-struct	am335x_eth_ale {
+struct	eth_a_ale {
 	uint32	idver;
 	uint32	res1;
 	uint32	ctrl;
@@ -15,12 +15,12 @@ struct	am335x_eth_ale {
 	uint32	portctl[6];
 };
 
-#define AM335X_ETH_ALECTL_EN	0x80000000 /* Enable ALE	*/
-#define AM335X_ETH_ALECTL_BY	0x00000010 /* Bypass Mode	*/
+#define ETH_AM335X_ALECTL_EN	0x80000000 /* Enable ALE	*/
+#define ETH_AM335X_ALECTL_BY	0x00000010 /* Bypass Mode	*/
 
-#define AM335X_ETH_ALEPCTL_FWD	0x00000003 /* Port Forward state*/
+#define ETH_AM335X_ALEPCTL_FWD	0x00000003 /* Port Forward state*/
 
-struct	am335x_eth_cpdma {
+struct	eth_a_cpdma {
 	uint32	tx_idver;
 	uint32	tx_ctrl;
 	uint32	tx_teardown;
@@ -54,14 +54,14 @@ struct	am335x_eth_cpdma {
 	uint32	rx_freebuffer[8];
 };
 
-struct	am335x_eth_stateram {
+struct	eth_a_stateram {
 	uint32	tx_hdp[8];
 	uint32	rx_hdp[8];
 	uint32	tx_cp[8];
 	uint32	rx_cp[8];
 };
 
-struct	am335x_eth_sl {
+struct	eth_a_sl {
 	uint32	idver;
 	uint32	macctrl;
 	uint32	macstat;
@@ -75,12 +75,12 @@ struct	am335x_eth_sl {
 	uint32	tx_gap;
 };
 
-#define AM335X_ETH_SLCTL_FD	0x00000001	/* Full Duplex	*/
-#define AM335X_ETH_SLCTL_LB	0x00000002	/* Loopback 	*/
-#define AM335X_ETH_SLCTL_EN	0x00000020	/* Rx/Tx Enable	*/
-#define AM335X_ETH_SLCTL_GIG	0x00000080	/* Gigabit mode	*/
+#define ETH_AM335X_SLCTL_FD	0x00000001	/* Full Duplex	*/
+#define ETH_AM335X_SLCTL_LB	0x00000002	/* Loopback 	*/
+#define ETH_AM335X_SLCTL_EN	0x00000020	/* Rx/Tx Enable	*/
+#define ETH_AM335X_SLCTL_GIG	0x00000080	/* Gigabit mode	*/
 
-struct	am335x_eth_ss {
+struct	eth_a_ss {
 	uint32	idver;
 	uint32	ctrl;
 	uint32	reset;
@@ -96,7 +96,7 @@ struct	am335x_eth_ss {
 	uint32	dlr_ltype;
 };
 
-struct	am335x_eth_wr {
+struct	eth_a_wr {
 	uint32	idver;
 	uint32	reset;
 	uint32	ctrl;
@@ -112,7 +112,7 @@ struct	am335x_eth_wr {
 	uint32	c0_misc_stat;
 };
 
-struct	am335x_eth_mdio {
+struct	eth_a_mdio {
 	uint32	ver;
 	uint32	ctrl;
 	uint32	alive;
@@ -131,25 +131,25 @@ struct	am335x_eth_mdio {
 	uint32	userphysel1;
 };
 
-#define AM335X_ETH_MDIOCTL_EN	0x40000000
+#define ETH_AM335X_MDIOCTL_EN	0x40000000
 
-#define AM335X_ETH_MDIOUA_GO	0x80000000 /* Perorm MDIO access*/
-#define AM335X_ETH_MDIOUA_WR	0x40000000 /* Write access	*/
-#define AM335X_ETH_MDIOUA_ACK	0x20000000 /* Read Ack		*/
-#define AM335X_ETH_MDIOUA_DM	0x0000ffff /* MDIO Data Mask	*/
+#define ETH_AM335X_MDIOUA_GO	0x80000000 /* Perorm MDIO access*/
+#define ETH_AM335X_MDIOUA_WR	0x40000000 /* Write access	*/
+#define ETH_AM335X_MDIOUA_ACK	0x20000000 /* Read Ack		*/
+#define ETH_AM335X_MDIOUA_DM	0x0000ffff /* MDIO Data Mask	*/
 
-struct	am335x_eth_csreg {
-	volatile struct	am335x_eth_ale		*ale;
-	volatile struct	am335x_eth_cpdma 	*cpdma;
-	volatile struct	am335x_eth_stateram 	*stateram;
-	volatile struct	am335x_eth_sl	 	*sl;
-	volatile struct	am335x_eth_ss		*ss;
-	volatile struct am335x_eth_wr		*wr;
-	volatile struct	am335x_eth_mdio	 	*mdio;
+struct	eth_a_csreg {
+	volatile struct	eth_a_ale		*ale;
+	volatile struct	eth_a_cpdma 	*cpdma;
+	volatile struct	eth_a_stateram 	*stateram;
+	volatile struct	eth_a_sl	 	*sl;
+	volatile struct	eth_a_ss		*ss;
+	volatile struct eth_a_wr		*wr;
+	volatile struct	eth_a_mdio	 	*mdio;
 };
 
-struct	am335x_eth_rx_desc {
-	struct	am335x_eth_rx_desc *next;
+struct	eth_a_rx_desc {
+	struct	eth_a_rx_desc *next;
 	uint32	buffer;
 	uint16	buflen;
 	uint16	bufoff;
@@ -157,15 +157,15 @@ struct	am335x_eth_rx_desc {
 	uint16	stat;
 };
 
-#define AM335X_ETH_RDS_SOP	0x8000	/* Start of packet	*/
-#define AM335X_ETH_RDS_EOP	0x4000
-#define AM335X_ETH_RDS_OWN	0x2000
-#define AM335X_ETH_RDS_EOQ	0x1000
+#define ETH_AM335X_RDS_SOP	0x8000	/* Start of packet	*/
+#define ETH_AM335X_RDS_EOP	0x4000
+#define ETH_AM335X_RDS_OWN	0x2000
+#define ETH_AM335X_RDS_EOQ	0x1000
 
-#define AM335X_ETH_RX_RING_SIZE	32
+#define ETH_AM335X_RX_RING_SIZE	32
 
-struct	am335x_eth_tx_desc {
-	struct	am335x_eth_tx_desc *next;
+struct	eth_a_tx_desc {
+	struct	eth_a_tx_desc *next;
 	uint32	buffer;
 	uint16	buflen;
 	uint16	bufoff;
@@ -173,26 +173,26 @@ struct	am335x_eth_tx_desc {
 	uint16	stat;
 };
 
-#define AM335X_ETH_TDS_SOP	0x8000
-#define AM335X_ETH_TDS_EOP	0x4000
-#define AM335X_ETH_TDS_OWN	0x2000
-#define AM335X_ETH_TDS_EOQ	0x1000
-#define AM335X_ETH_TDS_DIR	0x0010
-#define AM335X_ETH_TDS_P1	0x0001
+#define ETH_AM335X_TDS_SOP	0x8000
+#define ETH_AM335X_TDS_EOP	0x4000
+#define ETH_AM335X_TDS_OWN	0x2000
+#define ETH_AM335X_TDS_EOQ	0x1000
+#define ETH_AM335X_TDS_DIR	0x0010
+#define ETH_AM335X_TDS_P1	0x0001
 
-#define AM335X_ETH_TX_RING_SIZE	16
+#define ETH_AM335X_TX_RING_SIZE	16
 
-#define AM335X_ETH_ALE_ADDR		0x4A100D00
-#define AM335X_ETH_CPDMA_ADDR		0x4A100800
-#define AM335X_ETH_STATERAM_ADDR	0x4A100A00
-#define AM335X_ETH_SL1_ADDR		0x4A100D80
-#define AM335X_ETH_MDIO_ADDR		0x4A101000
-#define AM335X_ETH_SS_ADDR		0x4A100000
-#define AM335X_ETH_WR_ADDR		0x4A101200
+#define ETH_AM335X_ALE_ADDR		0x4A100D00
+#define ETH_AM335X_CPDMA_ADDR		0x4A100800
+#define ETH_AM335X_STATERAM_ADDR	0x4A100A00
+#define ETH_AM335X_SL1_ADDR		0x4A100D80
+#define ETH_AM335X_MDIO_ADDR		0x4A101000
+#define ETH_AM335X_SS_ADDR		0x4A100000
+#define ETH_AM335X_WR_ADDR		0x4A101200
 
-#define AM335X_ETH_RXINT		41
-#define AM335X_ETH_TXINT		42
-extern	int32 am335x_eth_phy_read(volatile struct am335x_eth_mdio *, byte, byte, uint32 *);
-extern	int32 am335x_eth_phy_write(volatile struct am335x_eth_mdio *, byte, byte, uint32);
-extern	int32 am335x_eth_phy_reset(volatile struct am335x_eth_mdio *, byte);
-extern	interrupt am335x_eth_intr(uint32);
+#define ETH_AM335X_RXINT		41
+#define ETH_AM335X_TXINT		42
+extern	int32 eth_a_phy_read(volatile struct eth_a_mdio *, byte, byte, uint32 *);
+extern	int32 eth_a_phy_write(volatile struct eth_a_mdio *, byte, byte, uint32);
+extern	int32 eth_a_phy_reset(volatile struct eth_a_mdio *, byte);
+extern	interrupt eth_a_intr(uint32);

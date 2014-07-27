@@ -2,12 +2,24 @@
 
 #include <xinu.h>
 #include <stdio.h>
-
+int32 cpudelay;
 process	main(void)
 {
 	/* Start the network */
 
-	//netstart();
+	eth_a_init(&devtab[ETHER0]);
+
+	int32 i;
+	for(i = 0; i < 6; i++) {
+		NetData.ethucast[i] = i;
+		NetData.ethbcast[i] = 0xff;
+	}
+
+	//kprintf("reading packet from ETHER0\n");
+	//struct netpacket pkt;
+	//read(ETHER0, &pkt, 1518);
+
+	netstart();
 
 	kprintf("\n...creating a shell\n");
 	recvclr();

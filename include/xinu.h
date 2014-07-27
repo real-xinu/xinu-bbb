@@ -32,6 +32,7 @@
 #include <shell.h>
 #include <date.h>
 #include <prototypes.h>
+#include <delay.h>
 #include <stdio.h>
 #include <string.h>
 #include <am335x_control.h>

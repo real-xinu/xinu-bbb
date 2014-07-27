@@ -35,10 +35,10 @@ struct	dentry	devtab[NDEVS] =
 
 /* ETHER0 is eth */
 	{ 2, 0, "ETHER0",
-	  (void *)ionull, (void *)ioerr, (void *)ioerr,
-	  (void *)ionull, (void *)ionull, (void *)ioerr,
-	  (void *)ioerr, (void *)ioerr, (void *)ionull,
-	  (void *)0x0, (void *)ionull, 0 },
+	  (void *)ionull, (void *)ionull, (void *)ionull,
+	  (void *)eth_a_read, (void *)eth_a_write, (void *)ionull,
+	  (void *)ionull, (void *)ionull, (void *)ionull,
+	  (void *)0x0, (void *)eth_a_intr, 0 },
 
 /* NAMESPACE is nam */
 	{ 3, 0, "NAMESPACE",

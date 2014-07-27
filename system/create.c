@@ -78,7 +78,7 @@ pid32	create(
 			*--saddr = 0;
 	}
 	*--saddr = (long)INITRET;	/* push on return address	*/
-	*--saddr = (long)0x00000153;	/* CPSR, A, F bits set,		*/
+	*--saddr = (long)0x00000053;	/* CPSR, A, F bits set,		*/
 					/* Supervisor mode		*/
 	prptr->prstkptr = (char *)saddr;
 	restore(mask);

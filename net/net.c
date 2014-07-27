@@ -15,9 +15,9 @@ void	net_init (void)
 
 	/* Initialize interface data structures */
 
-	memset((char *)&NetData, NULLCH, sizeof(struct network));
+	//memset((char *)&NetData, NULLCH, sizeof(struct network));
 
-	control(ETHER0, ETH_CTRL_GET_MAC, (int32)NetData.ethucast, 0);
+	//control(ETHER0, ETH_CTRL_GET_MAC, (int32)NetData.ethucast, 0);
 
 	memset((char *)NetData.ethbcast, 0xFF, ETH_ADDR_LEN);
 	
@@ -79,7 +79,7 @@ process	netin ()
 		if(retval == SYSERR) {
 			panic("Cannot read from Ethernet\n");
 		}
-
+		pdump(pkt);
 		/* Convert Ethernet Type to host order */
 
 		eth_ntoh(pkt);

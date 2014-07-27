@@ -28,7 +28,7 @@ DEFS		=	-DBSDURG -DVERSION=\""`cat version`"\"
 INCLUDE		=	-I$(TOPDIR)/include
 
 # Compiler flags
-CFLAGS  = -mcpu=cortex-a8 -marm -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O ${DEFS} ${INCLUDE}
+CFLAGS  = -mcpu=cortex-a8 -mno-unaligned-access -marm -fno-builtin -fno-stack-protector -nostdlib -c -Wall -O ${DEFS} ${INCLUDE}
 SFLAGS  = ${INCLUDE}
 
 # Loader flags
@@ -136,8 +136,8 @@ rebuild: $(CONFC)
 		-s $(TOPDIR)/lib					\
 		-s $(TOPDIR)/device/tty					\
 		-s $(TOPDIR)/device/nam					\
-		-s $(TOPDIR)/device/eth					\
-		-s $(TOPDIR)/net  'arp_dump*' 'netiface*' 'nat*'				\
+		-s $(TOPDIR)/device/eth	'am335x_eth_open.c'		\
+		-s $(TOPDIR)/net  'arp_dump*' 'netiface*' 'nat*'	\
 		-s $(TOPDIR)/shell  'xsh_rdstest*' 'xsh_udpecho*' 'xsh_ipaddr*' 'xsh_bingid*' > .defs
 
 defclean:

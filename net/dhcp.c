@@ -237,10 +237,12 @@ int32 build_dhcp_request(struct dhcpmsg* dmsg, const struct dhcpmsg* dmsg_offer,
 	dmsg->dc_opt[j++] = 0xff &  1;	/* option length		*/
 	dmsg->dc_opt[j++] = 0xff &  3;	/* DHCP Request message		*/
 	dmsg->dc_opt[j++] = 0xff &  0;	/* Options padding		*/
-
+	dmsg->dc_opt[j++] = 0;
+	dmsg->dc_opt[j++] = 0;
 	dmsg->dc_opt[j++] = 0xff & 50;	/* Requested IP	*/
 	dmsg->dc_opt[j++] = 0xff &  4;	/* option length		*/
-	*((uint32*)&dmsg->dc_opt[j]) = dmsg_offer->dc_yip;
+	//*((uint32*)&dmsg->dc_opt[j]) = dmsg_offer->dc_yip;
+	memcpy(&dmsg->dc_opt[j], &dmsg_offer->dc_yip, 4);
 	j += 4;
 	
 	/* Retrieve the DHCP server IP from the DHCP options */
@@ -251,10 +253,12 @@ int32 build_dhcp_request(struct dhcpmsg* dmsg, const struct dhcpmsg* dmsg_offer,
 		dump_dhcp_msg(dmsg_offer, dsmg_offer_size);
 		return SYSERR;
 	}
-	
+	dmsg->dc_opt[j++] = 0;
+	dmsg->dc_opt[j++] = 0;
 	dmsg->dc_opt[j++] = 0xff & 54;	/* Server IP	*/
 	dmsg->dc_opt[j++] = 0xff &  4;	/* option length		*/
-	*((uint32*)&dmsg->dc_opt[j]) = *server_ip;
+	//*((uint32*)&dmsg->dc_opt[j]) = *server_ip;
+	memcpy(&dmsg->dc_opt[j], server_ip, 4);
 	j += 4;
 
 	return (uint32)((char *)&dmsg->dc_opt[j] - (char *)dmsg + 1);
@@ -349,11 +353,13 @@ uint32	getlocalip_boot(uint32* boot_server, char* boot_file, uint32* size)
 			}
 
 			if (msgtype == 0x02) {	/* offer - send request	*/
+				kprintf("dhcp: got offer send req\n");
 				len = build_dhcp_request(&dmsg_snd, &dmsg_rvc, inlen);
 				if(len == SYSERR) {
 					kprintf("getlocalip: Unable to build DHCP request\r\n");
 					return SYSERR;
 				}
+				kprintf("calling udp_sendto\n");
 				udp_sendto(slot, IP_BCAST, UDP_DHCP_SPORT,
 					(char *)&dmsg_snd, len);
 				continue;
