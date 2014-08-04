@@ -1,30 +1,37 @@
-/* eth_a_intr.c - eth_a_intr */
+/* ethhandler.c - ethhandler */
 
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- * eth_a_intr - Ethernet Interrupt Handler
+ * ethhandler - TI AM335X Ethernet Interrupt Handler
  *------------------------------------------------------------------------
  */
-interrupt	eth_a_intr (
-				uint32	xnum
-				)
+interrupt ethhandler (
+		uint32	xnum	/* IRQ number	*/
+	)
 {
-	struct	eth_a_csreg *csrptr;
-	struct	eth_a_tx_desc *tdescptr;
-	struct	eth_a_rx_desc *rdescptr;
-	struct	ether *ethptr = &ethertab[0];
+	struct	eth_a_csreg *csrptr;		/* Ethernet CSR pointer	*/
+	struct	eth_a_tx_desc *tdescptr;	/* Tx desc pointer	*/
+	struct	eth_a_rx_desc *rdescptr;	/* Rx desc pointer	*/
+	struct	ether *ethptr = &ethertab[0];	/* Ethernet ctl blk ptr	*/
 
 	csrptr = (struct eth_a_csreg *)ethptr->csr;
 
-	if(xnum == ETH_AM335X_TXINT) {
+	if(xnum == ETH_AM335X_TXINT) {	/* Transmit interrupt */
+
+		/* Get pointer to first desc in queue	*/
 
 		tdescptr = (struct eth_a_tx_desc *)ethptr->txRing +
 							ethptr->txHead;
 
+		/* Defer scheduling until all descs are processed */
+
 		sched_cntl(DEFER_START);
 
 		while(semcount(ethptr->osem) < (int32)ethptr->txRingSize) {
+
+			/* If desc owned by DMA, check if we need to	*/
+			/* Restart the transmission			*/
 
 			if(tdescptr->stat & ETH_AM335X_TDS_OWN) {
 				if(csrptr->stateram->tx_hdp[0] == 0) {
@@ -34,7 +41,12 @@ interrupt	eth_a_intr (
 				break;
 			}
 
+			/* Acknowledge the interrupt	*/
+
 			csrptr->stateram->tx_cp[0] = (uint32)tdescptr;
+
+			/* Increment the head index of the queue	*/
+			/* And go to the next descriptor in queue	*/
 
 			ethptr->txHead++;
 			tdescptr++;
@@ -44,21 +56,33 @@ interrupt	eth_a_intr (
 							ethptr->txRing;
 			}
 
+			/* Signal the output semaphore */
+
 			signal(ethptr->osem);
 		}
 
+		/* Acknowledge the transmit interrupt */
+
 		csrptr->cpdma->eoi_vector = 0x2;
+
+		/* Resume rescheduling	*/
 
 		sched_cntl(DEFER_STOP);
 	}
-	else if(xnum == ETH_AM335X_RXINT) {
+	else if(xnum == ETH_AM335X_RXINT) {	/* Receive interrupt */
+
+		/* Get the pointer to last desc in the queue	*/
 
 		rdescptr = (struct eth_a_rx_desc *)ethptr->rxRing +
 							ethptr->rxTail;
 
+		/* Defer scheduling until all descriptors are processed	*/
+
 		sched_cntl(DEFER_START);
 
 		while(semcount(ethptr->isem) < (int32)ethptr->rxRingSize) {
+
+			/* Check if we need to restart the DMA	*/
 
 			if(rdescptr->stat & ETH_AM335X_RDS_OWN) {
 				if(csrptr->stateram->rx_hdp[0] == 0) {
@@ -68,7 +92,12 @@ interrupt	eth_a_intr (
 				break;
 			}
 
+			/* Acknowledge the interrupt	*/
+
 			csrptr->stateram->rx_cp[0] = (uint32)rdescptr;
+
+			/* Increment the tail index of the queue	*/
+			/* And go to the next descriptor in the queue	*/
 
 			ethptr->rxTail++;
 			rdescptr++;
@@ -77,11 +106,17 @@ interrupt	eth_a_intr (
 				rdescptr = (struct eth_a_rx_desc *)
 							ethptr->rxRing;
 			}
-			//kprintf("signaling semaphore %d\n", semcount(ethptr->isem));
+
+			/* Signal the input semaphore	*/
+
 			signal(ethptr->isem);
 		}
 
+		/* Acknowledge the receive interrupt */
+
 		csrptr->cpdma->eoi_vector = 0x1;
+
+		/* Resume rescheduling	*/
 
 		sched_cntl(DEFER_STOP);
 	}

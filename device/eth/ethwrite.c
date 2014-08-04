@@ -1,16 +1,16 @@
-/* eth_a_write.c - eth_a_write */
+/* ethwrite.c - ethwrite */
 
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- * eth_a_write - enqueue a packet for transmission (TI AM335X Ethernet)
+ * ethwrite - enqueue a packet for transmission on TI AM335X Ethernet
  *------------------------------------------------------------------------
  */
-int32	eth_a_write 	(
-			struct	dentry *devptr,
-			void	*buf,
-			uint32	count
-			)
+int32	ethwrite (
+		struct	dentry *devptr,
+		void	*buf,
+		uint32	count
+	)
 {
 	struct	ether *ethptr;		/* Ether entry pointer	*/
 	struct	eth_a_csreg *csrptr;	/* Ethernet CSR pointer	*/

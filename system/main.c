@@ -7,7 +7,7 @@ process	main(void)
 {
 	/* Start the network */
 
-	eth_a_init(&devtab[ETHER0]);
+	ethinit(&devtab[ETHER0]);
 
 	int32 i;
 	for(i = 0; i < 6; i++) {

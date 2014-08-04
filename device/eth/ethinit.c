@@ -1,38 +1,195 @@
-/* eth_a_init.c - eth_a_init */
+/* ethinit.c - ethinit, eth_phy_read, eth_phy_write */
 
 #include <xinu.h>
 
 struct	eth_a_csreg eth_a_regs;
 
 /*-----------------------------------------------------------------------
- * eth_a_init - initialize the TI AM335X ethernet hardware
+ * eth_phy_read - read a PHY register
  *-----------------------------------------------------------------------
  */
-int32	eth_a_init	(
-			struct	dentry *devptr
-			)
+int32	eth_phy_read (
+		volatile struct	eth_a_mdio *mdio,/* MDIO CSR pointer	*/
+		byte	regadr,	/* PHY Register number	*/
+		byte	phyadr,	/* PHY address		*/
+		uint32	*value	/* Pointer to value 	*/
+	)
 {
-	struct	ether *ethptr;
-	struct	eth_a_tx_desc *tdescptr;
-	struct	eth_a_rx_desc *rdescptr;
-	struct	netpacket *pktptr;
-	struct	eth_a_csreg *csrptr;
-	uint32	phyreg;
+
+	/* Ethernet PHY has only 32 registers */
+
+	if(regadr > 31) {
+		return SYSERR;
+	}
+
+	/* Only 32 possible PHY addresses */
+
+	if(phyadr > 31) {
+		return SYSERR;
+	}
+
+	/* Wait for the previous access to complete */
+
+	while( (mdio->useraccess0 & ETH_AM335X_MDIOUA_GO) != 0 );
+
+	/* Start the access */
+
+	mdio->useraccess0 = (ETH_AM335X_MDIOUA_GO) |
+			    (regadr << 21) |
+			    (phyadr << 16);
+
+	/* Wait until the access is complete */
+
+	while( (mdio->useraccess0 & ETH_AM335X_MDIOUA_GO) != 0 );
+
+	/* Check if the access was successful */
+
+	if( (mdio->useraccess0 & ETH_AM335X_MDIOUA_ACK) == 0 ) {
+		return SYSERR;
+	}
+
+	/* Copy the value read */
+
+	(*value) = mdio->useraccess0 & ETH_AM335X_MDIOUA_DM;
+
+	return OK;
+}
+
+/*-----------------------------------------------------------------------
+ * eth_phy_write - write a PHY register
+ *-----------------------------------------------------------------------
+ */
+int32	eth_phy_write (
+		volatile struct	eth_a_mdio *mdio, /* MDIO CSR pointer	*/
+		byte	regadr,	/* PHY register number	*/
+		byte	phyadr,	/* PHY address		*/
+		uint32	value	/* Value to be written	*/
+	)
+{
+
+	/* There are only 32 PHY registers */
+
+	if(regadr > 31) {
+		return SYSERR;
+	}
+
+	/* There are only 32 possible PHY addresses */
+
+	if(phyadr > 31) {
+		return SYSERR;
+	}
+
+	/* Wait for the previous access to complete */
+
+	while( (mdio->useraccess0 & ETH_AM335X_MDIOUA_GO) != 0);
+
+	/* Start the access */
+
+	mdio->useraccess0 = ETH_AM335X_MDIOUA_GO |
+			    ETH_AM335X_MDIOUA_WR |
+			    (regadr << 21) |
+			    (phyadr << 16) |
+			    (value & 0xffff);
+
+	/* Wait for the access to complete */
+
+	while( (mdio->useraccess0 & ETH_AM335X_MDIOUA_GO) != 0);
+
+	return OK;
+}
+
+/*-----------------------------------------------------------------------
+ * eth_phy_reset - Reset an Ethernet PHY
+ *-----------------------------------------------------------------------
+ */
+int32	eth_phy_reset (
+		volatile struct	eth_a_mdio *mdio, /* MDIO CSR pointer	*/
+		byte	phyadr			  /* PHY Address	*/
+	)
+{
 	int32	retval;
-	int32	i;
+	uint32	phyreg;
+
+	/* Read the PHY Control Register */
+
+	retval = eth_phy_read(mdio, ETH_PHY_CTLREG, phyadr, &phyreg);
+	if(retval == SYSERR) {
+		return SYSERR;
+	}
+
+	/* Set the Reset bit and write the register */
+
+	phyreg |= ETH_PHY_CTLREG_RESET;
+	eth_phy_write(mdio, ETH_PHY_CTLREG, phyadr, phyreg);
+
+	sleep(1);
+
+	/* Check if the reset operation is complete */
+
+	retval = eth_phy_read(mdio, ETH_PHY_CTLREG, phyadr, &phyreg);
+	if(retval == SYSERR) {
+		return SYSERR;
+	}
+
+	if( (phyreg & ETH_PHY_CTLREG_RESET) != 0 ) {
+		return SYSERR;
+	}
+
+	sleep(1);
+
+	/* Check if the Link is established */
+
+	retval = eth_phy_read(mdio, ETH_PHY_STATREG, phyadr, &phyreg);
+	if(retval == SYSERR) {
+		return SYSERR;
+	}
+
+	if( (phyreg & ETH_PHY_STATREG_LINK) == 0 ) {
+		return SYSERR;
+	}
+
+	return OK;
+}
+
+/*-----------------------------------------------------------------------
+ * ethinit - initialize the TI AM335X ethernet hardware
+ *-----------------------------------------------------------------------
+ */
+int32	ethinit	(
+		struct	dentry *devptr
+	)
+{
+	struct	ether *ethptr;		/* Ethernet control blk pointer	*/
+	struct	eth_a_tx_desc *tdescptr;/* Tx descriptor pointer	*/
+	struct	eth_a_rx_desc *rdescptr;/* Rx descriptor pointer	*/
+	struct	netpacket *pktptr;	/* Packet pointer		*/
+	struct	eth_a_csreg *csrptr;	/* Ethernet CSR pointer		*/
+	uint32	phyreg;			/* Variable to store PHY reg val*/
+	int32	retval;			/* Return value			*/
+	int32	i;			/* Index variable		*/
+
+	/* Get the Ethernet control block address	*/
+	/* from the device table entry			*/
 
 	ethptr = &ethertab[devptr->dvminor];
+
+	/* Store the address of CSRs in the Ethernet control block	*/
 
 	csrptr = &eth_a_regs;
 	ethptr->csr = csrptr;
 
-	csrptr->ale = ETH_AM335X_ALE_ADDR;
-	csrptr->cpdma = ETH_AM335X_CPDMA_ADDR;
-	csrptr->sl = ETH_AM335X_SL1_ADDR;
-	csrptr->stateram = ETH_AM335X_STATERAM_ADDR;
-	csrptr->ss = ETH_AM335X_SS_ADDR;
-	csrptr->wr = ETH_AM335X_WR_ADDR;
-	csrptr->mdio = ETH_AM335X_MDIO_ADDR;
+	/* Initialize the addresses of all the submodules	*/
+
+	csrptr->ale = (struct eth_a_ale *)ETH_AM335X_ALE_ADDR;
+	csrptr->cpdma = (struct eth_a_cpdma *)ETH_AM335X_CPDMA_ADDR;
+	csrptr->sl = (struct eth_a_sl *)ETH_AM335X_SL1_ADDR;
+	csrptr->stateram = (struct eth_a_stateram *)
+					ETH_AM335X_STATERAM_ADDR;
+	csrptr->ss = (struct eth_a_ss *)ETH_AM335X_SS_ADDR;
+	csrptr->wr = (struct eth_a_wr *)ETH_AM335X_WR_ADDR;
+	csrptr->mdio = (struct eth_a_mdio *)ETH_AM335X_MDIO_ADDR;
+
+	/* Reset all the submodules */
 
 	csrptr->cpdma->reset = 1;
 	while(csrptr->cpdma->reset == 1);
@@ -46,15 +203,19 @@ int32	eth_a_init	(
 	csrptr->ss->reset = 1;
 	while(csrptr->ss->reset == 1) ;
 
+	/* Enable MDIO	*/
+
 	csrptr->mdio->ctrl |= ETH_AM335X_MDIOCTL_EN;
 
-	retval = eth_a_phy_reset(csrptr->mdio, 0);
+	/* Reset the PHY */
+
+	retval = eth_phy_reset(csrptr->mdio, 0);
 	if(retval == SYSERR) {
 		kprintf("Cannot reset Ethernet PHY\n");
 		return SYSERR;
 	}
 
-	retval = eth_a_phy_read(csrptr->mdio, ETH_PHY_CTLREG, 0, &phyreg);
+	retval = eth_phy_read(csrptr->mdio, ETH_PHY_CTLREG, 0, &phyreg);
 	if(retval == SYSERR) {
 		return SYSERR;
 	}
@@ -208,152 +369,6 @@ int32	eth_a_init	(
 	/* Route the interrupts to core 0 */
 	csrptr->wr->c0_tx_en = 0x1;
 	csrptr->wr->c0_rx_en = 0x1;
-
-	return OK;
-}
-
-/*-----------------------------------------------------------------------
- * eth_a_phy_reset - Reset an Ethernet PHY
- *-----------------------------------------------------------------------
- */
-int32	eth_a_phy_reset (
-			volatile struct	eth_a_mdio *mdio,
-			byte	phyadr
-			)
-{
-	int32	retval;
-	uint32	phyreg;
-
-	/* Read the PHY Control Register */
-
-	retval = eth_a_phy_read(mdio, ETH_PHY_CTLREG, phyadr, &phyreg);
-	if(retval == SYSERR) {
-		return SYSERR;
-	}
-
-	/* Set the Reset bit and write the register */
-
-	phyreg |= ETH_PHY_CTLREG_RESET;
-	eth_a_phy_write(mdio, ETH_PHY_CTLREG, phyadr, phyreg);
-
-	sleep(1);
-
-	/* Check if the reset operation is complete */
-
-	retval = eth_a_phy_read(mdio, ETH_PHY_CTLREG, phyadr, &phyreg);
-	if(retval == SYSERR) {
-		return SYSERR;
-	}
-
-	if( (phyreg & ETH_PHY_CTLREG_RESET) != 0 ) {
-		return SYSERR;
-	}
-
-	sleep(1);
-
-	/* Check if the Link is established */
-
-	retval = eth_a_phy_read(mdio, ETH_PHY_STATREG, phyadr, &phyreg);
-	if(retval == SYSERR) {
-		return SYSERR;
-	}
-
-	if( (phyreg & ETH_PHY_STATREG_LINK) == 0 ) {
-		return SYSERR;
-	}
-
-	return OK;
-}
-/*-----------------------------------------------------------------------
- * eth_a_phy_read - read a PHY register
- *-----------------------------------------------------------------------
- */
-int32	eth_a_phy_read (
-			volatile struct	eth_a_mdio *mdio,
-			byte	regadr,
-			byte	phyadr,
-			uint32	*value
-			)
-{
-
-	/* Ethernet PHY has only 32 registers */
-
-	if(regadr > 31) {
-		return SYSERR;
-	}
-
-	/* Only 32 possible PHY addresses */
-
-	if(phyadr > 31) {
-		return SYSERR;
-	}
-
-	/* Wait for the previous access to complete */
-
-	while( (mdio->useraccess0 & ETH_AM335X_MDIOUA_GO) != 0 );
-
-	/* Start the access */
-
-	mdio->useraccess0 = (ETH_AM335X_MDIOUA_GO) |
-			    (regadr << 21) |
-			    (phyadr << 16);
-
-	/* Wait until the access is complete */
-
-	while( (mdio->useraccess0 & ETH_AM335X_MDIOUA_GO) != 0 );
-
-	/* Check if the access was successful */
-
-	if( (mdio->useraccess0 & ETH_AM335X_MDIOUA_ACK) == 0 ) {
-		return SYSERR;
-	}
-
-	/* Copy the value read */
-
-	(*value) = mdio->useraccess0 & ETH_AM335X_MDIOUA_DM;
-
-	return OK;
-}
-
-/*-----------------------------------------------------------------------
- * eth_a_phy_write - write a PHY register
- *-----------------------------------------------------------------------
- */
-int32	eth_a_phy_write (
-			volatile struct	eth_a_mdio *mdio,
-			byte	regadr,
-			byte	phyadr,
-			uint32	value
-			)
-{
-
-	/* There are only 32 PHY registers */
-
-	if(regadr > 31) {
-		return SYSERR;
-	}
-
-	/* There are only 32 possible PHY addresses */
-
-	if(phyadr > 31) {
-		return SYSERR;
-	}
-
-	/* Wait for the previous access to complete */
-
-	while( (mdio->useraccess0 & ETH_AM335X_MDIOUA_GO) != 0);
-
-	/* Start the access */
-
-	mdio->useraccess0 = ETH_AM335X_MDIOUA_GO |
-			    ETH_AM335X_MDIOUA_WR |
-			    (regadr << 21) |
-			    (phyadr << 16) |
-			    (value & 0xffff);
-
-	/* Wait for the access to complete */
-
-	while( (mdio->useraccess0 & ETH_AM335X_MDIOUA_GO) != 0);
 
 	return OK;
 }

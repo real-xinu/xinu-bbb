@@ -1,18 +1,18 @@
-/* eth_a_read.c - eth_a_read */
+/* ethread.c - ethread */
 
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- * eth_a_read - read an incoming Ethernet packet
+ * ethread - read an incoming packet on TI AM335X Ethernet
  *------------------------------------------------------------------------
  */
-int32	eth_a_read 	(
-			struct	dentry *devptr,
-			void	*buf,
-			uint32	count
-			)
+int32	ethread	(
+		struct	dentry *devptr,
+		void	*buf,
+		uint32	count
+	)
 {
-	struct	ether *ethptr;
+	struct	ether *ethptr;		/* Ethernet ctl blk ptr	*/
 	struct	eth_a_csreg *csrptr;	/* Ethernet CSR pointer	*/
 	struct	eth_a_rx_desc *rdescptr;/* Rx Desc. pointer	*/
 	struct	eth_a_rx_desc *prev;	/* Prev Rx desc pointer	*/
@@ -42,7 +42,7 @@ int32	eth_a_read 	(
 	/* Initialize the descriptor for next packet */
 	rdescptr->stat = ETH_AM335X_RDS_OWN;
 	rdescptr->bufoff = 0;
-	rdescptr->buflen = 1518;
+	rdescptr->buflen = sizeof(struct netpacket);
 	rdescptr->packlen = 0;
 	rdescptr->next = NULL;
 

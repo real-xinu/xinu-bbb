@@ -37,9 +37,9 @@ tty:
 eth:
 	on e1000e
 		-i ionull	-o ionull	-c ionull
-		-r eth_a_read	-g ionull	-p ionull
-		-w eth_a_write	-s ionull	-n ionull
-		-intr eth_a_intr
+		-r ethread	-g ionull	-p ionull
+		-w ethwrite	-s ionull	-n ionull
+		-intr ethhandler
 
 /* type of namespace device */
 nam:

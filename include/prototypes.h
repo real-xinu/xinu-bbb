@@ -79,17 +79,17 @@ extern	intmask	disable(void);
 
 extern	void	enable(void);
 
-/* in file eth_a_init.c */
-extern	int32	eth_a_init(struct dentry *);
+/* in file ethinit.c */
+extern	int32	ethinit(struct dentry *);
 
-/* in file eth_a_intr.c */
-extern	interrupt eth_a_intr(uint32);
+/* in file ethhandler.c */
+extern	interrupt ethhandler(uint32);
 
-/* in file eth_a_read.c */
-extern	int32	eth_a_read(struct dentry *, void *, uint32);
+/* in file ethread.c */
+extern	int32	ethread(struct dentry *, void *, uint32);
 
-/* in file eth_a_write.c */
-extern	int32	eth_a_write(struct dentry *, void *, uint32);
+/* in file ethwrite.c */
+extern	int32	ethwrite(struct dentry *, void *, uint32);
 
 /* in file evec.c */
 extern	int32	initevec(void);
