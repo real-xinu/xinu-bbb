@@ -1,16 +1,24 @@
-.text
-.globl	start
+/* start.S - start, bzero */
+
+/*------------------------------------------------------------------------
+ * start  -  Initial entry point for a Xinu image (ARM)
+ *------------------------------------------------------------------------
+ */ 
+	.text
+	.globl	start			/* Declare entry point global	*/
 
 start:
 	/* Load the stack pointer with end of memory */
 
 	ldr	sp, =0x84000000
 
-	/* Zero out the BSS area */
+	/* Use bzero (below) to zero out the BSS area */
 
 	ldr	r0, =edata
 	ldr	r1, =end
 	bl	bzero
+
+	/* Set up ??? */
 
 	mrc	p15, 0, r0, c1, c0, 0
 	and	r0, r0, #0xFFFFDFFF
@@ -19,28 +27,37 @@ start:
 	ldr	r0, =0x20000
 	mcr	p15, 0, r0, c12, c0, 0
 
+	/* Set up ??? */
+
 	ldr	r0, =0x4030CE18
 	ldr	r1, =instr
 	ldr	r1, [r1]
 	str	r1, [r0]
 
+	/* Set up an an exception handler */
+
 	ldr	r0, =0x4030CE38
 	ldr	r1, =irq_handler
 	str	r1, [r0]
 
-	/* Start system initialization */
+	/* Call nulluser to initialize the Xinu system  */
+	/*    (Note: the call never returns)		*/
 
 	bl	nulluser
 
+	/* ??? */
+
 instr:	ldr	pc, [pc, #24]
 
+	/* Function to zero memory (r0 is lowest addr; r1 is highest)	*/
+
 bzero:
-	mov	r2, #0
-	add	r0, r0, #3
-	and	r0, r0, #0xFFFFFFFC
-bloop:	cmp	r0, r1
-	bhs	bexit
-	str	r2, [r0]
-	add	r0, r0, #4
-	b	bloop
-bexit:	mov	pc, lr
+	mov	r2, #0			/* Round address to multiple	*/
+	add	r0, r0, #3		/*   of four by adding 3 and	*/
+	and	r0, r0, #0xFFFFFFFC	/*   taking the result module 4	*/
+bloop:	cmp	r0, r1			/* Loop until last address	*/
+	bhs	bexit			/*   has been reached		*/
+	str	r2, [r0]		/* Zero four-byte word of memory*/
+	add	r0, r0, #4		/* Move to next word		*/
+	b	bloop			/* Continue to iterate		*/
+bexit:	mov	pc, lr			/* Return to caller		*/
