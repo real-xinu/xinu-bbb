@@ -35,9 +35,9 @@ void	ttyhandle_out(
 		return;
 	}
 	
-	/* Initialize uspace to the size of the transmit FIFO */
+	/* Initialize uspace to the available space in the Tx FIFO */
 
-	uspace = UART_FIFO_SIZE;
+	uspace = UART_FIFO_SIZE - csrptr->txfifo_lvl;
 
 	/* While onboard FIFO is not full and the echo queue is	*/
 	/* nonempty, xmit chars from the echo queue		*/

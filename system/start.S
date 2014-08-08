@@ -12,7 +12,7 @@
 start:
 	/* Load the stack pointer with end of memory */
 
-	ldr	sp, =0x84000000
+	ldr	sp, =MAXADDR
 
 	/* Enable the Instruction Cache	*/
 
@@ -30,10 +30,6 @@ start:
 	/*    (Note: the call never returns)		*/
 
 	bl	nulluser
-
-	/* ??? */
-
-instr:	ldr	pc, [pc, #24]
 
 	/* Function to zero memory (r0 is lowest addr; r1 is highest)	*/
 

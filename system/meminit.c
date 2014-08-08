@@ -1,15 +1,24 @@
 /* meminit.c - meminit */
+
 #include <xinu.h>
 
-void	*minheap;
-void	*maxheap;
+void	*minheap;	/* Start address of heap	*/
+void	*maxheap;	/* End address of heap		*/
 
-void	meminit() {
+/*------------------------------------------------------------------------
+ * meminit - Initialize the free memory list for BeagleBone Black
+ *------------------------------------------------------------------------
+ */
+void	meminit(void)
+{
+	struct	memblk *memptr;	/* Memory block pointer	*/
 
-	struct	memblk *memptr;
+	/* Initialize the minheap and maxheap variables */
 
 	minheap = (void *)&end;
-	maxheap = (void *)0x84000000;
+	maxheap = (void *)MAXADDR;
+
+	/* Initialize the memory list as one big block */
 
 	memlist.mnext = (struct memblk *)minheap;
 	memptr = memlist.mnext;

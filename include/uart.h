@@ -2,7 +2,7 @@
 
 #define UART_BAUD	115200	/* Default console baud rate.		*/
 #define	UART_OUT_IDLE	0x0016	/* determine if transmit idle		*/
-#define	UART_FIFO_SIZE	1	/* chars in UART onboard output FIFO	*/
+#define	UART_FIFO_SIZE	64	/* chars in UART onboard output FIFO	*/
 				/* (16 for later UART chips)		*/
 
 /*
@@ -23,17 +23,18 @@ struct	uart_csreg
 	volatile uint32	msr;	/* modem status register		*/
 	volatile uint32	spr;	/* scratch register			*/
 	volatile uint32 mdr1;
-	volatile uint32 mdr2;
+	volatile uint32 res[12];/* unused UART registers		*/
+	/*volatile uint32 mdr2;
 	volatile uint32 res1[4];
 	volatile uint32 uasr;
 	volatile uint32 res2;
 	volatile uint32 scr;
 	volatile uint32 ssr;
 	volatile uint32 res3[2];
-	volatile uint32 mvr;
+	volatile uint32 mvr;*/
 	volatile uint32 sysc;	/* system configuration register	*/
 	volatile uint32 syss;	/* system status register		*/
-	/*volatile uint32 wer;
+	volatile uint32 wer;
 	volatile uint32 res4;
 	volatile uint32 rxfifo_lvl;
 	volatile uint32 txfifo_lvl;
@@ -42,7 +43,7 @@ struct	uart_csreg
 	volatile uint32 freq_sel;
 	volatile uint32 res5[2];
 	volatile uint32 mdr3;
-	volatile uint32 tx_dma_thresh;*/
+	volatile uint32 tx_dma_thresh;
 };
 
 /* Alternative names for control and status registers */

@@ -29,17 +29,16 @@ extern	struct	dentry	devtab[]; /* one entry per device */
 #define NULLDEV     1       /* type null     */
 #define ETHER0      2       /* type eth      */
 #define NAMESPACE   3       /* type nam      */
-#define RADIOTTY    4       /* type tty      */
 
 /* Control block sizes */
 
 #define	Nnull	1
-#define	Ntty	2
+#define	Ntty	1
 #define	Neth	1
 #define	Nnam	1
 
 #define DEVMAXNAME 24
-#define NDEVS 5
+#define NDEVS 4
 
 
 /* Configuration and Size Constants */

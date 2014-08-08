@@ -45,12 +45,5 @@ struct	dentry	devtab[NDEVS] =
 	  (void *)namInit, (void *)namOpen, (void *)ioerr,
 	  (void *)ioerr, (void *)ioerr, (void *)ioerr,
 	  (void *)ioerr, (void *)ioerr, (void *)ioerr,
-	  (void *)0x0, (void *)ioerr, 0 },
-
-/* RADIOTTY is tty */
-	{ 4, 1, "RADIOTTY",
-	  (void *)ttyinit, (void *)ionull, (void *)ionull,
-	  (void *)ttyread, (void *)ttywrite, (void *)ioerr,
-	  (void *)ttygetc, (void *)ttyputc, (void *)ttycontrol,
-	  (void *)0x48022000, (void *)ttyhandler, 73 }
+	  (void *)0x0, (void *)ioerr, 0 }
 };

@@ -67,7 +67,7 @@ nam:
    NAMESPACE is nam on top
 
    /* Define a radio device */
-   RADIOTTY is tty	on uart csr 0x48022000 -irq 73
+   /*RADIOTTY is tty	on uart csr 0x48022000 -irq 73*/
 %%
 
 /* Configuration and Size Constants */
