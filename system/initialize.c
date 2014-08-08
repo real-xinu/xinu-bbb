@@ -173,8 +173,6 @@ static	void	sysinit()
 	return;
 }
 
-#define	NBPG		4096		/* Number of bytes per page	*/
-
 int32	stop(char *s)
 {
 	kprintf("%s\n", s);
