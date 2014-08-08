@@ -1,13 +1,13 @@
-/* ttyInter_out.c - ttyInter_out */
+/* ttyhandle_out.c - ttyhandle_out */
 
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  ttyInter_out - handle an output on a tty device by sending more
+ *  ttyhandle_out - handle an output on a tty device by sending more
  *		    characters to the device FIFO (interrupts disabled)
  *------------------------------------------------------------------------
  */
-void	ttyInter_out(
+void	ttyhandle_out(
 	 struct	ttycblk	*typtr,		/* ptr to ttytab entry		*/
 	 struct	uart_csreg *csrptr	/* address of UART's CSRs	*/
 	)

@@ -1,22 +1,22 @@
-/* ttyRead.c - ttyRead */
+/* ttyread.c - ttyread */
 
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  ttyRead - read character(s) from a tty device (interrupts disabled)
+ *  ttyread  -  Read character(s) from a tty device (interrupts disabled)
  *------------------------------------------------------------------------
  */
-devcall	ttyRead(
-	  struct dentry	*devptr,	/* entry in device switch table	*/
-	  char	*buff,			/* buffer of characters		*/
-	  int32	count 			/* count of character to read	*/
+devcall	ttyread(
+	  struct dentry	*devptr,	/* Entry in device switch table	*/
+	  char	*buff,			/* Buffer of characters		*/
+	  int32	count 			/* Count of character to read	*/
 	)
 {
-	struct	ttycblk	*typtr;		/* pointer to tty control block	*/
-	int32	avail;			/* characters available in buff.*/
-	int32	nread;			/* number of characters read	*/
-	int32	firstch;		/* first input character on line*/
-	char	ch;			/* next input character		*/
+	struct	ttycblk	*typtr;		/* Pointer to tty control block	*/
+	int32	avail;			/* Characters available in buff.*/
+	int32	nread;			/* Number of characters read	*/
+	int32	firstch;		/* First input character on line*/
+	char	ch;			/* Next input character		*/
 
 	if (count < 0) {
 		return SYSERR;
@@ -36,29 +36,29 @@ devcall	ttyRead(
 			}
 		}
 		for (nread = 0; nread < count; nread++) {
-			*buff++ = (char) ttyGetc(devptr);
+			*buff++ = (char) ttygetc(devptr);
 		}
 		return nread;
 	}
 
 	/* Block until input arrives */
 
-	firstch = ttyGetc(devptr);
+	firstch = ttygetc(devptr);
 
 	/* Check for End-Of-File */
 
 	if (firstch == EOF) {
-		return (EOF);
+		return EOF;
 	}
 
-	/* read up to a line */
+	/* Read up to a line */
 
 	ch = (char) firstch;
 	*buff++ = ch;
 	nread = 1;
 	while ( (nread < count) && (ch != TY_NEWLINE) &&
 			(ch != TY_RETURN) ) {
-		ch = ttyGetc(devptr);
+		ch = ttygetc(devptr);
 		*buff++ = ch;
 		nread++;
 	}

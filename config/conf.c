@@ -21,10 +21,10 @@ struct	dentry	devtab[NDEVS] =
 
 /* CONSOLE is tty */
 	{ 0, 0, "CONSOLE",
-	  (void *)ttyInit, (void *)ionull, (void *)ionull,
-	  (void *)ttyRead, (void *)ttyWrite, (void *)ioerr,
-	  (void *)ttyGetc, (void *)ttyPutc, (void *)ttyControl,
-	  (void *)0x44e09000, (void *)ttyInterrupt, 72 },
+	  (void *)ttyinit, (void *)ionull, (void *)ionull,
+	  (void *)ttyread, (void *)ttywrite, (void *)ioerr,
+	  (void *)ttygetc, (void *)ttyputc, (void *)ttycontrol,
+	  (void *)0x44e09000, (void *)ttyhandler, 72 },
 
 /* NULLDEV is null */
 	{ 1, 0, "NULLDEV",
@@ -49,8 +49,8 @@ struct	dentry	devtab[NDEVS] =
 
 /* RADIOTTY is tty */
 	{ 4, 1, "RADIOTTY",
-	  (void *)ttyInit, (void *)ionull, (void *)ionull,
-	  (void *)ttyRead, (void *)ttyWrite, (void *)ioerr,
-	  (void *)ttyGetc, (void *)ttyPutc, (void *)ttyControl,
-	  (void *)0x48022000, (void *)ttyInterrupt, 73 }
+	  (void *)ttyinit, (void *)ionull, (void *)ionull,
+	  (void *)ttyread, (void *)ttywrite, (void *)ioerr,
+	  (void *)ttygetc, (void *)ttyputc, (void *)ttycontrol,
+	  (void *)0x48022000, (void *)ttyhandler, 73 }
 };

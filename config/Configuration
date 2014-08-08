@@ -28,10 +28,10 @@ null:
 /* type of a tty device */
 tty:
 	on uart
-		-i ttyInit      -o ionull       -c ionull
-		-r ttyRead      -g ttyGetc      -p ttyPutc
-		-w ttyWrite     -s ioerr        -n ttyControl
-		-intr ttyInterrupt
+		-i ttyinit      -o ionull       -c ionull
+		-r ttyread      -g ttygetc      -p ttyputc
+		-w ttywrite     -s ioerr        -n ttycontrol
+		-intr ttyhandler
 
 /* type of a ethernet device */
 eth:

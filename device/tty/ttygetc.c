@@ -1,30 +1,32 @@
-/* ttyGetc.c - ttyGetc */
+/* ttygetc.c - ttygetc */
 
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  ttyGetc - read one character from a tty device (interrupts disabled)
+ *  ttygetc  -  Read one character from a tty device (interrupts disabled)
  *------------------------------------------------------------------------
  */
-devcall	ttyGetc(
-	  struct dentry	*devptr		/* entry in device switch table	*/
+devcall	ttygetc(
+	  struct dentry	*devptr		/* Entry in device switch table	*/
 	)
 {
-	char	ch;
-	struct	ttycblk	*typtr;		/* pointer to ttytab entry	*/
+	char	ch;			/* Character to return		*/
+	struct	ttycblk	*typtr;		/* Pointer to ttytab entry	*/
 
 	typtr = &ttytab[devptr->dvminor];
 
-	/* Wait for a character in the buffer */
+	/* Wait for a character in the buffer and extract one character	*/
 
 	wait(typtr->tyisem);
-	ch = *typtr->tyihead++;		/* extract one character	*/
+	ch = *typtr->tyihead++;
 
 	/* Wrap around to beginning of buffer, if needed */
 
 	if (typtr->tyihead >= &typtr->tyibuff[TY_IBUFLEN]) {
 		typtr->tyihead = typtr->tyibuff;
 	}
+
+	/* In cooked mode, check for the EOF character */
 
 	if ( (typtr->tyimode == TY_IMCOOKED) && (typtr->tyeof) &&
 	     (ch == typtr->tyeofch) ) {

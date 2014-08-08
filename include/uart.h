@@ -31,9 +31,9 @@ struct	uart_csreg
 	volatile uint32 ssr;
 	volatile uint32 res3[2];
 	volatile uint32 mvr;
-	volatile uint32 sysc;
-	volatile uint32 syss;
-	volatile uint32 wer;
+	volatile uint32 sysc;	/* system configuration register	*/
+	volatile uint32 syss;	/* system status register		*/
+	/*volatile uint32 wer;
 	volatile uint32 res4;
 	volatile uint32 rxfifo_lvl;
 	volatile uint32 txfifo_lvl;
@@ -42,7 +42,7 @@ struct	uart_csreg
 	volatile uint32 freq_sel;
 	volatile uint32 res5[2];
 	volatile uint32 mdr3;
-	volatile uint32 tx_dma_thresh;
+	volatile uint32 tx_dma_thresh;*/
 };
 
 /* Alternative names for control and status registers */
@@ -55,11 +55,11 @@ struct	uart_csreg
 
 /* Definintion of individual bits in control and status registers	*/
 
-/* Port offsets from the base */
+/* Divisor values for baud rate */
 
-#define	UART_DLL	0x00	/* value for low byte of divisor latch	*/
+#define	UART_DLL	26	/* value for low byte of divisor latch	*/
 				/*	DLAB=0				*/
-#define UART_DLM	0x01	/* value for high byte of divisor latch	*/
+#define UART_DLM	0	/* value for high byte of divisor latch	*/
 				/*	DLAB=1				*/
 
 /* Line control bits */

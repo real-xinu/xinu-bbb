@@ -14,8 +14,6 @@ extern	void main(void);	/* Main is the first process created	*/
 extern	void xdone(void);	/* System "shutdown" procedure		*/
 static	void sysinit(); 	/* Internal system initialization	*/
 extern	void meminit(void);	/* Initializes the free memory list	*/
-extern	int32 acpi_scan(void);	/* Scans BIOS-provided ACPI data	*/
-extern	int quark_irq_routing();
 
 /* Declarations of major kernel variables */
 
@@ -48,7 +46,7 @@ void	nulluser()
 	uint32	free_mem;		/* Total amount of free memory	*/
 	
 	/* Initialize the system */
-		
+	kprintf("calling sysinit\n");
 	sysinit();
 
 	kprintf("\n\r%s\n\n\r", VERSION);
@@ -105,6 +103,10 @@ static	void	sysinit()
 	struct	procent	*prptr;		/* Ptr to process table entry	*/
 	struct	sentry	*semptr;	/* Prr to semaphore table entry	*/
 
+	/* Platform Specific Initialization */
+
+	platinit();
+
 	/* Initialize the interrupt vectors */
 
 	initevec();
@@ -160,7 +162,7 @@ static	void	sysinit()
 	/* Create a ready list for processes */
 
 	readylist = newqueue();
-	
+
 	/* Initialize the real time clock */
 
 	clkinit();

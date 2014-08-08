@@ -8,7 +8,7 @@ struct	ttycblk	ttytab[Ntty];
  *  ttyInit - initialize buffers and modes for a tty line
  *------------------------------------------------------------------------
  */
-devcall	ttyInit(
+devcall	ttyinit(
 	  struct dentry	*devptr		/* entry in device switch table	*/
 	)
 {
@@ -130,7 +130,7 @@ devcall	ttyInit(
 
 	/* Enable interrupts for the device */
 
-	ttyKickOut(typtr, uptr);
+	ttykickout(uptr);
 
 	return OK;
 }

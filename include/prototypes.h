@@ -332,6 +332,9 @@ extern	int32	pci_init(void);
 extern	void	pdump(struct netpacket *);
 extern	void	pdumph(struct netpacket *);
 
+/* in file platinit.c */
+extern	void	platinit(void);
+
 /* in file ptclear.c */
 extern	void	_ptclear(struct ptentry *, uint16, int32 (*)(int32));
 
@@ -540,38 +543,35 @@ extern	int32	insw(int32, int32 ,int32);
 /* in file suspend.c */
 extern	syscall	suspend(pid32);
 
-/* in file ttyControl.c */
-extern	devcall	ttyControl(struct dentry *, int32, int32, int32);
+/* in file ttycontrol.c */
+extern	devcall	ttycontrol(struct dentry *, int32, int32, int32);
 
-/* in file ttyDispatch.c */
-extern	interrupt	ttyDispatch(void);
+/* in file ttygetc.c */
+extern	devcall	ttygetc(struct dentry *);
 
-/* in file ttyGetc.c */
-extern	devcall	ttyGetc(struct dentry *);
+/* in file ttyhandle_in.c */
+extern	void	ttyhandle_in(struct ttycblk *, struct uart_csreg *);
 
-/* in file ttyInter_in.c */
-extern	void	ttyInter_in(struct ttycblk *, struct uart_csreg *);
+/* in file ttyhandle_out.c */
+extern	void	ttyhandle_out(struct ttycblk *, struct uart_csreg *);
 
-/* in file ttyInter_out.c */
-extern	void	ttyInter_out(struct ttycblk *, struct uart_csreg *);
+/* in file ttyhandler.c */
+extern	void	ttyhandler(uint32);
 
-/* in file ttyInterrupt.c */
-extern	void	ttyInterrupt(uint32);
+/* in file ttyinit.c */
+extern	devcall	ttyinit(struct dentry *);
 
-/* in file ttyInit.c */
-extern	devcall	ttyInit(struct dentry *);
+/* in file ttykickout.c */
+extern	void	ttykickout(struct uart_csreg *);
 
-/* in file ttyKickOut.c */
-extern	void	ttyKickOut(struct ttycblk *, struct uart_csreg *);
+/* in file ttyputc.c */
+extern	devcall	ttyputc(struct dentry *, char);
 
-/* in file ttyPutc.c */
-extern	devcall	ttyPutc(struct dentry *, char);
+/* in file ttyread.c */
+extern	devcall	ttyread(struct dentry *, char *, int32);
 
-/* in file ttyRead.c */
-extern	devcall	ttyRead(struct dentry *, char *, int32);
-
-/* in file ttyWrite.c */
-extern	devcall	ttyWrite(struct dentry *, char *, int32);
+/* in file ttywrite.c */
+extern	devcall	ttywrite(struct dentry *, char *, int32);
 
 /* in file udp.c */
 

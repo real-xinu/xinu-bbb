@@ -1,4 +1,4 @@
-/* evec.c -- initevec, set_evec, irq_dispatch */
+/* evec.c -- initintc, set_evec, irq_dispatch */
 
 #include <xinu.h>
 #include <stdio.h>
@@ -9,12 +9,13 @@
 extern	void	userret(void);
 
 uint32	intc_vector[128];	/* Interrupt vector	*/
-
+char	expmsg1[] = "Unhandled exception. Link Register: 0x%x";
+char	expmsg2[] = "**** EXCEPTION ****";
 /*------------------------------------------------------------------------
- * initevec - initialize exception vectors to a default handler
+ * initintc - Initialize the Interrupt Controller
  *------------------------------------------------------------------------
  */
-int32	initevec()
+int32	initintc()
 {
 	struct	intc_csreg *csrptr = (struct intc_csreg *)0x48200000;
 

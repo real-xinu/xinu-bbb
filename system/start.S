@@ -1,5 +1,7 @@
 /* start.S - start, bzero */
 
+#include <armv7a.h>
+
 /*------------------------------------------------------------------------
  * start  -  Initial entry point for a Xinu image (ARM)
  *------------------------------------------------------------------------
@@ -12,33 +14,17 @@ start:
 
 	ldr	sp, =0x84000000
 
+	/* Enable the Instruction Cache	*/
+
+	mrc	p15, 0, r0, c1, c0, 0
+	orr	r0, r0, #ARMV7A_C1CTL_I
+	mcr	p15, 0, r0, c1, c0, 0
+
 	/* Use bzero (below) to zero out the BSS area */
 
 	ldr	r0, =edata
 	ldr	r1, =end
 	bl	bzero
-
-	/* Set up ??? */
-
-	mrc	p15, 0, r0, c1, c0, 0
-	and	r0, r0, #0xFFFFDFFF
-	mcr	p15, 0, r0, c1, c0, 0
-
-	ldr	r0, =0x20000
-	mcr	p15, 0, r0, c12, c0, 0
-
-	/* Set up ??? */
-
-	ldr	r0, =0x4030CE18
-	ldr	r1, =instr
-	ldr	r1, [r1]
-	str	r1, [r0]
-
-	/* Set up an an exception handler */
-
-	ldr	r0, =0x4030CE38
-	ldr	r1, =irq_handler
-	str	r1, [r0]
 
 	/* Call nulluser to initialize the Xinu system  */
 	/*    (Note: the call never returns)		*/
