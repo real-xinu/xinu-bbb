@@ -37,7 +37,7 @@ restore:
 	mov	pc, lr		/* Return to caller			*/
 
 /*------------------------------------------------------------------------
- *  enable  -  enable interrupts
+ * enable  -  Enable interrupts
  *------------------------------------------------------------------------
  */
 enable:
@@ -54,7 +54,7 @@ pause:
 dloop:	b	dloop		/* Dead loop			*/
 
 /*------------------------------------------------------------------------
- * pause or halt  -  Place the processor in a hard loop
+ * ira_handler  -  Dispatch an IRQ exception to an interrupt handler
  *------------------------------------------------------------------------
  */
 irq_handler:
