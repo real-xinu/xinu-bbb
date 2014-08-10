@@ -1,4 +1,4 @@
-/* intr.S - enable, disable, restore, halt, pause, irq_handler */
+/* intr.S - enable, disable, restore, halt, pause, irq_handler (ARM) */
 
 #include <armv7a.h>
 
@@ -54,7 +54,7 @@ pause:
 dloop:	b	dloop		/* Dead loop			*/
 
 /*------------------------------------------------------------------------
- * ira_handler  -  Dispatch an IRQ exception to an interrupt handler
+ * irq_handler  -  Dispatch an IRQ exception to an interrupt handler
  *------------------------------------------------------------------------
  */
 irq_handler:
@@ -110,7 +110,7 @@ exphnd: str	r2, [r0]
 	mov	pc, lr
 
 /*------------------------------------------------------------------------
- * expjmpinstr - A PC relative jump instruction, copied in exp. vector
+ * expjmpinstr - A PC relative jump instruction, copied into exp. vector
  *------------------------------------------------------------------------
  */
 expjmpinstr:
