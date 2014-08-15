@@ -136,6 +136,10 @@ rebuild: $(CONFC)
 		-s $(TOPDIR)/lib					\
 		-s $(TOPDIR)/device/tty					\
 		-s $(TOPDIR)/device/nam					\
+		-s $(TOPDIR)/device/lfs					\
+		-s $(TOPDIR)/device/ram					\
+		-s $(TOPDIR)/device/rds					\
+		-s $(TOPDIR)/device/rfs					\
 		-s $(TOPDIR)/device/eth	'am335x_eth_open.c'		\
 		-s $(TOPDIR)/net  'arp_dump*' 'netiface*' 'nat*'	\
 		-s $(TOPDIR)/shell  'xsh_rdstest*' 'xsh_udpecho*' 'xsh_ipaddr*' 'xsh_bingid*' > .defs
