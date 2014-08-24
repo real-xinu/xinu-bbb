@@ -1,4 +1,4 @@
-/* intr.S - enable, disable, restore, halt, pause, irq_handler (ARM) */
+/* intr.S - enable, disable, restore, halt, pause, irq_disp (ARM) */
 
 #include <armv7a.h>
 
@@ -92,9 +92,9 @@ initevec:
 	ldr	r0, =ARMV7A_EV_START  /* Start address of exp. vector	*/
 	ldr	r1, =ARMV7A_EV_END    /* End address of exp. vector	*/
 	ldr	r2, =expjmpinstr      /* Copy the exp jump instr	*/
-	ldr	r2, [r2]	      /* into register r2		*/
+	ldr	r2, [r2]	      /*   into register r2		*/
 expvec:	str	r2, [r0]	      /* Store the jump instruction	*/
-	add	r0, r0, #4	      /* in the exception vector	*/
+	add	r0, r0, #4	      /*   in the exception vector	*/
 	cmp	r0, r1
 	bne	expvec
 	ldr	r0, =ARMV7A_EH_START  /* Install the default exception	*/
@@ -104,9 +104,9 @@ exphnd: str	r2, [r0]
 	add	r0, r0, #4
 	cmp	r0, r1
 	bne	exphnd
-	ldr	r0, =ARMV7A_IRQH_ADDR  /* Install the IRQ handler	*/
-	ldr	r1, =irq_handler      /* to override the default	*/
-	str	r1, [r0]	      /* exception handler		*/
+	ldr	r0, =ARMV7A_IRQH_ADDR /* Install the IRQ handler to	*/
+	ldr	r1, =irq_handler      /*   override the default		*/
+	str	r1, [r0]	      /*   exception handler		*/
 	mov	pc, lr
 
 /*------------------------------------------------------------------------
