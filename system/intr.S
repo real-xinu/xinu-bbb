@@ -1,4 +1,4 @@
-/* intr.S - enable, disable, restore, halt, pause, irq_disp (ARM) */
+/* intr.S - enable, disable, restore, halt, pause, irq_except (ARM) */
 
 #include <armv7a.h>
 
@@ -8,7 +8,7 @@
 	.globl	enable
 	.globl	pause
 	.globl	halt
-	.globl	irq_disp
+	.globl	irq_except
 	.globl	irq_dispatch
 	.globl	initevec
 	.globl	expjmpinstr
@@ -55,10 +55,10 @@ pause:
 dloop:	b	dloop		/* Dead loop			*/
 
 /*------------------------------------------------------------------------
- * irq_disp  -  Dispatch an IRQ exception to higher level IRQ dispatcher
+ * irq_except  -  Dispatch an IRQ exception to higher level IRQ dispatcher
  *------------------------------------------------------------------------
  */
-irq_disp:
+irq_except:
 	sub	lr, lr, #4	/* Correct the return address		*/
 	srsdb	sp!, #19	/* Save return state on the supervisor	*/
 				/*   mode stack				*/
@@ -106,7 +106,7 @@ exphnd: str	r2, [r0]
 	cmp	r0, r1
 	bne	exphnd
 	ldr	r0, =ARMV7A_IRQH_ADDR /* Install the IRQ handler to	*/
-	ldr	r1, =irq_disp         /*   override the default		*/
+	ldr	r1, =irq_except       /*   override the default		*/
 	str	r1, [r0]	      /*   exception handler		*/
 	mov	pc, lr
 

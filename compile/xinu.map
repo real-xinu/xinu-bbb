@@ -560,7 +560,7 @@ Linker script and memory map
                 0x81011094                enable
                 0x8101109c                pause
                 0x8101109c                halt
-                0x810110a4                irq_disp
+                0x810110a4                irq_except
                 0x810110d4                initevec
                 0x81011134                expjmpinstr
  .text          0x81011164      0x114 ../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_udivsi3.o)
