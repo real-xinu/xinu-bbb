@@ -9,6 +9,7 @@
 	.globl	pause
 	.globl	halt
 	.globl	irq_disp
+	.globl	irq_dispatch
 	.globl	initevec
 	.globl	expjmpinstr
 
@@ -54,7 +55,7 @@ pause:
 dloop:	b	dloop		/* Dead loop			*/
 
 /*------------------------------------------------------------------------
- * irq_disp  -  Dispatch an IRQ exception to an interrupt handler
+ * irq_disp  -  Dispatch an IRQ exception to higher level IRQ dispatcher
  *------------------------------------------------------------------------
  */
 irq_disp:
@@ -63,7 +64,7 @@ irq_disp:
 				/*   mode stack				*/
 	cps	#19		/* Change to supervisor mode		*/
 	push	{r0-r12, lr}	/* Save all registers			*/
-	bl	irq_handler	/* Call IRQ dispatch			*/
+	bl	irq_dispatch	/* Call IRQ dispatch			*/
 	pop	{r0-r12, lr}	/* Restore all registers		*/
 	rfeia	sp!		/* Return from the exception using info	*/
 				/*   stored on the stack		*/

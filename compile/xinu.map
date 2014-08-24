@@ -84,7 +84,7 @@ Linker script and memory map
  .text          0x81000900       0xb0 binaries/evec.o
                 0x81000900                initintc
                 0x8100092c                set_evec
-                0x8100096c                irq_handler
+                0x8100096c                irq_dispatch
  .text          0x810009b0       0x7c binaries/freebuf.o
                 0x810009b0                freebuf
  .text          0x81000a2c      0x148 binaries/freemem.o
