@@ -105,7 +105,7 @@ exphnd: str	r2, [r0]
 	cmp	r0, r1
 	bne	exphnd
 	ldr	r0, =ARMV7A_IRQH_ADDR /* Install the IRQ handler to	*/
-	ldr	r1, =irq_handler      /*   override the default		*/
+	ldr	r1, =irq_disp         /*   override the default		*/
 	str	r1, [r0]	      /*   exception handler		*/
 	mov	pc, lr
 
