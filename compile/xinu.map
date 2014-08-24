@@ -84,7 +84,7 @@ Linker script and memory map
  .text          0x81000900       0xb0 binaries/evec.o
                 0x81000900                initintc
                 0x8100092c                set_evec
-                0x8100096c                irq_dispatch
+                0x8100096c                irq_handler
  .text          0x810009b0       0x7c binaries/freebuf.o
                 0x810009b0                freebuf
  .text          0x81000a2c      0x148 binaries/freemem.o
@@ -560,7 +560,7 @@ Linker script and memory map
                 0x81011094                enable
                 0x8101109c                pause
                 0x8101109c                halt
-                0x810110a4                irq_handler
+                0x810110a4                irq_disp
                 0x810110d4                initevec
                 0x81011134                expjmpinstr
  .text          0x81011164      0x114 ../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_udivsi3.o)

@@ -8,7 +8,7 @@
 	.globl	enable
 	.globl	pause
 	.globl	halt
-	.globl	irq_handler
+	.globl	irq_disp
 	.globl	initevec
 	.globl	expjmpinstr
 
@@ -54,16 +54,16 @@ pause:
 dloop:	b	dloop		/* Dead loop			*/
 
 /*------------------------------------------------------------------------
- * irq_handler  -  Dispatch an IRQ exception to an interrupt handler
+ * irq_disp  -  Dispatch an IRQ exception to an interrupt handler
  *------------------------------------------------------------------------
  */
-irq_handler:
+irq_disp:
 	sub	lr, lr, #4	/* Correct the return address		*/
 	srsdb	sp!, #19	/* Save return state on the supervisor	*/
 				/*   mode stack				*/
 	cps	#19		/* Change to supervisor mode		*/
 	push	{r0-r12, lr}	/* Save all registers			*/
-	bl	irq_dispatch	/* Call IRQ dispatch			*/
+	bl	irq_handler	/* Call IRQ dispatch			*/
 	pop	{r0-r12, lr}	/* Restore all registers		*/
 	rfeia	sp!		/* Return from the exception using info	*/
 				/*   stored on the stack		*/
@@ -87,7 +87,7 @@ initevec:
 	mrc	p15, 0, r0, c1, c0, 0 /* Read the c1-control register	*/
 	bic	r0, r0, #ARMV7A_C1CTL_V/* V bit = 0, normal exp. base	*/
 	mcr	p15, 0, r0, c1, c0, 0 /* Write the c1-control register	*/
-	mov	r0, #0x20000	      /* Exception base address		*/
+	ldr	r0, =ARMV7A_EV_START  /* Exception base address		*/
 	mcr	p15, 0, r0, c12, c0, 0/* Store excp. base addr. in c12	*/
 	ldr	r0, =ARMV7A_EV_START  /* Start address of exp. vector	*/
 	ldr	r1, =ARMV7A_EV_END    /* End address of exp. vector	*/

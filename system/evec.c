@@ -66,10 +66,10 @@ int32	set_evec(uint32 xnum, uint32 handler)
 }
 
 /*-------------------------------------------------------------------------
- * irq_dispatch - call the handler for specific interrupt
+ * irq_handler - call the handler for specific interrupt
  *-------------------------------------------------------------------------
  */
-void	irq_dispatch()
+void	irq_handler()
 {
 	struct	intc_csreg *csrptr = (struct intc_csreg *)0x48200000;
 	uint32	xnum;		/* Interrupt number of device	*/
