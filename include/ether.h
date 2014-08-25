@@ -109,7 +109,7 @@ struct	ether	{
 	int16	outPool;	/* Buffer pool ID for output buffers	*/
 
 	int16 	proms; 		/* nonzero => promiscuous mode 		*/
-    
+
 	int16 	ed_mcset;       /* nonzero => multicast reception set   */
 	int16 	ed_mcc;	 	/* count of multicast addresses		*/
     	Eaddr   ed_mca[ETH_NUM_MCAST];/* array of multicast addrs 	*/
@@ -121,7 +121,7 @@ struct	ether	{
 	status 	(*ethClose)(struct ether *ethptr);
 	devcall (*ethRead)(struct ether *ethptr, void *buf, uint32 len);
 	devcall (*ethWrite)(struct ether *ethptr, void *buf, uint32 len);
-	devcall (*ethControl)(struct ether *ethptr, int32 func, 
+	devcall (*ethControl)(struct ether *ethptr, int32 func,
 			int32 arg1, int32 arg2);
 	interrupt (*ethInterrupt)(struct ether *ethptr);
 };
