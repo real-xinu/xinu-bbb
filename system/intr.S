@@ -99,7 +99,7 @@ expvec:	str	r2, [r0]	      /* Store the jump instruction	*/
 	cmp	r0, r1
 	bne	expvec
 	ldr	r0, =ARMV7A_EH_START  /* Install the default exception	*/
-	ldr	r1, =ARMV7A_EH_END    /* handler for all exceptions	*/
+	ldr	r1, =ARMV7A_EH_END    /*   handler for all exceptions	*/
 	ldr	r2, =defexp_handler
 exphnd: str	r2, [r0]
 	add	r0, r0, #4
