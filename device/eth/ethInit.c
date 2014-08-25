@@ -62,7 +62,7 @@ devcall	ethInit (
 		ethptr->ethWrite = e1000e_write;
 		ethptr->ethControl = e1000e_cntl;
 		ethptr->ethInterrupt = e1000e_intr;
-	} 
+	}
 	else {
 		kprintf("No recognized PCI Ethernet NIC found\n");
 		return SYSERR;

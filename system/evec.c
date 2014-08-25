@@ -94,7 +94,7 @@ void	irq_dispatch()
 #if 0
 static long *fp;
 /*------------------------------------------------------------------------
- * trap -- print some debugging info when a trap occurred 
+ * trap -- print some debugging info when a trap occurred
  * Note: Need some more work.
  *------------------------------------------------------------------------
 */
@@ -114,7 +114,7 @@ void trap(int inum)
 		kprintf("exception %d (%s) currpid %d (%s)\n", inum,
 			inames[inum], currpid, proctab[currpid].prname);
 	else
-		kprintf("exception %d currpid %d (%s)\n", inum, currpid, 
+		kprintf("exception %d currpid %d (%s)\n", inum, currpid,
 			proctab[currpid].prname);
 #ifdef REGDUMP
 	kprintf("eflags %X ", *sp--);

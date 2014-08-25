@@ -340,7 +340,7 @@ int32	ethinit	(
 	}
 
 	/* Enable the ALE and put it into bypass mode */
-	csrptr->ale->ctrl = (ETH_AM335X_ALECTL_EN | 
+	csrptr->ale->ctrl = (ETH_AM335X_ALECTL_EN |
 			     ETH_AM335X_ALECTL_BY);
 
 	/* Put the ports 0, 1 in forwarding state */

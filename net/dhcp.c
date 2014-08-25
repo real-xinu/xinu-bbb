@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 /*------------------------------------------------------------------------
- * dump_dhcp_msg - Print out a DHCP message 
+ * dump_dhcp_msg - Print out a DHCP message
  *------------------------------------------------------------------------
  */
 void dump_dhcp_msg(const struct dhcpmsg* dmsg, uint32 dmsg_size)
@@ -133,10 +133,10 @@ void dump_dhcp_msg(const struct dhcpmsg* dmsg, uint32 dmsg_size)
 
 /*------------------------------------------------------------------------
  * get_dhcp_option_value - Retrieve a pointer to the value for a particular
- *                           DHCP options key 
+ *                           DHCP options key
  *------------------------------------------------------------------------
  */
-char* get_dhcp_option_value(const struct dhcpmsg* dmsg, uint32 dmsg_size, uint8 option_key) 
+char* get_dhcp_option_value(const struct dhcpmsg* dmsg, uint32 dmsg_size, uint8 option_key)
 {
 	unsigned char* opt_tmp;
 	unsigned char* eom;
@@ -150,7 +150,7 @@ char* get_dhcp_option_value(const struct dhcpmsg* dmsg, uint32 dmsg_size, uint8 
 		if((*opt_tmp) == option_key) {
 	
 			/* Offset past the option value and the size (2 bytes) */
-			return (char*)(opt_tmp+2);  
+			return (char*)(opt_tmp+2);
 		}
 	
 		opt_tmp++;	/* move to length octet */
@@ -162,10 +162,10 @@ char* get_dhcp_option_value(const struct dhcpmsg* dmsg, uint32 dmsg_size, uint8 
 }
 
 /*------------------------------------------------------------------------
- * build_dhcp_discover - handcraft a DHCP Discover message in dmsg 
+ * build_dhcp_discover - handcraft a DHCP Discover message in dmsg
  *------------------------------------------------------------------------
  */
-int32 build_dhcp_discover(struct dhcpmsg* dmsg) 
+int32 build_dhcp_discover(struct dhcpmsg* dmsg)
 {
 	uint32  j;
 	uint32	xid;			/* xid used for the exchange	*/
@@ -204,10 +204,10 @@ int32 build_dhcp_discover(struct dhcpmsg* dmsg)
 }
 
 /*------------------------------------------------------------------------
- * build_dhcp_request - handcraft a DHCP request message in dmsg 
+ * build_dhcp_request - handcraft a DHCP request message in dmsg
  *------------------------------------------------------------------------
  */
-int32 build_dhcp_request(struct dhcpmsg* dmsg, const struct dhcpmsg* dmsg_offer, uint32 dsmg_offer_size) 
+int32 build_dhcp_request(struct dhcpmsg* dmsg, const struct dhcpmsg* dmsg_offer, uint32 dsmg_offer_size)
 {
 	uint32  j;
 	uint32	xid;			  /* xid used for the exchange	*/
@@ -380,10 +380,10 @@ uint32	getlocalip_boot(uint32* boot_server, char* boot_file, uint32* size)
 			NetData.ipvalid = TRUE;
 			udp_release(slot);
 			
-			if(boot_server != NULL && 
-			   size != NULL && 
+			if(boot_server != NULL &&
+			   size != NULL &&
 			   boot_file != NULL) {
-			   
+			
 			    /* Retrieve the boot server IP */
 			    if(dot2ip((char*)dmsg_rvc.sname, boot_server) != OK) {
 				

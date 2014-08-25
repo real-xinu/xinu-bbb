@@ -117,7 +117,7 @@ int32	am335x_eth_open (
 	}
 
 	/* Enable the ALE and put it into bypass mode */
-	csrptr->ale->ctrl = (AM335X_ETH_ALECTL_EN | 
+	csrptr->ale->ctrl = (AM335X_ETH_ALECTL_EN |
 			     AM335X_ETH_ALECTL_BY);
 
 	/* Put the ports 0, 1 in forwarding state */
