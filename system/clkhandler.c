@@ -51,7 +51,7 @@ void	clkhandler()
 	/* Reschedule if necessary	    */
 
 	if((--preempt) == 0) {
-
+		preempt = QUANTUM;
 		resched();
 	}
 }
