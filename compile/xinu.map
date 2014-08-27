@@ -1,11 +1,11 @@
 Archive member included because of file (symbol)
 
-../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_udivsi3.o)
+../cross_compiler/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_udivsi3.o)
                               binaries/qsort.o (__aeabi_uidiv)
-../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_divsi3.o)
+../cross_compiler/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_divsi3.o)
                               binaries/xsh_help.o (__aeabi_idiv)
-../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_dvmd_tls.o)
-                              ../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_udivsi3.o) (__aeabi_idiv0)
+../cross_compiler/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_dvmd_tls.o)
+                              ../cross_compiler/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_udivsi3.o) (__aeabi_idiv0)
 
 Allocating common symbols
 Common symbol       size              file
@@ -563,15 +563,15 @@ Linker script and memory map
                 0x810110bc                irq_except
                 0x810110ec                initevec
                 0x8101114c                expjmpinstr
- .text          0x8101117c      0x114 ../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_udivsi3.o)
+ .text          0x8101117c      0x114 ../cross_compiler/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_udivsi3.o)
                 0x8101117c                __udivsi3
                 0x8101117c                __aeabi_uidiv
                 0x81011270                __aeabi_uidivmod
- .text          0x81011290      0x148 ../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_divsi3.o)
+ .text          0x81011290      0x148 ../cross_compiler/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_divsi3.o)
                 0x81011290                __aeabi_idiv
                 0x81011290                __divsi3
                 0x810113b8                __aeabi_idivmod
- .text          0x810113d8        0x4 ../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_dvmd_tls.o)
+ .text          0x810113d8        0x4 ../cross_compiler/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_dvmd_tls.o)
                 0x810113d8                __aeabi_ldiv0
                 0x810113d8                __aeabi_idiv0
  *(.rodata .rodata.*)
@@ -1051,9 +1051,9 @@ Linker script and memory map
  .data          0x81014470        0x0 binaries/xsh_uptime.o
  .data          0x81014470        0x0 binaries/ctxsw.o
  .data          0x81014470        0x0 binaries/intr.o
- .data          0x81014470        0x0 ../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_udivsi3.o)
- .data          0x81014470        0x0 ../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_divsi3.o)
- .data          0x81014470        0x0 ../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_dvmd_tls.o)
+ .data          0x81014470        0x0 ../cross_compiler/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_udivsi3.o)
+ .data          0x81014470        0x0 ../cross_compiler/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_divsi3.o)
+ .data          0x81014470        0x0 ../cross_compiler/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_dvmd_tls.o)
                 0x81014470                edata = ABSOLUTE (.)
                 0x81015000                . = ALIGN (0x1000)
  *fill*         0x81014470      0xb90 
@@ -1282,9 +1282,9 @@ Linker script and memory map
  .bss           0x81015014        0x0 binaries/xsh_uptime.o
  .bss           0x81015014        0x0 binaries/ctxsw.o
  .bss           0x81015014        0x0 binaries/intr.o
- .bss           0x81015014        0x0 ../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_udivsi3.o)
- .bss           0x81015014        0x0 ../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_divsi3.o)
- .bss           0x81015014        0x0 ../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_dvmd_tls.o)
+ .bss           0x81015014        0x0 ../cross_compiler/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_udivsi3.o)
+ .bss           0x81015014        0x0 ../cross_compiler/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_divsi3.o)
+ .bss           0x81015014        0x0 ../cross_compiler/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_dvmd_tls.o)
  *(COMMON)
  COMMON         0x81015014       0xf4 binaries/bufinit.o
                 0x81015014                buftab
@@ -1573,7 +1573,7 @@ LOAD binaries/xsh_udpeserver.o
 LOAD binaries/xsh_uptime.o
 LOAD binaries/ctxsw.o
 LOAD binaries/intr.o
-LOAD ../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a
+LOAD ../cross_compiler/lib/gcc/arm-none-eabi/4.8.1//libgcc.a
 OUTPUT(../compile/xinu elf32-littlearm)
 
 .ARM.attributes
@@ -2013,11 +2013,11 @@ OUTPUT(../compile/xinu elf32-littlearm)
  .ARM.attributes
                 0x00002c98       0x25 binaries/intr.o
  .ARM.attributes
-                0x00002cbd       0x18 ../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_udivsi3.o)
+                0x00002cbd       0x18 ../cross_compiler/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_udivsi3.o)
  .ARM.attributes
-                0x00002cd5       0x18 ../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_divsi3.o)
+                0x00002cd5       0x18 ../cross_compiler/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_divsi3.o)
  .ARM.attributes
-                0x00002ced       0x18 ../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_dvmd_tls.o)
+                0x00002ced       0x18 ../cross_compiler/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_dvmd_tls.o)
 
 .comment        0x00000000       0x30
  .comment       0x00000000       0x30 binaries/ascdate.o
@@ -2237,5 +2237,5 @@ OUTPUT(../compile/xinu elf32-littlearm)
  .comment       0x00000000       0x31 binaries/xsh_uptime.o
 
 .debug_frame    0x00000000       0x40
- .debug_frame   0x00000000       0x20 ../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_udivsi3.o)
- .debug_frame   0x00000020       0x20 ../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_divsi3.o)
+ .debug_frame   0x00000000       0x20 ../cross_compiler/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_udivsi3.o)
+ .debug_frame   0x00000020       0x20 ../cross_compiler/lib/gcc/arm-none-eabi/4.8.1//libgcc.a(_divsi3.o)

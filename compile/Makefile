@@ -8,7 +8,7 @@
 #									#
 #########################################################################
 
-COMPILER_ROOT	=	../arm-2013.11/bin/arm-none-eabi-
+COMPILER_ROOT	=	../cross_compiler/bin/arm-none-eabi-
 PNAME		=	galileo
 PLAT		=	Platform_$(PNAME)
 TOPDIR		=	..
@@ -85,7 +85,7 @@ export
 
 xinu:	Makefile $(BLDDIRS) $(CONFH) $(CONFC) $(XINU_LD_LIST)
 	@echo;echo 'Loading object files to produce GRUB bootable xinu'
-	@$(LD) $(LDFLAGS) $(XINU_LD_LIST) -o $(XINU) -L../arm-2013.11/lib/gcc/arm-none-eabi/4.8.1/ -lgcc
+	@$(LD) $(LDFLAGS) $(XINU_LD_LIST) -o $(XINU) -L../cross_compiler/lib/gcc/arm-none-eabi/4.8.1/ -lgcc
 	@echo;echo 'Building $(XINUBIN)'
 	@$(OBJCOPY) -O binary $(XINU) $(XINUBIN)
 	@echo;echo 'Building $(XINUXBIN)'
