@@ -13,9 +13,11 @@ uint32	preempt;		/* preemption counter			*/
  */
 void	clkinit(void)
 {
-	volatile struct am335x_timer1ms *csrptr = 0x44E31000;
+	volatile struct am335x_timer1ms *csrptr =
+	(volatile struct am335x_timer1ms *)AM335X_TIMER1MS_ADDR;
 			/* Pointer to timer CSR in BBoneBlack	*/
-	volatile uint32 *clkctrl = AM335X_TIMER1MS_CLKCTRL_ADDR;
+	volatile uint32 *clkctrl = 
+			(volatile uint32 *)AM335X_TIMER1MS_CLKCTRL_ADDR;
 
 	*clkctrl = AM335X_TIMER1MS_CLKCTRL_EN;
 	while((*clkctrl) != 0x2);
@@ -30,7 +32,7 @@ void	clkinit(void)
 
 	/* Set interrupt vector for clock to invoke clkint */
 
-	set_evec(67, (uint32)clkhandler);
+	set_evec(AM335X_TIMER1MS_IRQ, (uint32)clkhandler);
 
 	sleepq = newqueue();	/* allocate a queue to hold the delta	*/
 				/* list of sleeping processes		*/
