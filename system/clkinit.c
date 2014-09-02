@@ -1,14 +1,14 @@
-/* clkinit.c - clkinit, clkint */
+/* clkinit.c - clkinit */
 
 #include <xinu.h>
 
-uint32	clktime;		/* seconds since boot			*/
-uint32	ctr1000 = 0;		/* milliseconds since boot		*/
-qid16	sleepq;			/* queue of sleeping processes		*/
-uint32	preempt;		/* preemption counter			*/
+uint32	clktime;		/* Seconds since boot			*/
+uint32	ctr1000 = 0;		/* Milliseconds since boot		*/
+qid16	sleepq;			/* Queue of sleeping processes		*/
+uint32	preempt;		/* Preemption counter			*/
 
 /*------------------------------------------------------------------------
- * clkinit - initialize the clock and sleep queue at startup
+ * clkinit  -  Initialize the clock and sleep queue at startup
  *------------------------------------------------------------------------
  */
 void	clkinit(void)
@@ -20,7 +20,7 @@ void	clkinit(void)
 			(volatile uint32 *)AM335X_TIMER1MS_CLKCTRL_ADDR;
 
 	*clkctrl = AM335X_TIMER1MS_CLKCTRL_EN;
-	while((*clkctrl) != 0x2);
+	while((*clkctrl) != 0x2) /* Do nothing */ ;
 
 	/* Reset the timer module */
 
@@ -28,20 +28,23 @@ void	clkinit(void)
 
 	/* Wait until the reset os complete */
 
-	while((csrptr->tistat & AM335X_TIMER1MS_TISTAT_RESETDONE) == 0);
+	while((csrptr->tistat & AM335X_TIMER1MS_TISTAT_RESETDONE) == 0)
+		/* Do nothing */ ;
 
 	/* Set interrupt vector for clock to invoke clkint */
 
 	set_evec(AM335X_TIMER1MS_IRQ, (uint32)clkhandler);
 
-	sleepq = newqueue();	/* allocate a queue to hold the delta	*/
-				/* list of sleeping processes		*/
-	preempt = QUANTUM;	/* initial time quantum			*/
+	sleepq = newqueue();	/* Allocate a queue to hold the delta	*/
+				/*   list of sleeping processes		*/
 
-	clktime = 0;		/* start counting seconds		*/
+	preempt = QUANTUM;	/* Set the preemption time		*/
 
-	/* The following values are calculated for a timer */
-	/* that generates 1ms tick			   */
+	clktime = 0;		/* Start counting seconds		*/
+
+	/* The following values are calculated for a	*/
+	/*   timer that generates 1ms tick rate		*/
+
 	csrptr->tpir = 1000000;
 	csrptr->tnir = 0;
 	csrptr->tldr = 0xFFFFFFFF - 26000;
@@ -55,7 +58,7 @@ void	clkinit(void)
 	csrptr->tclr |= AM335X_TIMER1MS_TCLR_ST;
 
 	/* Enable overflow interrupt which will generate */
-	/* an interrupt every 1 ms			 */
+	/*   an interrupt every 1 ms			 */
 
 	csrptr->tier = AM335X_TIMER1MS_TIER_OVF_IT_ENA;
 
