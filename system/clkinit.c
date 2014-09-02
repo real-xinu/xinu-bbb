@@ -1,4 +1,4 @@
-/* clkinit.c - clkinit */
+/* clkinit.c - clkinit (BeagleBone Black) */
 
 #include <xinu.h>
 
