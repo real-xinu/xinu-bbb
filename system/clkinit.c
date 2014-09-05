@@ -16,7 +16,7 @@ void	clkinit(void)
 	volatile struct am335x_timer1ms *csrptr =
 	(volatile struct am335x_timer1ms *)AM335X_TIMER1MS_ADDR;
 			/* Pointer to timer CSR in BBoneBlack	*/
-	volatile uint32 *clkctrl = 
+	volatile uint32 *clkctrl =
 			(volatile uint32 *)AM335X_TIMER1MS_CLKCTRL_ADDR;
 
 	*clkctrl = AM335X_TIMER1MS_CLKCTRL_EN;
