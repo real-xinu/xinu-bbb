@@ -25,7 +25,7 @@
 
 /* Exception Vector Addresses */
 
-#define ARMV7A_EV_START	0x4030CE04	/* Exception vector start addr	*/
+#define ARMV7A_EV_START	0x4030CE00	/* Exception vector start addr	*/
 #define ARMV7A_EV_END	0x4030CE20	/* Exception vector end addr	*/
 #define ARMV7A_EH_START 0x4030CE24	/* Exception handler start addr	*/
 #define ARMV7A_EH_END	0x4030CE40	/* Exception handler end addr	*/

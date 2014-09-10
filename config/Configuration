@@ -34,8 +34,8 @@ tty:
 
 /* type of a ethernet device */
 eth:
-	on quark_eth
-		-i ethinit	-o ioerr	-c ioerr
+	on am335x_eth
+		-i ionull	-o ioerr	-c ioerr
 		-r ethread	-g ioerr	-p ioerr
 		-w ethwrite	-s ioerr	-n ioerr
 		-intr ethhandler
@@ -96,13 +96,13 @@ nam:
 /*   will be present in the system					*/
 
    /* Define the console device to be a tty and specify CSR*/
-   CONSOLE is tty  on uart  csr 0001770 -irq 0052
+   CONSOLE is tty  on uart  csr 0x44E09000 -irq 72
 
    /* Define a null device */
    NULLDEV is null on nothing
 
    /* Physical Ethernet (raw packet transfer) */
-   ETHER0 is eth   on quark_eth csr 0 -irq 0053
+   ETHER0 is eth   on am335x_eth csr 0 -irq 0
 
    /* Define a namespace device */
    NAMESPACE is nam on top
@@ -128,7 +128,7 @@ nam:
    
    /* Define a SD memory card device */
    /*
-   SDMC is sdmc on sd csr 0 -irq 0051
+   /*SDMC is sdmc on sd csr 0 -irq 0051*/
    */
 
 %%
