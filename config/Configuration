@@ -37,7 +37,7 @@ eth:
 	on am335x_eth
 		-i ethinit	-o ioerr	-c ioerr
 		-r ethread	-g ioerr	-p ioerr
-		-w ethwrite	-s ioerr	-n ioerr
+		-w ethwrite	-s ioerr	-n ethcontrol
 		-intr ethhandler
 
 /* type of a remote disk system device */

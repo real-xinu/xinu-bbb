@@ -4,6 +4,8 @@
 
 struct	eth_a_csreg eth_a_regs;
 
+struct	ether ethertab[1];
+
 /*-----------------------------------------------------------------------
  * eth_phy_read - read a PHY register
  *-----------------------------------------------------------------------
@@ -253,6 +255,20 @@ int32	ethinit	(
 	else {
 		kprintf("Link is Half Duplex\n");
 	}
+
+	/* Read the device MAC address */
+	for(i = 0; i < 2; i++) {
+		ethptr->devAddress[4+i] = *((byte *)(0x44e10630+i));
+	}
+	for(i = 0; i < 4; i++) {
+		ethptr->devAddress[i] = *((byte *)(0x44e10634+i));
+	}
+
+	kprintf("MAC Address is: ");
+	for(i = 0; i < 5; i++) {
+		kprintf("%02X:", ethptr->devAddress[i]);
+	}
+	kprintf("%02X\n", ethptr->devAddress[5]);
 
 	/* Initialize the rx ring size field */
 	ethptr->rxRingSize = ETH_AM335X_RX_RING_SIZE;

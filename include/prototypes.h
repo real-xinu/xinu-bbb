@@ -79,6 +79,9 @@ extern	intmask	disable(void);
 
 extern	void	enable(void);
 
+/* in file ethcontrol.c */
+extern	int32	ethcontrol(struct dentry *, int32, int32, int32);
+
 /* in file ethinit.c */
 extern	int32	ethinit(struct dentry *);
 

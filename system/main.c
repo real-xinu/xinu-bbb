@@ -17,23 +17,25 @@ process	main(void)
 	/* Start the network */
 
 	//ethinit(&devtab[ETHER0]);
-/*
+
+	uint32	*macaddr = 0x44e10630;
+	kprintf("mac addr: %x %x\n", *macaddr, *(macaddr+1));
 	int32 i;
-	for(i = 0; i < 6; i++) {
+/*	for(i = 0; i < 6; i++) {
 		NetData.ethucast[i] = i;
 		NetData.ethbcast[i] = 0xff;
-	}
-*/
+	}*/
+
 	//kprintf("reading packet from ETHER0\n");
 	//struct netpacket pkt;
 	//read(ETHER0, &pkt, 1518);
 
 	//resume(create(counterproc, 8192, 19, "counter proc", 0, NULL));
 	//sleep(10);
-	kprintf("Counter value: %d\n", gcounter);
+	//kprintf("Counter value: %d\n", gcounter);
 
-	DELAY(5000000);
-	//netstart();
+	//DELAY(5000000);
+	netstart();
 
 	kprintf("\n...creating a shell\n");
 	recvclr();

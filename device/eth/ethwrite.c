@@ -19,8 +19,6 @@ int32	ethwrite (
 
 	ethptr = &ethertab[devptr->dvminor];
 
-	kprintf("OUT :");
-	pdump(buf);
 	/* Get the pointer to the Ethernet CSR */
 	csrptr = (struct eth_a_csreg *)ethptr->csr;
 

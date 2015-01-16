@@ -95,7 +95,7 @@ struct	ether	{
 	uint32	txRingSize;	/* size of Tx ring descriptor array	*/
 	uint32	txIrq;		/* Count of Tx interrupt requests       */
 
-	uint8	devAddress[ETH_ADDR_LEN];/* MAC address 		*/
+	byte	devAddress[ETH_ADDR_LEN];/* MAC address 		*/
 
 	uint8	addrLen;	/* Hardware address length	      	*/
 	uint16	mtu;	    	/* Maximum transmission unit (payload)  */
