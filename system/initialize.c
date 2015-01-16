@@ -46,7 +46,7 @@ void	nulluser()
 	uint32	free_mem;		/* Total amount of free memory	*/
 	
 	/* Initialize the system */
-	kprintf("calling sysinit\n");
+
 	sysinit();
 
 	kprintf("\n\r%s\n\n\r", VERSION);

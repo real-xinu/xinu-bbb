@@ -3,23 +3,37 @@
 #include <xinu.h>
 #include <stdio.h>
 int32 cpudelay;
+volatile uint32	gcounter = 400000000;
+process	counterproc() {
+
+	while(gcounter > 0) {
+		gcounter--;
+	}
+	return OK;
+}
+
 process	main(void)
 {
 	/* Start the network */
 
-	ethinit(&devtab[ETHER0]);
-
+	//ethinit(&devtab[ETHER0]);
+/*
 	int32 i;
 	for(i = 0; i < 6; i++) {
 		NetData.ethucast[i] = i;
 		NetData.ethbcast[i] = 0xff;
 	}
-
+*/
 	//kprintf("reading packet from ETHER0\n");
 	//struct netpacket pkt;
 	//read(ETHER0, &pkt, 1518);
 
-	netstart();
+	//resume(create(counterproc, 8192, 19, "counter proc", 0, NULL));
+	//sleep(10);
+	kprintf("Counter value: %d\n", gcounter);
+
+	DELAY(5000000);
+	//netstart();
 
 	kprintf("\n...creating a shell\n");
 	recvclr();

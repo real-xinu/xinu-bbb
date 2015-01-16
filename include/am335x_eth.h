@@ -1,3 +1,5 @@
+/* am335x_eth.h - Ethernet device definitions for AM335X SoC */
+
 struct	eth_a_ale {
 	uint32	idver;
 	uint32	res1;
@@ -192,7 +194,5 @@ struct	eth_a_tx_desc {
 
 #define ETH_AM335X_RXINT		41
 #define ETH_AM335X_TXINT		42
-extern	int32 eth_a_phy_read(volatile struct eth_a_mdio *, byte, byte, uint32 *);
-extern	int32 eth_a_phy_write(volatile struct eth_a_mdio *, byte, byte, uint32);
-extern	int32 eth_a_phy_reset(volatile struct eth_a_mdio *, byte);
-extern	interrupt eth_a_intr(uint32);
+
+#define	ETH_AM335X_INIT_DELAY	1000000

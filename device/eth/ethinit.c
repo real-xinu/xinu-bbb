@@ -107,8 +107,9 @@ int32	eth_phy_reset (
 		byte	phyadr			  /* PHY Address	*/
 	)
 {
-	int32	retval;
-	uint32	phyreg;
+	uint32	phyreg;	/* Variable to hold ETH PHY register value	*/
+	int32	retries;/* Number of retries				*/
+	int32	retval;	/* Return value of functions called here	*/
 
 	/* Read the PHY Control Register */
 
@@ -122,29 +123,41 @@ int32	eth_phy_reset (
 	phyreg |= ETH_PHY_CTLREG_RESET;
 	eth_phy_write(mdio, ETH_PHY_CTLREG, phyadr, phyreg);
 
-	sleep(1);
+	/* Check if Reset operation is complete */
 
-	/* Check if the reset operation is complete */
-
-	retval = eth_phy_read(mdio, ETH_PHY_CTLREG, phyadr, &phyreg);
-	if(retval == SYSERR) {
+	for(retries = 0; retries < 10; retries++) {
+		if(eth_phy_read(mdio, ETH_PHY_CTLREG, phyadr, &phyreg) == SYSERR) {
+			return SYSERR;
+		}
+		if((phyreg & ETH_PHY_CTLREG_RESET) == 0) {
+			break;
+		}
+		else {
+			retries++;
+			DELAY(ETH_AM335X_INIT_DELAY);
+			continue;
+		}
+	}
+	if(retries >= 3) {
 		return SYSERR;
 	}
-
-	if( (phyreg & ETH_PHY_CTLREG_RESET) != 0 ) {
-		return SYSERR;
-	}
-
-	sleep(1);
 
 	/* Check if the Link is established */
 
-	retval = eth_phy_read(mdio, ETH_PHY_STATREG, phyadr, &phyreg);
-	if(retval == SYSERR) {
-		return SYSERR;
+	for(retries = 0; retries < 10; retries++) {
+		if(eth_phy_read(mdio, ETH_PHY_STATREG, phyadr, &phyreg) == SYSERR) {
+			return SYSERR;
+		}
+		if(phyreg & ETH_PHY_STATREG_LINK) {
+			break;
+		}
+		else {
+			retries++;
+			DELAY(ETH_AM335X_INIT_DELAY);
+			continue;
+		}
 	}
-
-	if( (phyreg & ETH_PHY_STATREG_LINK) == 0 ) {
+	if(retries >= 3) {
 		return SYSERR;
 	}
 

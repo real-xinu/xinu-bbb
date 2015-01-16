@@ -35,7 +35,7 @@ tty:
 /* type of a ethernet device */
 eth:
 	on am335x_eth
-		-i ionull	-o ioerr	-c ioerr
+		-i ethinit	-o ioerr	-c ioerr
 		-r ethread	-g ioerr	-p ioerr
 		-w ethwrite	-s ioerr	-n ioerr
 		-intr ethhandler

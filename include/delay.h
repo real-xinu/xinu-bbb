@@ -5,7 +5,7 @@
  */
 #define	DELAY(n)                                	\
 {                                               	\
-	register long N = (n * 100);			\
+	volatile long N = 2*n;				\
 							\
 	while(N > 0) {					\
 		N--;					\
