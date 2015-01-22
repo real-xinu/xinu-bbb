@@ -12,7 +12,7 @@ int32	ethread	(
 		uint32	count
 	)
 {
-	struct	ether *ethptr;		/* Ethernet ctl blk ptr	*/
+	struct	ethcblk *ethptr;	/* Ethernet ctl blk ptr	*/
 	struct	eth_a_csreg *csrptr;	/* Ethernet CSR pointer	*/
 	struct	eth_a_rx_desc *rdescptr;/* Rx Desc. pointer	*/
 	struct	eth_a_rx_desc *prev;	/* Prev Rx desc pointer	*/

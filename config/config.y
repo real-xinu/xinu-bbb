@@ -9,6 +9,17 @@
 #include <ctype.h>
 
 extern	char	*yytext;
+/*
+   Workaround for type conflict resulting from unmatched versions of flex and
+   bison (lex and yacc).  Force new-style flex output (lex.yy.c) to treat
+   yyleng as an int (as done by oldest lex versions) instead of a size_t, by
+   overriding new flex's yy_size_t typedef.
+*/
+#ifndef YY_TYPEDEF_YY_SIZE_T
+#define YY_TYPEDEF_YY_SIZE_T
+typedef int yy_size_t;
+#endif
+/* end workaround */
 extern	int	yyleng;
 
 #define	NIL	(struct dev_ent *)0x00
@@ -184,14 +195,14 @@ int main(int argc, char **argv)
 		verbose++;
 	}
 
-	if ( argc > 2 ) {
-		fprintf(stderr, "use: config [-v] [file]\n");
+	if ( argc > 4 ) {
+		fprintf(stderr, "use: config [-v] [file] [conf.c] [conf.h]\n");
 		exit(1);
 	}
 
 	if (verbose) { printf("Opening input file...\n"); }
 
-	if (argc == 2) {
+	if (argc >= 2) {
 		if (freopen(argv[1], "r", stdin) == NULL) {
 			fprintf(stderr, "Can't open %s\n", argv[1]);
 			exit(1);
@@ -214,14 +225,30 @@ int main(int argc, char **argv)
 
 	if (verbose) { printf("Opening output files...\n"); }
 
-	if ( (confc = fopen(CONFIGC,"w") ) == NULL) {
-		fprintf(stderr, "Can't write on %s\n", CONFIGC);
-		exit(1);
+	if (argc >= 3) {
+		if ( (confc = fopen(argv[2],"w") ) == NULL) {
+			fprintf(stderr, "Can't write on %s\n", argv[2]);
+			exit(1);
+		}
+	}
+	else { 	/* try to open conf.c file */
+		if ( (confc = fopen(CONFIGC,"w") ) == NULL) {
+			fprintf(stderr, "Can't write on %s\n", CONFIGC);
+			exit(1);
+		}
 	}
 
-	if ( (confh = fopen(CONFIGH,"w") ) == NULL) {
-		fprintf(stderr, "Can't write on %s\n", CONFIGH);
-		exit(1);
+	if (argc >= 4) {
+		if ( (confh = fopen(argv[3],"w") ) == NULL) {
+			fprintf(stderr, "Can't write on %s\n", argv[3]);
+			exit(1);
+		}
+	}
+	else { 	/* try to open conf.h file */
+		if ( (confh = fopen(CONFIGH,"w") ) == NULL) {
+			fprintf(stderr, "Can't write on %s\n", CONFIGH);
+			exit(1);
+		}
 	}
 
 	/** produce conf.h **/

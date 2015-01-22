@@ -67,7 +67,7 @@ struct	etherPkt {
 
 #define ETH_PHY_STATREG_LINK	0x0004
 
-struct	ether	{
+struct	ethcblk	{
 	byte	state; 		/* ETH_STATE_... as defined above 	*/
 	struct	dentry	*phy;	/* physical eth device for Tx DMA 	*/
 	byte 	type; 		/* NIC type_... as defined above 	*/
@@ -113,23 +113,6 @@ struct	ether	{
 	int16 	ed_mcset;       /* nonzero => multicast reception set   */
 	int16 	ed_mcc;	 	/* count of multicast addresses		*/
     	Eaddr   ed_mca[ETH_NUM_MCAST];/* array of multicast addrs 	*/
-
-	/* Late binding operations */
-
-	void 	(*ethInit)(struct ether *ethptr);
-	status 	(*ethOpen)(struct ether *ethptr);
-	status 	(*ethClose)(struct ether *ethptr);
-	devcall (*ethRead)(struct ether *ethptr, void *buf, uint32 len);
-	devcall (*ethWrite)(struct ether *ethptr, void *buf, uint32 len);
-	devcall (*ethControl)(struct ether *ethptr, int32 func,
-			int32 arg1, int32 arg2);
-	interrupt (*ethInterrupt)(struct ether *ethptr);
 };
 
-extern	struct	ether	ethertab[];	/* array of control blocks      */
-
-int32	colon2mac(char *, byte *);
-int32	allocRxBuffer(struct ether *, int32);
-int32	waitOnBit(volatile uint32 *, uint32, const int32, int32);
-
-typedef	uint32	IPaddr;
+extern	struct	ethcblk	ethertab[];	/* array of control blocks      */

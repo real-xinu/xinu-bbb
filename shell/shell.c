@@ -5,12 +5,11 @@
 #include "shprototypes.h"
 
 /************************************************************************/
-/* Xinu shell commands and the function associated with each		*/
+/* Table of Xinu shell commands and the function associated with each	*/
 /************************************************************************/
 const	struct	cmdent	cmdtab[] = {
 	{"argecho",	TRUE,	xsh_argecho},
 	{"arp",		FALSE,	xsh_arp},
-	//{"bingid",	FALSE,	xsh_bingid},
 	{"cat",		FALSE,	xsh_cat},
 	{"clear",	TRUE,	xsh_clear},
 	{"date",	FALSE,	xsh_date},
@@ -18,16 +17,15 @@ const	struct	cmdent	cmdtab[] = {
 	{"echo",	FALSE,	xsh_echo},
 	{"exit",	TRUE,	xsh_exit},
 	{"help",	FALSE,	xsh_help},
-	//{"ipaddr",	FALSE,	xsh_ipaddr},
+	{"ipaddr",	FALSE,	xsh_ipaddr},
 	{"kill",	TRUE,	xsh_kill},
-	{"led",		FALSE,	xsh_led},
 	{"memdump",	FALSE,	xsh_memdump},
 	{"memstat",	FALSE,	xsh_memstat},
 	{"ping",	FALSE,	xsh_ping},
 	{"ps",		FALSE,	xsh_ps},
 	{"sleep",	FALSE,	xsh_sleep},
 	{"udp",		FALSE,	xsh_udpdump},
-	//{"udpecho",	FALSE,	xsh_udpecho},
+	{"udpecho",	FALSE,	xsh_udpecho},
 	{"udpeserver",	FALSE,	xsh_udpeserver},
 	{"uptime",	FALSE,	xsh_uptime},
 	{"?",		FALSE,	xsh_help}
@@ -37,15 +35,15 @@ const	struct	cmdent	cmdtab[] = {
 uint32	ncmd = sizeof(cmdtab) / sizeof(struct cmdent);
 
 /************************************************************************/
-/* Xinu shell - provide an interactive user interface that executes	*/
-/*		commands.  Each command begins with a command name, has	*/
-/*		a set of optional arguments, has optional input or	*/
-/*		output redirection, and an optional specification for	*/
-/*		background execution (ampersand).  The syntax is:	*/
+/* shell  -  Provide an interactive user interface that executes	*/
+/*	     commands.  Each command begins with a command name, has	*/
+/*	     a set of optional arguments, has optional input or		*/
+/*	     output redirection, and an optional specification for	*/
+/*	     background execution (ampersand).  The syntax is:		*/
 /*									*/
 /*		   command_name [args*] [redirection] [&]		*/
 /*									*/
-/*		Redirection is either or both of:			*/
+/*	     Redirection is either or both of:				*/
 /*									*/
 /*				< input_file				*/
 /*			or						*/
@@ -55,38 +53,38 @@ uint32	ncmd = sizeof(cmdtab) / sizeof(struct cmdent);
 
 process	shell (
 		did32	dev		/* ID of tty device from which	*/
-	)				/*  to accept commands		*/
+	)				/*   to accept commands		*/
 {
-	char	buf[SHELL_BUFLEN];	/* input line (large enough for	*/
-					/*  one line from a tty device	*/
-	int32	len;			/* length of line read		*/
-	char	tokbuf[SHELL_BUFLEN +	/* buffer to hold a set of	*/
-			SHELL_MAXTOK];  /* contiguous null-terminated	*/
-					/* strings of tokens		*/
-	int32	tlen;			/* current length of all data	*/
+	char	buf[SHELL_BUFLEN];	/* Input line (large enough for	*/
+					/*   one line from a tty device	*/
+	int32	len;			/* Length of line read		*/
+	char	tokbuf[SHELL_BUFLEN +	/* Buffer to hold a set of	*/
+			SHELL_MAXTOK];  /* Contiguous null-terminated	*/
+					/* Strings of tokens		*/
+	int32	tlen;			/* Current length of all data	*/
 					/*   in array tokbuf		*/
-	int32	tok[SHELL_MAXTOK];	/* index of each token in	*/
-					/*   tokbuf			*/
-	int32	toktyp[SHELL_MAXTOK];	/* type of each token in tokbuf	*/
-	int32	ntok;			/* number of tokens on line	*/
-	pid32	child;			/* process ID of spawned child	*/
-	bool8	backgnd;		/* run command in background?	*/
-	char	*outname, *inname;	/* ptrs to strings for file	*/
+	int32	tok[SHELL_MAXTOK];	/* Index of each token in	*/
+					/*   array tokbuf		*/
+	int32	toktyp[SHELL_MAXTOK];	/* Type of each token in tokbuf	*/
+	int32	ntok;			/* Number of tokens on line	*/
+	pid32	child;			/* Process ID of spawned child	*/
+	bool8	backgnd;		/* Run command in background?	*/
+	char	*outname, *inname;	/* Pointers to strings for file	*/
 					/*   names that follow > and <	*/
-	did32	stdinput, stdoutput;	/* descriptors for redirected	*/
+	did32	stdinput, stdoutput;	/* Descriptors for redirected	*/
 					/*   input and output		*/
-	int32	i;			/* index into array of tokens	*/
-	int32	j;			/* index into array of commands	*/
-	int32	msg;			/* message from receive() for	*/
+	int32	i;			/* Index into array of tokens	*/
+	int32	j;			/* Index into array of commands	*/
+	int32	msg;			/* Message from receive() for	*/
 					/*   child termination		*/
-	int32	tmparg;			/* address of this var is used	*/
+	int32	tmparg;			/* Address of this var is used	*/
 					/*   when first creating child	*/
 					/*   process, but is replaced	*/
-	char	*src, *cmp;		/* ptrs using during name	*/
+	char	*src, *cmp;		/* Pointers used during name	*/
 					/*   comparison			*/
-	bool8	diff;			/* was difference found during	*/
+	bool8	diff;			/* Was difference found during	*/
 					/*   comparison			*/
-	char	*args[SHELL_MAXTOK];	/* argument vector passed to	*/
+	char	*args[SHELL_MAXTOK];	/* Argument vector passed to	*/
 					/*   builtin commands		*/
 
 	/* Print shell banner and startup message */
@@ -156,7 +154,7 @@ process	shell (
 
 		outname = inname = NULL;
 		if ( (ntok >=3) && ( (toktyp[ntok-2] == SH_TOK_LESS)
-				   ||(toktyp[ntok-2] == SH_TOK_GREATER))) {
+				   ||(toktyp[ntok-2] == SH_TOK_GREATER))){
 			if (toktyp[ntok-1] != SH_TOK_OTHER) {
 				fprintf(dev,"%s\n", SHELL_SYNERRMSG);
 				continue;
@@ -172,7 +170,7 @@ process	shell (
 
 
 		if ( (ntok >=3) && ( (toktyp[ntok-2] == SH_TOK_LESS)
-				   ||(toktyp[ntok-2] == SH_TOK_GREATER))) {
+				   ||(toktyp[ntok-2] == SH_TOK_GREATER))){
 			if (toktyp[ntok-1] != SH_TOK_OTHER) {
 				fprintf(dev,"%s\n", SHELL_SYNERRMSG);
 				continue;
@@ -238,8 +236,8 @@ process	shell (
 
 		/* Handle built-in command */
 
-		if (cmdtab[j].cbuiltin) { /* no background or redirection */
-			if (inname != NULL || outname != NULL || backgnd) {
+		if (cmdtab[j].cbuiltin) { /* No background or redirect. */
+			if (inname != NULL || outname != NULL || backgnd){
 				fprintf(dev, SHELL_BGERRMSG);
 				continue;
 			} else {
@@ -308,7 +306,7 @@ process	shell (
 		}
     }
 
-    /* Close shell */
+    /* Terminate the shell process by returning from the top level */
 
     fprintf(dev,SHELL_EXITMSG);
     return OK;

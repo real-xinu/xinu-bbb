@@ -1,8 +1,8 @@
 /* net.h */
 
-#define NETSTK		8192 		/* stack size for network setup */
-#define NETPRIO		500    		/* network startup priority 	*/
-#define NETBOOTFILE	128		/* size of the netboot filename	*/
+#define NETSTK		8192 		/* Stack size for network setup */
+#define NETPRIO		500    		/* Network startup priority 	*/
+#define NETBOOTFILE	128		/* Size of the netboot filename	*/
 
 /* Constants used in the networking code */
 
@@ -33,7 +33,7 @@ struct	netpacket	{
 	  uint16	net_udpdport;	/* UDP destination protocol port*/
 	  uint16	net_udplen;	/* UDP total length		*/
 	  uint16	net_udpcksum;	/* UDP checksum			*/
-	  byte		net_udpdata[1500-28];/* UDP payload (1500-above) */
+	  byte		net_udpdata[1500-28];/* UDP payload (1500-above)*/
 	 };
 	 struct {
 	  byte		net_ictype;	/* ICMP message type		*/

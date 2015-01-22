@@ -2,7 +2,7 @@
 extern	status	addargs(pid32, int32, int32[], int32,char *, void *);
 
 /* in file am335x_eth_init.c */
-extern	int32	am335x_eth_init(struct ether *);
+extern	int32	am335x_eth_init(struct ethcblk *);
 
 /* in file arp.c */
 
@@ -498,8 +498,8 @@ extern	status	rdscomm(struct rd_msg_hdr *, int32, struct rd_msg_hdr *, int32, st
 /* in file rdsprocess.c */
 extern	void	rdsprocess(struct rdscblk *);
 
-/* in file sched_cntl.c */
-extern	status	sched_cntl(int32);
+/* in file resched.c */
+extern	status	resched_cntl(int32);
 
 /* in file seek.c */
 extern	syscall	seek(did32, uint32);

@@ -8,14 +8,14 @@
 #define NQENT	(NPROC + 4 + NSEM + NSEM)
 #endif
 
-#define	EMPTY	(-1)		/* null value for qnext or qprev index	*/
-#define	MAXKEY	0x7FFFFFFF	/* max key that can be stored in queue	*/
-#define	MINKEY	0x80000000	/* min key that can be stored in queue	*/
+#define	EMPTY	(-1)		/* Null value for qnext or qprev index	*/
+#define	MAXKEY	0x7FFFFFFF	/* Max key that can be stored in queue	*/
+#define	MINKEY	0x80000000	/* Min key that can be stored in queue	*/
 
-struct	qentry	{		/* one per process plus two per list	*/
-	int32	qkey;		/* key on which the queue is ordered	*/
-	qid16	qnext;		/* index of next process or tail	*/
-	qid16	qprev;		/* index of previous process or head	*/
+struct	qentry	{		/* One per process plus two per list	*/
+	int32	qkey;		/* Key on which the queue is ordered	*/
+	qid16	qnext;		/* Index of next process or tail	*/
+	qid16	qprev;		/* Index of previous process or head	*/
 };
 
 extern	struct qentry	queuetab[];
@@ -34,14 +34,3 @@ extern	struct qentry	queuetab[];
 /* Inline to check queue id assumes interrupts are disabled */
 
 #define	isbadqid(x)	(((int32)(x) < 0) || (int32)(x) >= NQENT-1)
-
-/* Queue function prototypes */
-
-pid32	getfirst(qid16);
-pid32	getlast(qid16);
-pid32	getitem(pid32);
-pid32	enqueue(pid32, qid16);
-pid32	dequeue(qid16);
-status	insert(pid32, qid16, int);
-status	insertd(pid32, qid16, int);
-qid16	newqueue(void);

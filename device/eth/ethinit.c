@@ -4,7 +4,7 @@
 
 struct	eth_a_csreg eth_a_regs;
 
-struct	ether ethertab[1];
+struct	ethcblk ethertab[1];
 
 /*-----------------------------------------------------------------------
  * eth_phy_read - read a PHY register
@@ -174,7 +174,7 @@ int32	ethinit	(
 		struct	dentry *devptr
 	)
 {
-	struct	ether *ethptr;		/* Ethernet control blk pointer	*/
+	struct	ethcblk *ethptr;		/* Ethernet control blk pointer	*/
 	struct	eth_a_tx_desc *tdescptr;/* Tx descriptor pointer	*/
 	struct	eth_a_rx_desc *rdescptr;/* Rx descriptor pointer	*/
 	struct	netpacket *pktptr;	/* Packet pointer		*/

@@ -1,13 +1,1 @@
-This is the new forwarding code for 636.  It
-uses multicast emulation to create two othernets,
-and allows the user to configure the machine as a
-host on Othernet1, a host on Othernet2, or a
-router that connects both Othernets to the lab
-Ethernet (which leads to the Internet).  When
-configured as a router, the code performs NAT
-for UDP and ICMP (ping only) messages.  Thus, a
-host on an Othernet can send UDP or ping an
-arbitrary Internet site.  For example, the date
-command sends UDP to a time server on 128.10.2.6.
-
-The code started with the X86 reference version.
+This directory holds Xinu sources for the Beaglebone Black.

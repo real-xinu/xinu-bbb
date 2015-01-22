@@ -12,7 +12,7 @@ int32	ethwrite (
 		uint32	count
 	)
 {
-	struct	ether *ethptr;		/* Ether entry pointer	*/
+	struct	ethcblk *ethptr;	/* Ether entry pointer	*/
 	struct	eth_a_csreg *csrptr;	/* Ethernet CSR pointer	*/
 	struct	eth_a_tx_desc *tdescptr;/* Tx Desc. pointer	*/
 	struct	eth_a_tx_desc *prev;	/* Prev. Desc. pointer	*/

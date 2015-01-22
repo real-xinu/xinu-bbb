@@ -13,7 +13,7 @@ interrupt ethhandler (
 	struct	eth_a_csreg *csrptr;		/* Ethernet CSR pointer	*/
 	struct	eth_a_tx_desc *tdescptr;	/* Tx desc pointer	*/
 	struct	eth_a_rx_desc *rdescptr;	/* Rx desc pointer	*/
-	struct	ether *ethptr = &ethertab[0];	/* Ethernet ctl blk ptr	*/
+	struct	ethcblk *ethptr = &ethertab[0];	/* Ethernet ctl blk ptr	*/
 
 	csrptr = (struct eth_a_csreg *)ethptr->csr;
 
@@ -26,7 +26,7 @@ interrupt ethhandler (
 
 		/* Defer scheduling until all descs are processed */
 
-		sched_cntl(DEFER_START);
+		resched_cntl(DEFER_START);
 
 		while(semcount(ethptr->osem) < (int32)ethptr->txRingSize) {
 
@@ -67,7 +67,7 @@ interrupt ethhandler (
 
 		/* Resume rescheduling	*/
 
-		sched_cntl(DEFER_STOP);
+		resched_cntl(DEFER_STOP);
 	}
 	else if(xnum == ETH_AM335X_RXINT) {	/* Receive interrupt */
 
@@ -78,7 +78,7 @@ interrupt ethhandler (
 
 		/* Defer scheduling until all descriptors are processed	*/
 
-		sched_cntl(DEFER_START);
+		resched_cntl(DEFER_START);
 
 		while(semcount(ethptr->isem) < (int32)ethptr->rxRingSize) {
 
@@ -118,6 +118,6 @@ interrupt ethhandler (
 
 		/* Resume rescheduling	*/
 
-		sched_cntl(DEFER_STOP);
+		resched_cntl(DEFER_STOP);
 	}
 }

@@ -56,7 +56,7 @@ void ttyhandler(uint32 xnum) {
 	    case UART_IIR_RDA:
 	    case UART_IIR_RTO:
 
-		sched_cntl(DEFER_START);
+		resched_cntl(DEFER_START);
 
 		/* While chars avail. in UART buffer, call ttyhandle_in	*/
 
@@ -64,7 +64,7 @@ void ttyhandler(uint32 xnum) {
 			ttyhandle_in(typtr, csrptr);
                 }
 
-		sched_cntl(DEFER_STOP);
+		resched_cntl(DEFER_STOP);
 
 		return;
 
