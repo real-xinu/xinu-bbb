@@ -101,7 +101,8 @@ export
 xinu:	Makefile rebuild $(BLDDIRS) $(DEFSFILE) $(DEPSFILE) $(CONFH) $(CONFC) $(LD_LIST)
 	@echo;echo 'Loading object files to produce xinu'
 	@$(LD) $(LDFLAGS) $(LD_LIST) -o $(XINU) -L../cross_compiler/lib/gcc/arm-none-eabi/4.8.1/ -lgcc
-	@mkimage -A arm -O linux -T kernel -C none -a 0x81000000 -e 0x81000000 -d xinu.bin xinu.boot
+	@$(OBJCOPY) -O binary $(XINU) $(XINUBIN)
+	@mkimage -A arm -O linux -T kernel -C none -a 0x81000000 -e 0x81000000 -d $(XINUBIN) $(XINUBOOT)
 
 $(BLDDIRS): 
 	@mkdir -p $(BLDDIRS)
@@ -133,6 +134,7 @@ clean:
 	@(cd $(TOPDIR)/config; make clean)
 	@echo removing xinu ...
 	@rm -f $(XINU)
+	@rm -f $(XINUBIN)
 	@rm -f $(XINUBOOT)
 
 #--------------------------------------------------------------------------------
