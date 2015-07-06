@@ -24,14 +24,6 @@ struct	uart_csreg
 	volatile uint32	spr;	/* scratch register			*/
 	volatile uint32 mdr1;
 	volatile uint32 res[12];/* unused UART registers		*/
-	/*volatile uint32 mdr2;
-	volatile uint32 res1[4];
-	volatile uint32 uasr;
-	volatile uint32 res2;
-	volatile uint32 scr;
-	volatile uint32 ssr;
-	volatile uint32 res3[2];
-	volatile uint32 mvr;*/
 	volatile uint32 sysc;	/* system configuration register	*/
 	volatile uint32 syss;	/* system status register		*/
 	volatile uint32 wer;

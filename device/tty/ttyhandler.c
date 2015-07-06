@@ -3,7 +3,7 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- *  ttyhandler - Handle an interrupt for a tty (serial) device
+ *  ttyhandler  -  Handle an interrupt for a tty (serial) device
  *------------------------------------------------------------------------
  */
 void ttyhandler(uint32 xnum) {
@@ -13,10 +13,10 @@ void ttyhandler(uint32 xnum) {
 	uint32	iir = 0;		/* Interrupt identification	*/
 	uint32	lsr = 0;		/* Line status			*/
 
+
 	/* Get CSR address of the device (assume console for now) */
 
 	devptr = (struct dentry *) &devtab[CONSOLE];
-
 	csrptr = (struct uart_csreg *) devptr->dvcsr;
 
 	/* Obtain a pointer to the tty control block */
@@ -26,8 +26,7 @@ void ttyhandler(uint32 xnum) {
 	/* Decode hardware interrupt request from UART device */
 
         /* Check interrupt identification register */
-        iir = csrptr->iir;
-
+	iir = csrptr->iir;
         if (iir & UART_IIR_IRQ) {
 		return;
         }
@@ -47,7 +46,10 @@ void ttyhandler(uint32 xnum) {
 	    case UART_IIR_RLSI:
 		lsr = csrptr->lsr;
 		if(lsr & UART_LSR_BI) { /* Break Interrupt */
-			lsr = csrptr->buffer; /* Read the RHR register to acknowledge */
+
+			/* Read the RHR register to acknowledge */
+
+			lsr = csrptr->buffer;
 		}
 		return;
 
@@ -71,7 +73,6 @@ void ttyhandler(uint32 xnum) {
             /* Transmitter output FIFO is empty (i.e., ready for more)	*/
 
 	    case UART_IIR_THRE:
-
 		ttyhandle_out(typtr, csrptr);
 		return;
 
