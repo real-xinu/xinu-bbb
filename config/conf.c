@@ -185,5 +185,19 @@ struct	dentry	devtab[NDEVS] =
 	  (void *)lflinit, (void *)ioerr, (void *)lflclose,
 	  (void *)lflread, (void *)lflwrite, (void *)lflseek,
 	  (void *)lflgetc, (void *)lflputc, (void *)lflcontrol,
-	  (void *)0x0, (void *)ionull, 0 }
+	  (void *)0x0, (void *)ionull, 0 },
+
+/* SPI0 is spi */
+	{ 24, 0, "SPI0",
+	  (void *)spiinit, (void *)ionull, (void *)ionull,
+	  (void *)ionull, (void *)ionull, (void *)ionull,
+	  (void *)ionull, (void *)ionull, (void *)spicontrol,
+	  (void *)0x48030000, (void *)ionull, 0 },
+
+/* SPI1 is spi */
+	{ 25, 1, "SPI1",
+	  (void *)spiinit, (void *)ionull, (void *)ionull,
+	  (void *)ionull, (void *)ionull, (void *)ionull,
+	  (void *)ionull, (void *)ionull, (void *)spicontrol,
+	  (void *)0x481a0000, (void *)ionull, 0 }
 };

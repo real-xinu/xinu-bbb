@@ -96,6 +96,12 @@ nam:
 		-w ioerr 	-s ioerr 	-n ioerr
 		-intr ioerr
 
+spi:
+	on top
+		-i spiinit	-o ionull	-c ionull
+		-r ionull	-g ionull	-p ionull
+		-w ionull	-s ionull	-n spicontrol
+		-intr ionull
 %%
 
 /* Actual device declarations that each give the name of a device that	*/
@@ -148,6 +154,11 @@ nam:
    LFILE3 is lfl on lfs
    LFILE4 is lfl on lfs
    LFILE5 is lfl on lfs
+
+   /* SPI devices */
+
+   SPI0 is spi on top csr 0x48030000
+   SPI1 is spi on top csr 0x481A0000
 
 %%
 
