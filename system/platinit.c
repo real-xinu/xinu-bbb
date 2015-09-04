@@ -9,7 +9,16 @@
 void	platinit(void)
 {
 
-	struct	uart_csreg *uptr;	/* address of UART's CSRs	*/
+	struct	uart_csreg *uptr;	/* Address of UART's CSRs	*/
+	struct	watchdog_csreg *wdtptr;	/* Watchdog registers		*/
+
+	/* Disable the watchdog timer */
+
+	wdtptr = (struct watchdog_csreg *)WDTADDR;
+	wdtptr->wspr = 0x0000aaaa;
+	while(wdtptr->wwps & 0x00000010);
+	wdtptr->wspr = 0x00005555;
+	while(wdtptr->wwps & 0x00000010);
 
 	/* Initialize the Interrupt Controller */
 
