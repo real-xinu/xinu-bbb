@@ -12,7 +12,7 @@ local	int newpid();
  */
 pid32	create(
 	  void		*procaddr,	/* procedure address		*/
-	  uint32	ssize,		/* stack size in words		*/
+	  uint32	ssize,		/* stack size in bytes		*/
 	  pri16		priority,	/* process priority > 0		*/
 	  char		*name,		/* name (for debugging)		*/
 	  uint32	nargs,		/* number of args that follow	*/
