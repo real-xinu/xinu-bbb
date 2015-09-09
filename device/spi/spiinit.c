@@ -20,7 +20,7 @@ int32	spiinit (
 		csrptr = (struct spi_csreg *)SPI_0_ADDR;
 		am335x_padctl(SPI_0_PADCTL_SCLK, AM335X_PADCTL_PEN |
 						 AM335X_PADCTL_PUP |
-						 AM335X_PADCTL_TX |
+						 AM335X_PADCTL_RXTX |
 						 0);
 		am335x_padctl(SPI_0_PADCTL_D0, AM335X_PADCTL_PEN |
 						 AM335X_PADCTL_PUP |
@@ -68,6 +68,8 @@ int32	spiinit (
 	/* Put the device in single channel mode */
 
 	csrptr->modulctrl = SPI_MODULCTRL_SINGLE;
+
+	/* Set the default frequency and CS level */
 
 	csrptr->ch[0].chconf = SPI_CHCONF_CLKD | SPI_CHCONF_EPOL |
 			    (SPI_CHCONF_WL & 0x00000380) |

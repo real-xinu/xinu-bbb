@@ -53,7 +53,7 @@ process	main(void)
 	memset(&tx[2], 0, 8);
 	memset(rx, 0, 10);
 
-	control(SPI1, SPI_CTRL_TRANSFER, (int32)&msg, 0);
+	control(SPI0, SPI_CTRL_TRANSFER, (int32)&msg, 0);
 
 	int	i;
 	for(i = 0; i < 5; i++) {
