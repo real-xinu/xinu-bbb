@@ -199,5 +199,12 @@ struct	dentry	devtab[NDEVS] =
 	  (void *)spiinit, (void *)ionull, (void *)ionull,
 	  (void *)ionull, (void *)ionull, (void *)ionull,
 	  (void *)ionull, (void *)ionull, (void *)spicontrol,
-	  (void *)0x481a0000, (void *)ionull, 0 }
+	  (void *)0x481a0000, (void *)ionull, 0 },
+
+/* RADIO0 is rad */
+	{ 26, 0, "RADIO0",
+	  (void *)radinit, (void *)ionull, (void *)ionull,
+	  (void *)ionull, (void *)ionull, (void *)ionull,
+	  (void *)ionull, (void *)ionull, (void *)ionull,
+	  (void *)0x0, (void *)ionull, 0 }
 };

@@ -10,13 +10,43 @@
 #define	ETH_IP      0x0800		/* Ethernet type for IP		*/
 #define	ETH_IPv6    0x86DD		/* Ethernet type for IPv6	*/
 
-/* Format of an Ethernet packet carrying IPv4 and UDP */
+#define	RAD_BEACON  0x0			/* Radio Beacon Frame		*/
+#define	RAD_DATA    0x1			/* Radio Data Frame		*/
+#define	RAD_ACK	    0x2			/* Radio Acknowledgement Frame	*/
+#define	RAD_MACCOM  0x3			/* Radio MAC Command Frame	*/
 
-#pragma pack(2)
+#define	RAD_AM0    0x0			/* PAN ID, Address not present	*/
+#define	RAD_AM2    0x2			/* Short Address		*/
+#define	RAD_AM3    0x3			/* Extended Address		*/
+
+/* Format of an Ethernet / Radio packet carrying IPv6 and UDP */
+
+#pragma pack(1)
 struct	netpacket	{
-	byte	net_ethdst[ETH_ADDR_LEN];/* Ethernet dest. MAC address	*/
-	byte	net_ethsrc[ETH_ADDR_LEN];/* Ethernet source MAC address	*/
-	uint16	net_ethtype;		/* Ethernet type field		*/
+	union {
+	 struct {	/* Ethernet header	*/
+	  byte		net_ethdst[ETH_ADDR_LEN];/* Ethernet dest. MAC address	*/
+	  byte		net_ethsrc[ETH_ADDR_LEN];/* Ethernet source MAC address	*/
+	  uint16	net_ethtype;		/* Ethernet type field		*/
+	 };
+	 struct	{	/* IEEE 802.15.4 header	*/
+	  byte		net_radftype:3;		/* Frame Type		*/
+	  byte		net_radsec:1;		/* Security enabled	*/
+	  byte		net_radfp:1;		/* Frame pending	*/
+	  byte		net_radar:1;
+	  byte		net_radpidc:1;		/* PAN ID compression	*/
+	  byte		net_radres1:1;		/* Reserved bit		*/
+	  byte		net_radres2:2;		/* Reserved bits	*/
+	  byte		net_raddam:2;		/* Dest. Addr. Mode	*/
+	  byte		net_radfvers:2;		/* Frame version	*/
+	  byte		net_radsam:2;		/* Src. Addr. Mode	*/
+	  byte		net_radseq;		/* Sequence number	*/
+	  uint16	net_raddpan;		/* Dst. PAN Id		*/
+	  byte		net_raddst[8];		/* Dest. address	*/
+	  uint16	net_radspan;		/* Src. PAN Id		*/
+	  byte		net_radsrc[8];		/* Src. address		*/
+	 };
+	};
 	byte	net_ipvh;		/* IP version and hdr length	*/
 	byte	net_iptos;		/* IP type of service		*/
 	uint16	net_iplen;		/* IP total packet length	*/

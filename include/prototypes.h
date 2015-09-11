@@ -365,6 +365,9 @@ extern	syscall	ptsend(int32, umsg32);
 /* in file putc.c */
 extern	syscall	putc(did32, char);
 
+/* in file radinit.c */
+extern	devcall	radinit(struct dentry *);
+
 /* in file ramclose.c */
 extern	devcall	ramclose(struct dentry *);
 

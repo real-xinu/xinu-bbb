@@ -102,6 +102,13 @@ spi:
 		-r ionull	-g ionull	-p ionull
 		-w ionull	-s ionull	-n spicontrol
 		-intr ionull
+
+rad:
+	on spi
+		-i radinit	-o ionull	-c ionull
+		-r ionull	-g ionull	-p ionull
+		-w ionull	-s ionull	-n ionull
+		-intr ionull
 %%
 
 /* Actual device declarations that each give the name of a device that	*/
@@ -159,6 +166,10 @@ spi:
 
    SPI0 is spi on top csr 0x48030000
    SPI1 is spi on top csr 0x481A0000
+
+   /* Radio device */
+
+   RADIO0 is rad on spi
 
 %%
 
