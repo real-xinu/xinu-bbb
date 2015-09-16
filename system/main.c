@@ -48,12 +48,18 @@ process	main(void)
 	msg.txbuf = tx;
 	msg.rxbuf = rx;
 	msg.length = 5;
+
+	tx[0] = 0x30;
+	msg.length = 1;
+	control(radtab[0].spidev, SPI_CTRL_TRANSFER, &msg, 0);
+
 	tx[0] = 0xaf;
 	tx[1] = 0x8f;
 	memset(&tx[2], 0, 8);
 	memset(rx, 0, 10);
+	msg.length = 3;
 
-	control(SPI1, SPI_CTRL_TRANSFER, (int32)&msg, 0);
+	control(SPI0, SPI_CTRL_TRANSFER, (int32)&msg, 0);
 
 	int	i;
 	for(i = 0; i < 5; i++) {
@@ -86,16 +92,23 @@ process	main(void)
 	}
 	kprintf("\n");
 
-	byte	partnum, txlast;
+	byte	pktcfg0;
+	byte	partnum, txlast, txfirst;
 
 	ticc1200_read_ext(&radtab[0], 0x8F, &partnum);
 	kprintf("part number %2x\n", partnum);
 
-	ticc1200_write(&radtab[0], 0x35, 0);
-	ticc1200_write(&radtab[0], 0x34, 0);
-
 	ticc1200_read_ext(&radtab[0], TICC1200_ADDR_TXLAST, &txlast);
 	kprintf("txlast: %02x\n", txlast);
+
+	byte	txnumbytes;
+	ticc1200_read_ext(&radtab[0], 0xD6, &txnumbytes);
+	kprintf("txnumbytes: %2x\n", txnumbytes);
+
+	ticc1200_read(&radtab[0], 0x28, &pktcfg0);
+	pktcfg0 &= ~0x60;
+	pktcfg0 |= 0x20;
+	ticc1200_write(&radtab[0], 0x28, pktcfg0);
 
 	byte	pkttxbuf[25];
 	byte	pktrxbuf[25];
@@ -103,16 +116,32 @@ process	main(void)
 
 	pktmsg.txbuf = pkttxbuf;
 	pktmsg.rxbuf = pktrxbuf;
-	pktmsg.length = 24;
+	pktmsg.length = 25;
 
 	pkttxbuf[0] = TICC1200_COM_SFIFO | TICC1200_COM_BURST;
-	pkttxbuf[1] = txlast;
-	memcpy(&pkttxbuf[1], &pkt, 23);
+	pkttxbuf[1] = 23;
+	memcpy(&pkttxbuf[2], &pkt, 23);
 
+	control(radtab[0].spidev, SPI_CTRL_TRANSFER, &pktmsg, 0);
+
+	tx[0] = 0x35;
+	msg.length = 1;
 	control(radtab[0].spidev, SPI_CTRL_TRANSFER, &msg, 0);
+
+	sleep(5);
 
 	ticc1200_read_ext(&radtab[0], TICC1200_ADDR_TXLAST, &txlast);
 	kprintf("txlast after writing: %2x\n", txlast);
+
+	ticc1200_read_ext(&radtab[0], TICC1200_ADDR_TXFIRST, &txfirst);
+	kprintf("txfirst after writing: %2x\n", txfirst);
+
+	ticc1200_read_ext(&radtab[0], 0xD6, &txnumbytes);
+	kprintf("txnumbytes: %2x\n", txnumbytes);
+
+	byte	pktlen;
+	ticc1200_read(&radtab[0], 0x2E, &pktlen);
+	kprintf("pktlen: %2x\n", pktlen);
 
 	kprintf("\n...creating a shell\n");
 	recvclr();

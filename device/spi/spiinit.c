@@ -32,7 +32,7 @@ int32	spiinit (
 						 0);
 		am335x_padctl(SPI_0_PADCTL_CS0, AM335X_PADCTL_PEN |
 						 AM335X_PADCTL_PUP |
-						 AM335X_PADCTL_TX |
+						 AM335X_PADCTL_RXTX |
 						 0);
 	}
 	else {

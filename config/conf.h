@@ -52,6 +52,7 @@ extern	struct	dentry	devtab[]; /* one entry per device */
 #define SPI0        24       /* type spi      */
 #define SPI1        25       /* type spi      */
 #define RADIO0      26       /* type rad      */
+#define RADIO1      27       /* type rad      */
 
 /* Control block sizes */
 
@@ -66,10 +67,10 @@ extern	struct	dentry	devtab[]; /* one entry per device */
 #define	Nlfl	6
 #define	Nnam	1
 #define	Nspi	2
-#define	Nrad	1
+#define	Nrad	2
 
 #define DEVMAXNAME 24
-#define NDEVS 27
+#define NDEVS 28
 
 
 /* Configuration and Size Constants */

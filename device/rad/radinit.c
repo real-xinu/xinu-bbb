@@ -27,10 +27,10 @@ devcall	radinit (
 	/* Set the SPI device */
 
 	if(devptr->dvminor == 0) {
-		radptr->spidev = SPI1;
+		radptr->spidev = SPI0;
 	}
 	else {
-		radptr->spidev = SPI0;
+		radptr->spidev = SPI1;
 	}
 
 	/* Set the address length and the MTU */
@@ -42,6 +42,9 @@ devcall	radinit (
 
 	ticc1200_write(radptr, TICC1200_ADDR_PKTCFG2,
 			       TICC1200_PKTCFG2_FGMODE);
+	byte ret;
+	ticc1200_read(radptr, TICC1200_ADDR_PKTCFG2, &ret);
+	kprintf("radinit: PKTCFG2 %2x\n", ret);
 
 	return OK;
 }

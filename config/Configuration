@@ -170,6 +170,7 @@ rad:
    /* Radio device */
 
    RADIO0 is rad on spi
+   RADIO1 is rad on spi
 
 %%
 
