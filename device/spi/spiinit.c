@@ -12,8 +12,6 @@ int32	spiinit (
 {
 	struct	spi_csreg *csrptr;	/* SPI control and status regs	*/
 
-	kprintf("Initializing SPI%d\n", devptr->dvminor);
-
 	/* Set the CSR address and the pads */
 
 	if(devptr->dvminor == 0) {
@@ -56,14 +54,10 @@ int32	spiinit (
 						 3);
 	}
 
-	kprintf("Reseting SPI device\n");
-
 	/* Reset the SPI device */
 
 	csrptr->sysconfig |= SPI_SYSCONFIG_SOFTRESET;
 	while((csrptr->sysstatus & SPI_SYSSTATUS_RESETDONE) == 0);
-
-	kprintf("SPI reset done\n");
 
 	/* Put the device in single channel mode */
 
@@ -75,7 +69,6 @@ int32	spiinit (
 			    (SPI_CHCONF_WL & 0x00000380) |
 			     SPI_CHCONF_DPE1 | SPI_CHCONF_IS |
 			     SPI_CHCONF_FORCE;
-	kprintf("SPI conf: %08x\n", csrptr->ch[0].chconf);
 
 	/* Enable the channel */
 

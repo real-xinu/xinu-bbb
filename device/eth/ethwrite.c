@@ -48,6 +48,16 @@ int32	ethwrite (
 	/* Copy the packet into the Tx buffer */
 	memcpy((char *)tdescptr->buffer, buf, count);
 
+	/* TODO Figure out why we need this hack	*/
+	/* This ethernet device does not send packets smaller than 60	*/
+	/* bytes; So pad a small packet to make it 60 bytes long	*/
+
+	if(count < 60) {
+		memset((char *)tdescptr->buffer+count, 0, 60-count);
+		tdescptr->buflen = 60;
+		tdescptr->packlen = 60;
+	}
+
 	/* Insert the descriptor into Tx queue */
 
 	if(csrptr->stateram->tx_hdp[0] == 0) {
