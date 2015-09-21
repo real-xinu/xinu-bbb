@@ -15,28 +15,30 @@
 #define	RAD_ACK		2	/* Radio ack. frame	*/
 #define	RAD_MAC		3	/* Radio MAC cmd frame	*/
 
+/* Format of an IEEE 802.15.4 packet carrying IPv6 */
+
 #pragma pack(1)
 struct	netpacket_r {
 	uint16	net_radftype:3;	/* Radio frame type	*/
-	uint16	net_radsec:1;	/* Security enabled	*/
+	uint16	net_radsec:1;	/* Secutiry enabled	*/
 	uint16	net_radfp:1;	/* Frame pending	*/
 	uint16	net_radar:1;	/* Acknowledgement req	*/
 	uint16	net_radpidc:1;	/* PAN ID compression	*/
 	uint16	net_radres:1;	/* Reserved		*/
 	uint16	net_radseqsup:1;/* Seq. num. suppression*/
-	uint16	net_radie:1;	/* IE List present	*/
-	uint16	net_raddam:2;	/* Dst. Address Mode	*/
+	uint16	net_radie:1;	/* IE list present	*/
+	uint16	net_raddam:2;	/* Dst. Addres Mode	*/
 	uint16	net_radfver:2;	/* Radio frame version	*/
 	uint16	net_radsam:2;	/* Src. Address Mode	*/
 	byte	net_radseq;	/* Sequence number	*/
-	byte	net_raddstpan[2];/* Dst. PAN ID		*/
-	byte	net_raddst[8];	/* Dst. Address		*/
+	byte	net_raddstpan[2];/* Dst PAN ID		*/
+	byte	net_raddst[8];	/* Radio dst. address	*/
 	byte	net_radsrcpan[2];/* Src. PAN ID		*/
-	byte	net_radsrc[8];	/* Src. Address		*/
-	byte	net_lpdisp;	/* LoWPAN Dispatch	*/
-	byte	net_ipvtch;	/* IP vers, TC high	*/
-	byte	net_iptclflh;	/* TC low, FL high	*/
-	uint16	net_ipfll;	/* IP FL low		*/
+	byte	net_radsrc[8];	/* Radio src. address	*/
+	byte	net_lpdisp;	/* LoWPAN dispatch	*/
+	byte	net_ipvtch;	/* IP ver, TC high	*/
+	byte	net_iptclflh;	/* IP TC low, FL high	*/
+	uint16	net_ipfll;	/* IP FL flow		*/
 	uint16	net_iplen;	/* IP payload length	*/
 	byte	net_ipnh;	/* IP next header	*/
 	byte	net_iphl;	/* IP hop limit		*/
@@ -47,7 +49,7 @@ struct	netpacket_r {
 
 /* Format of an Ethernet packet carrying IPv4 and UDP */
 
-#pragma pack(1)
+#pragma pack(2)
 struct	netpacket	{
 	byte	net_ethdst[ETH_ADDR_LEN];/* Ethernet dest. MAC address	*/
 	byte	net_ethsrc[ETH_ADDR_LEN];/* Ethernet source MAC address	*/
