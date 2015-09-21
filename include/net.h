@@ -10,15 +10,10 @@
 #define	ETH_IP      0x0800		/* Ethernet type for IP		*/
 #define	ETH_IPv6    0x86DD		/* Ethernet type for IPv6	*/
 
-#define	RAD_BCN		0	/* Radio bracon	frame	*/
+#define	RAD_BCN		0	/* Radio beacon frame	*/
 #define	RAD_DATA	1	/* Radio data frame	*/
-#define	RAD_ACK		2	/* Radio ack frame	*/
+#define	RAD_ACK		2	/* Radio ack. frame	*/
 #define	RAD_MAC		3	/* Radio MAC cmd frame	*/
-
-#define	RAD_AM0	0
-#define	RAD_AM1	1
-#define	RAD_AM2	2
-#define	RAD_AM3	3
 
 #pragma pack(1)
 struct	netpacket_r {
@@ -28,19 +23,20 @@ struct	netpacket_r {
 	uint16	net_radar:1;	/* Acknowledgement req	*/
 	uint16	net_radpidc:1;	/* PAN ID compression	*/
 	uint16	net_radres:1;	/* Reserved		*/
-	uint16	net_radseqsup:1;/* Sequence suppression	*/
+	uint16	net_radseqsup:1;/* Seq. num. suppression*/
 	uint16	net_radie:1;	/* IE List present	*/
 	uint16	net_raddam:2;	/* Dst. Address Mode	*/
-	uint16	net_radfver:2;	/* Frame version	*/
+	uint16	net_radfver:2;	/* Radio frame version	*/
 	uint16	net_radsam:2;	/* Src. Address Mode	*/
 	byte	net_radseq;	/* Sequence number	*/
 	byte	net_raddstpan[2];/* Dst. PAN ID		*/
-	byte	net_raddst[8];	/* Radio dst. address	*/
+	byte	net_raddst[8];	/* Dst. Address		*/
 	byte	net_radsrcpan[2];/* Src. PAN ID		*/
-	byte	net_radsrc[8];	/* Radio src. address	*/
-	byte	net_ipvtch;
-	byte	net_iptclflh;
-	uint16	net_ipfll;
+	byte	net_radsrc[8];	/* Src. Address		*/
+	byte	net_lpdisp;	/* LoWPAN Dispatch	*/
+	byte	net_ipvtch;	/* IP vers, TC high	*/
+	byte	net_iptclflh;	/* TC low, FL high	*/
+	uint16	net_ipfll;	/* IP FL low		*/
 	uint16	net_iplen;	/* IP payload length	*/
 	byte	net_ipnh;	/* IP next header	*/
 	byte	net_iphl;	/* IP hop limit		*/
