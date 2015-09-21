@@ -48,6 +48,12 @@ int32	ethwrite (
 	/* Copy the packet into the Tx buffer */
 	memcpy((char *)tdescptr->buffer, buf, count);
 
+	if(count < 60) {
+		memset((char *)tdescptr->buffer+count, 0, 60-count);
+		tdescptr->buflen = 60;
+		tdescptr->packlen = 60;
+	}
+
 	/* Insert the descriptor into Tx queue */
 
 	if(csrptr->stateram->tx_hdp[0] == 0) {
