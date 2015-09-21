@@ -28,7 +28,7 @@ struct	pkt {
 #pragma pack()
 
 byte	SERVETH[] = 	{0x90, 0xE2, 0xBA, 0x64, 0xF7, 0x55};
-#define	SERVIP		0x800a0333
+#define	SERVIP		0x800a871f
 #define	SERVPORT	9000
 
 /*------------------------------------------------------------------------
@@ -64,6 +64,7 @@ void	pktlog (
 	p.udplen = 8 + pktlen;
 	p.udplen = htons(p.udplen);
 	p.udpcksum = 0;
+	memcpy(p.data, pktbuf, pktlen);
 
 	sum = 0;
 	ptr16 = (uint16 *)&p.ipvh;

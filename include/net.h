@@ -10,59 +10,42 @@
 #define	ETH_IP      0x0800		/* Ethernet type for IP		*/
 #define	ETH_IPv6    0x86DD		/* Ethernet type for IPv6	*/
 
-#define	RAD_BCN		0x0	/* Radio beacon frame		*/
-#define	RAD_DATA	0x1	/* Radio data frame		*/
-#define	RAD_ACK		0x2	/* Radio ack. frame		*/
-#define	RAD_MAC		0x3	/* Radio MAC cmd frame		*/
-#define	RAD_LLDN	0x4	/* Radio LLDN frame		*/
-#define	RAD_MULT	0x5	/* Radio multipurpose frame	*/
+#define	RAD_BCN		0	/* Radio bracon	frame	*/
+#define	RAD_DATA	1	/* Radio data frame	*/
+#define	RAD_ACK		2	/* Radio ack frame	*/
+#define	RAD_MAC		3	/* Radio MAC cmd frame	*/
 
-#define	RAD_AM0		0x0
-#define	RAD_AM1		0x1
-#define	RAD_AM2		0x2
-#define	RAD_AM3		0x3
+#define	RAD_AM0	0
+#define	RAD_AM1	1
+#define	RAD_AM2	2
+#define	RAD_AM3	3
 
 #pragma pack(1)
 struct	netpacket_r {
-	uint16	net_radftype:3;		/* Radio frame type	*/
-	uint16	net_radsec:1;		/* Radio security	*/
-	uint16	net_radfp:1;		/* Frame pending	*/
-	uint16	net_radar:1;		/* Acknowledgement req	*/
-	uint16	net_radpidc:1;		/* Pan ID compression	*/
-	uint16	net_radres:1;		/* Reserved		*/
-	uint16	net_radseqsup:1;	/* Seq. num. suppression*/
-	uint16	net_radie:1;		/* IE List present	*/
-	uint16	net_raddam:2;		/* Dest. Address Mode	*/
-	uint16	net_radfver:2;		/* Radio frame version	*/
-	uint16	net_radsam:2;		/* Src. Address Mode	*/
-	byte	net_radseq;		/* Sequence number	*/
-	byte	net_radsrcpan[2];	/* Src. PAN ID		*/
-	byte	net_radsrc[RAD_ADDR_LEN];/* Src. Address	*/
-	byte	net_raddstpan[2];	/* Dest. PAN ID		*/
-	byte	net_raddst[RAD_ADDR_LEN];/* Dst. Address	*/
-	uint32	net_ipfl:20;		/* IP Flow label	*/
-	uint32	net_iptc:8;		/* IP traffic class	*/
-	uint32	net_ipver:4;		/* IP version		*/
-	uint16	net_iplen;		/* IP payload length	*/
-	byte	net_ipnh;		/* IP next header	*/
-	byte	net_iphl;		/* IP hop limit		*/
-	byte	net_ipsrc[16];		/* IP src. address	*/
-	byte	net_ipdst[16];		/* IP dst. address	*/
-	union {
-	 struct {
-	  uint16	net_udpsport;	/* UDP source port	*/
-	  uint16	net_udpdport;	/* UDP dest port	*/
-	  uint16	net_udplen;	/* UDP header+data len	*/
-	  uint16	net_udpcksum;	/* UDP checksum		*/
-	  uint16	net_udpdata[1280-23-40-8];
-	 };
-	 struct {
-	  byte		net_ictype;	/* ICMP type		*/
-	  byte		net_iccode;	/* ICMP code		*/
-	  uint16	net_iccksum;	/* ICMP checksum	*/
-	  byte		net_icdata[1280-23-40-4];
-	 };
-	};
+	uint16	net_radftype:3;	/* Radio frame type	*/
+	uint16	net_radsec:1;	/* Security enabled	*/
+	uint16	net_radfp:1;	/* Frame pending	*/
+	uint16	net_radar:1;	/* Acknowledgement req	*/
+	uint16	net_radpidc:1;	/* PAN ID compression	*/
+	uint16	net_radres:1;	/* Reserved		*/
+	uint16	net_radseqsup:1;/* Sequence suppression	*/
+	uint16	net_radie:1;	/* IE List present	*/
+	uint16	net_raddam:2;	/* Dst. Address Mode	*/
+	uint16	net_radfver:2;	/* Frame version	*/
+	uint16	net_radsam:2;	/* Src. Address Mode	*/
+	byte	net_radseq;	/* Sequence number	*/
+	byte	net_raddstpan[2];/* Dst. PAN ID		*/
+	byte	net_raddst[8];	/* Radio dst. address	*/
+	byte	net_radsrcpan[2];/* Src. PAN ID		*/
+	byte	net_radsrc[8];	/* Radio src. address	*/
+	byte	net_ipvtch;
+	byte	net_iptclflh;
+	uint16	net_ipfll;
+	uint16	net_iplen;	/* IP payload length	*/
+	byte	net_ipnh;	/* IP next header	*/
+	byte	net_iphl;	/* IP hop limit		*/
+	byte	net_ipsrc[16];	/* IP src. address	*/
+	byte	net_ipdst[16];	/* IP dst. address	*/
 };
 #pragma pack()
 
