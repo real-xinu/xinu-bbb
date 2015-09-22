@@ -7,9 +7,30 @@
 #define	IP_ICMP		1		/* ICMP protocol type for IP 	*/
 #define	IP_UDP		17		/* UDP protocol type for IP 	*/
 
-#define	IP_ASIZE	4		/* Bytes in an IP address	*/
-#define	IP_HDR_LEN	20		/* Bytes in an IP header	*/
-#define IP_VH		0x45 		/* IP version and hdr length 	*/
+#define	IP_ASIZE	16		/* Bytes in an IP address	*/
+#define	IP_HDR_LEN	40		/* Bytes in an IP header	*/
+
+#define	IP_HBH		0
+#define	IP_RT		43
+#define	IP_FRAG		44
+#define	IP_DSTOP	60
+#define	IP_IPV6		41
+
+#define	isipll(x)	(!memcmp((x), ip_llprefix, 8))
+#define	isipmc(x)	(0)
+#pragma pack(1)
+struct	iphdr {
+	byte	ipvtch;
+	byte	iptclflh;
+	uint16	ipfll;
+	uint16	iplen;
+	byte	ipnh;
+	byte	iphl;
+	byte	ipsrc[16];
+	byte	ipdst[16];
+	byte	ipdata[];
+};
+#pragma pack()
 
 #define	IP_OQSIZ	8		/* Size of IP output queue	*/
 

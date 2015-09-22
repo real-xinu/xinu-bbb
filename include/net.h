@@ -15,6 +15,51 @@
 #define	RAD_ACK		2	/* Radio ack. frame	*/
 #define	RAD_MAC		3	/* Radio MAC cmd frame	*/
 
+#define	LP_DISP_IPHC	3	/* IPHC dispatch	*/
+#define	LP_DISP_FRAG1	0x18	/* Frag1 dispatch	*/
+#define	LP_DISP_FRAGN	0x1C	/* FragN dispatch	*/
+#define	LP_DISP_IP	0x41	/* Uncompr. IP dispatch	*/
+
+#pragma pack(1)
+struct	lp_iphc {
+	byte	iphc_hl:2;	/* IPHC hop limit	*/
+	byte	iphc_nh:1;	/* IPHC next hdr. comp.	*/
+	byte	iphc_tf:2;	/* IPHC TC FL		*/
+	byte	iphc_disp:3;	/* IPHC dispatch	*/
+	byte	iphc_dam:2;	/* IPHC Dst. Addr. Mode	*/
+	byte	iphc_dac:1;	/* IPHC Stateful dst.	*/
+	byte	iphc_m:1;	/* IPHC multicast dst.	*/
+	byte	iphc_sam:2;	/* IPHC Src. Addr. Mode	*/
+	byte	iphc_sac:1;	/* IPHC stateful src.	*/
+	byte	iphc_cid:1;	/* IPHC Context ID	*/
+};
+#pragma pack()
+
+#pragma pack(1)
+struct	lp_frag1 {
+	union {
+	 struct {
+	  uint32	frag1_dtag:16;	/* Datagram tag		*/
+	  uint32	frag1_dsize:11;	/* Datagram size	*/
+	  uint32	frag1_disp:5;	/* Frag1 dispatch	*/
+	 };
+	 uint32	frag1;
+	};
+};
+
+struct	lp_fragn {
+	union {
+	 struct {
+	  uint32	fragn_dtag:16;	/* Datagram tag		*/
+	  uint32	fragn_dsize:11;	/* Datagram size	*/
+	  uint32	fragn_disp:5;	/* FragN dispatch	*/
+	 };
+	 uint32	fragn;
+	};
+	byte	fragn_doff;	/* Datagram offset	*/
+};
+#pragma pack()
+
 /* Format of an IEEE 802.15.4 packet carrying IPv6 */
 
 #pragma pack(1)
@@ -35,15 +80,35 @@ struct	netpacket_r {
 	byte	net_raddst[8];	/* Radio dst. address	*/
 	byte	net_radsrcpan[2];/* Src. PAN ID		*/
 	byte	net_radsrc[8];	/* Radio src. address	*/
-	byte	net_lpdisp;	/* LoWPAN dispatch	*/
-	byte	net_ipvtch;	/* IP ver, TC high	*/
-	byte	net_iptclflh;	/* IP TC low, FL high	*/
-	uint16	net_ipfll;	/* IP FL flow		*/
-	uint16	net_iplen;	/* IP payload length	*/
-	byte	net_ipnh;	/* IP next header	*/
-	byte	net_iphl;	/* IP hop limit		*/
-	byte	net_ipsrc[16];	/* IP src. address	*/
-	byte	net_ipdst[16];	/* IP dst. address	*/
+	union {
+	 byte	net_raddata[1280-23];	/* Radio data		*/
+	 struct { /* Uncompressed IPv6 header */
+	  byte		net_lpdisp;	/* IP dispatch		*/
+	  byte		net_ipvtch;	/* IP ver, TC high	*/
+	  byte		net_iptclflh;	/* IP TC low, FL high	*/
+	  uint16	net_ipfll;	/* IP FL flow		*/
+	  uint16	net_iplen;	/* IP payload length	*/
+	  byte		net_ipnh;	/* IP next header	*/
+	  byte		net_iphl;	/* IP hop limit		*/
+	  byte		net_ipsrc[16];	/* IP src. address	*/
+	  byte		net_ipdst[16];	/* IP dst. address	*/
+	  byte		net_ipdata[];	/* IP data		*/
+	 };
+	 struct {
+	  struct lp_frag1	net_lpfrag1;
+	  struct lp_iphc	net_f1iphc;
+	  byte	 f1data[];
+	 };
+	 struct {
+	  struct lp_fragn	net_lpfragn;
+	  struct lp_iphc	net_f2iphc;
+	  byte	 fndata[];
+	 };
+	 struct {
+	  struct lp_iphc	net_iphc;
+	  byte	 iphcdata[];
+	 };
+	};
 };
 #pragma pack()
 
