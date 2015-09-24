@@ -6,96 +6,112 @@ byte	ip_llprefix[] = {0xfe, 0x80, 0, 0, 0, 0, 0, 0,
 			 0, 0, 0, 0, 0, 0, 0, 0};
 
 /*------------------------------------------------------------------------
- * lp_send  -  Compress and send an IPv6 datagram
+ * lp_send  -  Compress and send an IPv6 datagram (RFC 6282 and 4494)
  *------------------------------------------------------------------------
  */
 int32	lp_send (
 		 struct	netpacket_r *pkt
 		)
 {
-	struct	netpacket_r cpkt;	/* Compressed packet pointer	*/
-	struct	lp_iphc *iphc;		/* IPHC header pointer		*/
+	struct	netpacket_r cpkt;	/* Compressed packet to be sent	*/
+	struct	lp_iphc *iphc;		/* Lowpan IPHC header		*/
 	struct	lp_frag1 *f1;		/* Lowpan Frag1 header		*/
-	struct	lp_fragn *fn;		/* Lowpan Fragn header		*/
+	struct	lp_fragn *fn;		/* Lowpan FragN header		*/
 	struct	iphdr *ipptr;		/* IP header			*/
 	struct	udphdr *udpptr;		/* UDP header			*/
-	byte	*encsrc, *encdst;	/* Encap. src and dst addresses	*/
-	byte	*cstart;		/* Start of compression		*/
-	byte	*ustart;		/* Start of uncompressed pkt	*/
-	byte	*cptr, *uptr;		/* Current compressed and	*/
-					/* uncompressed pointers	*/
+	byte	*encsrc, *encdst;	/* Encap. src and dst		*/
+	bool8	ipenc;			/* IP encapsulation boolean	*/
+	byte	*cstart;		/* Start of compr. packet	*/
+	byte	*ustart;		/* Start of uncompr. packet	*/
+	byte	*cptr, *uptr;		/* Current compr, uncompr ptrs	*/
+	byte	*tmptr;			/* Temporary pointer		*/
 	byte	*chdrs[10];		/* Compressed header addresses	*/
-	byte	*uhdrs[10];		/* Uncompressed hdr addresses	*/
+	byte	*uhdrs[10];		/* Uncompr. header addresses	*/
 	byte	nhs[10];		/* Next header types		*/
-	byte	nh = IP_IPV6;		/* Next header type - IPv6	*/
-	bool8	ipenc = 0;		/* IP encapsulation		*/
-	int32	nhdrs = 0;		/* No. of compr. headers	*/
-	bool8	compr = 1;		/* Current compression state	*/
-	bool8	frag = 0;		/* Fragmentation		*/
-	int32	mtu = 128;		/* Max. Transmission Unit	*/
-	int32	pktremain;		/* Remaining bytes in pkt	*/
+	byte	nh;			/* Current header type		*/
+	int32	nhdrs;			/* No. of headers compressed	*/
+	int32	mtu = 40;		/* Max. Transmission Unit	*/
+	int32	pktremain;		/* Remaining bytes in packet	*/
 	int32	mturemain;		/* Remaining bytes in MTU	*/
-	int32	iplen;			/* Length of entire IP pkt	*/
-	byte	*tmptr;			/* Temp. byte pointer		*/
+	int32	pktlen;			/* Length of entire IP packet	*/
+	bool8	compr;			/* Compression boolean		*/
+	bool8	frag;			/* Fragmentation boolean	*/
 
-	/* If the packet is not IPv6, return */
+	/* Verify that the packet is IPv6 */
 
 	if((pkt->net_ipvtch & 0xf0) != 0x60) {
 		return SYSERR;
 	}
 
+	/* Initialize all the pointers and variables */
+
+	cstart = cptr = cpkt.net_raddata;
+	ustart = uptr = &pkt->net_ipvtch;
+	pktlen = IP_HDR_LEN + ntohs(pkt->net_iplen);
+	encsrc = pkt->net_radsrc;
+	encdst = pkt->net_raddst;
+	nh = IP_IPV6;
+	ipenc = 0;
+	compr = 1;
+	frag = 0;
+	nhdrs = 0;
+
 	/* Copy the radio header */
 
 	memcpy(&cpkt, pkt, 23);
 
-	cstart = cpkt.net_raddata;
-	ustart = (byte *)&pkt->net_ipvtch;
-	cptr = cstart;
-	uptr = (byte *)&pkt->net_ipvtch;
-	encsrc = pkt->net_radsrc;
-	encdst = pkt->net_raddst;
+	/* Start compressing */
 
-	iplen = IP_HDR_LEN + ntohs(pkt->net_iplen);
-
-	while(compr) { /* Still compressing */
+	while(compr) {
 
 		switch(nh) {
 
 		 case IP_IPV6: /* Compress an IPv6 header */
 
-		  kprintf("compressing IPv6\n");
+		  /* Store the start of compressed and uncompressed headers */
 
 		  chdrs[nhdrs] = cptr;
 		  uhdrs[nhdrs] = uptr;
 		  nhs[nhdrs] = nh;
 		  nhdrs++;
 
-		  ipptr = (struct iphdr *)uptr;
+		  /* If this header is encapsulate, add a IPNHC byte */
 
-		  if(ipenc) {
-			  *cptr = 0xEE; cptr++;
+		  if(ipenc == 1) {
+			  *cptr = 0xEE;
+			  cptr++;
 		  }
 
+		  ipptr = (struct iphdr *)uptr;
 		  iphc = (struct lp_iphc *)cptr;
 		  cptr += 2;
 
+		  /* Set the IPHC dispatch */
+
 		  iphc->iphc_disp = LP_DISP_IPHC;
 
-		  iphc->iphc_tf = 3;
+		  /* Traffic class is elided for now */
+
+		  iphc->iphc_tf = 0x3;
+
+		  /* Encode the next header */
 
 		  if(ipptr->ipnh == IP_HBH ||
 		     ipptr->ipnh == IP_RT ||
 		     ipptr->ipnh == IP_FRAG ||
 		     ipptr->ipnh == IP_DSTOP ||
+		     ipptr->ipnh == IP_IPV6 ||
 		     ipptr->ipnh == IP_UDP) {
-			  iphc->iphc_nh = 1;
 			  nh = ipptr->ipnh;
+			  iphc->iphc_nh = 1;
 		  }
 		  else {
-			  iphc->iphc_nh = 0;
-			  *cptr = ipptr->ipnh; cptr++;
 			  compr = 0;
+			  *cptr = ipptr->ipnh;
+			  cptr++;
 		  }
+
+		  /* Encode the hop limit */
 
 		  if(ipptr->iphl == 1) {
 			  iphc->iphc_hl = 1;
@@ -108,11 +124,17 @@ int32	lp_send (
 		  }
 		  else {
 			  iphc->iphc_hl = 0;
-			  *cptr = ipptr->iphl; cptr++;
+			  *cptr = ipptr->iphl;
+			  cptr++;
 		  }
+
+		  /* We do not use contextx for now */
 
 		  iphc->iphc_cid = 0;
 		  iphc->iphc_sac = 0;
+		  iphc->iphc_dac = 0;
+
+		  /* Encode the IP source address */
 
 		  if(isipll(ipptr->ipsrc)) {
 			  if(!memcmp(&ipptr->ipsrc[8], encsrc, 8)) {
@@ -125,10 +147,11 @@ int32	lp_send (
 			  }
 		  }
 		  else {
-			  iphc->iphc_sam = 0;
 			  memcpy(cptr, ipptr->ipsrc, 16);
 			  cptr += 16;
 		  }
+
+		  /* Encode the IP destination address */
 
 		  if(isipmc(ipptr->ipdst)) {
 		  }
@@ -139,7 +162,7 @@ int32	lp_send (
 				  }
 				  else {
 					  iphc->iphc_dam = 1;
-				  	  memcpy(cptr, &ipptr->ipdst[8], 8);
+					  memcpy(cptr, &ipptr->ipdst[8], 8);
 					  cptr += 8;
 				  }
 			  }
@@ -149,28 +172,34 @@ int32	lp_send (
 			  }
 		  }
 
-		  ipenc = 1;
-		  encsrc = &ipptr->ipsrc[8];
-		  encdst = &ipptr->ipdst[8];
 		  *cptr = 0;
+		  ipenc = 1;
+		  encsrc = ipptr->ipsrc;
+		  encdst = ipptr->ipdst;
 		  uptr += IP_HDR_LEN;
 		  break;
 
 		 case IP_DSTOP:
-		  *cptr = (*cptr) + 1;
+		  *cptr += 1;
 		 case IP_FRAG:
-		  *cptr = (*cptr) + 1;
+		  *cptr += 1;
 		 case IP_RT:
-		  *cptr = (*cptr) + 1;
+		  *cptr += 1;
 		 case IP_HBH:
 
-		  *cptr = (*cptr) << 1;
-		  *cptr |= 0xE0;
+		  /* Record the start of compr. and uncompr. headers */
 
 		  chdrs[nhdrs] = cptr;
 		  uhdrs[nhdrs] = uptr;
 		  nhs[nhdrs] = nh;
 		  nhdrs++;
+
+		  /* Set the IPNHC byte */
+
+		  *cptr *= 2;
+		  *cptr |= 0xE0;
+
+		  /* Encode the next header */
 
 		  if((*uptr) == IP_HBH ||
 		     (*uptr) == IP_RT ||
@@ -179,44 +208,54 @@ int32	lp_send (
 		     (*uptr) == IP_IPV6 ||
 		     (*uptr) == IP_UDP) {
 			  nh = *uptr;
-			  *cptr |= 0x01; cptr++;
+			  *cptr |= 0x01;
+			  cptr++;
 		  }
 		  else {
-			  cptr++;
-			  *cptr = *uptr; cptr++;
 			  compr = 0;
+			  cptr++;
+			  *cptr = *uptr;
+			  cptr++;
 		  }
 		  uptr++;
 
-		  *cptr = (*uptr)*8 + 6; cptr++;
-		  memcpy(cptr, uptr+1, (*uptr)*8 + 6);
+		  /* Copy the extension header data */
+
+		  *cptr = (*uptr)*8 + 6;
+		  cptr++;
+		  memcpy(cptr, (uptr+1), (*uptr)*8 + 6);
 		  cptr += (*uptr)*8 + 6;
 		  uptr += (*uptr)*8 + 7;
 		  break;
 		}
 
+		/* If we have exceeded the MTUm start backtracking */
+
 		if((cptr-cstart) > mtu) {
+			/* Leave 4 bytes for frag1 header */
 			while((cptr-cstart) > (mtu-4)) {
 				nhdrs--;
 				cptr = chdrs[nhdrs-1];
 				uptr = uhdrs[nhdrs-1];
 				nh = nhs[nhdrs-1];
 				if(nh == IP_IPV6) {
-					iphc = (struct lp_iphc *)cptr;
-					iphc->iphc_nh = 0;
-					tmptr = chdrs[nhdrs];
-					while(tmptr >= (cptr+2)) {
-						*(tmptr + 1) = *tmptr;
-						tmptr--;
-					}
+					*cptr = *(cptr+1);
+					*(cptr+1) = *(cptr+2);
+					*(cptr+2) = nhs[nhdrs];
+					((struct lp_iphc *)cptr)->iphc_nh = 0;
+					cptr = chdrs[nhdrs];
+					uptr = uhdrs[nhdrs];
 				}
 				else {
-					*cptr &= 0xFE;
-					tmptr = chdrs[nhdrs];
+					tmptr = chdrs[nhdrs]-1;
 					while(tmptr >= (cptr+1)) {
 						*(tmptr + 1) = *tmptr;
 						tmptr--;
 					}
+					*cptr &= 0xE0;
+					*(cptr + 1) = nhs[nhdrs];
+					cptr = chdrs[nhdrs]+1;
+					uptr = uhdrs[nhdrs];
 				}
 			}
 			frag = 1;
@@ -224,29 +263,36 @@ int32	lp_send (
 		}
 	}
 
-	pktremain = iplen - (uptr-ustart);
+	pktremain = pktlen - (uptr-ustart);
 
 	if(frag == 0) {
 		mturemain = mtu - (cptr-cstart);
 		if(pktremain <= mturemain) {
 			memcpy(cptr, uptr, pktremain);
+			cptr += pktremain;
+			uptr += pktremain;
 			pktlog(&cpkt, 23 + (cptr-cstart));
 			return OK;
 		}
 	}
+
+	/* Make space for the Frag1 header */
 
 	tmptr = cptr;
 	while(tmptr >= cstart) {
 		*(tmptr + 4) = *tmptr;
 		tmptr--;
 	}
+	cptr += 4;
+
 	f1 = (struct lp_frag1 *)cstart;
 	f1->frag1_disp = LP_DISP_FRAG1;
 	f1->frag1_dtag = 0;
-	f1->frag1_dsize = iplen;
+	f1->frag1_dsize = pktlen;
 	f1->frag1 = htonl(f1->frag1);
 
-	cptr += 4;
+	/* Copy as much data as possible in the fragment */
+
 	mturemain = mtu - (cptr-cstart);
 	while(mturemain >= 8) {
 		memcpy(cptr, uptr, 8);
@@ -259,20 +305,22 @@ int32	lp_send (
 
 	while(1) {
 
-		cstart = cptr = cpkt.net_raddata;
 		fn = (struct lp_fragn *)cstart;
 		fn->fragn_disp = LP_DISP_FRAGN;
 		fn->fragn_dtag = 0;
-		fn->fragn_dsize = iplen;
+		fn->fragn_dsize = pktlen;
 		fn->fragn_doff = (uptr-ustart)/8;
 		fn->fragn = htonl(fn->fragn);
 
-		pktremain = iplen - (uptr-ustart);
-		mturemain = mtu - 5;
-		cptr += 5;
+		cptr = cstart + 5;
+
+		pktremain = pktlen - (uptr-ustart);
+		mturemain = mtu - (cptr-cstart);
 
 		if(pktremain <= mturemain) {
 			memcpy(cptr, uptr, pktremain);
+			cptr += pktremain;
+			uptr += pktremain;
 			pktlog(&cpkt, 23 + (cptr-cstart));
 			return OK;
 		}
