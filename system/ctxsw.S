@@ -18,5 +18,5 @@ ctxsw:
 	pop	{r0}			/* Use status as argument and	*/
 	bl	restore			/*   call restore to restore it	*/
 	pop	{lr}			/* Pick up the return address	*/
-	pop	{r0-r12}		/* Restore other registere	*/
+	pop	{r0-r12}		/* Restore other registers	*/
 	mov	pc, r12			/* Return to the new process	*/
