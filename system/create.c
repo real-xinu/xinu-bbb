@@ -83,35 +83,6 @@ pid32	create(
 	prptr->prstkptr = (char *)saddr;
 	restore(mask);
 	return pid;
-
-	/* The following entries on the stack must match what ctxsw	*/
-	/*   expects a saved process state to contain: ret address,	*/
-	/*   ebp, interrupt mask, flags, registerss, and an old SP	*/
-
-	*--saddr = (long)procaddr;	/* Make the stack look like it's*/
-					/*  half-way through a call to	*/
-					/*  ctxsw that "returns" to the	*/
-					/*  new process			*/
-	*--saddr = savsp;		/* This will be register ebp	*/
-					/*  for process exit		*/
-	savsp = (uint32) saddr;		/* start of frame for ctxsw	*/
-	*--saddr = 0x00000200;		/* New process runs with	*/
-					/*  interrupts enabled		*/
-
-	/* Basically, the following emulates a x86 "pushal" instruction	*/
-
-	*--saddr = 0;		/* %eax */
-	*--saddr = 0;		/* %ecx */
-	*--saddr = 0;		/* %edx */
-	*--saddr = 0;		/* %ebx */
-	*--saddr = 0;		/* %esp; value filled in below */
-	pushsp = saddr;		/*  remember this location */
-	*--saddr = savsp;	/* %ebp (while finishing ctxsw) */
-	*--saddr = 0;		/* %esi */
-	*--saddr = 0;		/* %edi */
-	*pushsp = (unsigned long) (prptr->prstkptr = (char *)saddr);
-	restore(mask);
-	return pid;
 }
 
 /*------------------------------------------------------------------------

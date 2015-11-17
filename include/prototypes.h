@@ -71,11 +71,11 @@ extern	uint32	dot2ip(char *, uint32 *);
 
 extern	pid32	enqueue(pid32, qid16);
 
-/* in file intutils.S */
+/* in file intr.S */
 
 extern	intmask	disable(void);
 
-/* in file intutils.S */
+/* in file intr.S */
 
 extern	void	enable(void);
 
@@ -95,6 +95,8 @@ extern	int32	ethread(struct dentry *, void *, uint32);
 extern	int32	ethwrite(struct dentry *, void *, uint32);
 
 /* in file evec.c */
+nn
+
 extern	int32	initevec(void);
 extern	int32	set_evec(uint32, uint32);
 extern	void	trap(int32);
@@ -154,17 +156,11 @@ extern	void	icmp_ntoh(struct netpacket *);
 /* in file init.c */
 extern	syscall	init(did32);
 
-/* in file initialize.c */
-extern	int32	sizmem(void);
-
 /* in file insert.c */
 extern	status	insert(pid32, qid16, int32);
 
 /* in file insertd.c */
 extern	status	insertd(pid32, qid16, int32);
-
-/* in file intr.S */
-extern	uint16	getirmask(void);
 
 /* in file ioerr.c */
 extern	devcall	ioerr(void);
@@ -426,7 +422,7 @@ extern	umsg32	recvtime(int32);
 /* in file resched.c */
 extern	void	resched(void);
 
-/* in file intutils.S */
+/* in file intr.S */
 extern	void	restore(intmask);
 
 /* in file resume.c */
