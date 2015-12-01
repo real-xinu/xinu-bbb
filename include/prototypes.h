@@ -95,7 +95,6 @@ extern	int32	ethread(struct dentry *, void *, uint32);
 extern	int32	ethwrite(struct dentry *, void *, uint32);
 
 /* in file evec.c */
-nn
 
 extern	int32	initevec(void);
 extern	int32	set_evec(uint32, uint32);

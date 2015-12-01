@@ -24,6 +24,6 @@ void	meminit(void)
 	memptr = memlist.mnext;
 
 	memptr->mnext = (struct memblk *)NULL;
-	memlist->mlength = memptr->mlength =
+	memlist.mlength = memptr->mlength =
 		(uint32)maxheap - (uint32)minheap;
 }
