@@ -25,6 +25,10 @@
 #include <net.h>
 #include <ip.h>
 #include <arp.h>
+#include <mq.h>
+#include <timer.h>
+#include <tcp.h>
+#include <tcb.h>
 #include <udp.h>
 #include <dhcp.h>
 #include <icmp.h>
