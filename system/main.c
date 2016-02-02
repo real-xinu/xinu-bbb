@@ -61,47 +61,7 @@ process	main(void)
 	lp_send(&pkt);
 #endif
 
-	uint32	ipaddr;
-	dot2ip("128.10.137.101", &ipaddr);
-	kprintf("Server IP %x\n", ipaddr);
-
-	int32	slot = tcp_register(ipaddr, 12345, 1);
-	kprintf("slot = %d\n", slot);
-
-	char	name[] = "AlexHamlin";
-	kprintf("sending packet now");
-	tcp_send(slot, name, 5);
-	char	msg[50] = {0};
-	tcp_recv(slot, msg, 50);
-	kprintf("%s\n", msg);
-
-	tcp_close(slot);
-
-#if 0
-	int32	lslot = tcp_register(NetData.ipucast, 12345, 0);
-	int32	nslot, retval;
-	char	name[50];
-	char	msg[50];
-
-	while(TRUE) {
-		retval = tcp_recv(lslot, &nslot, 4);
-		if(retval == SYSERR) {
-			continue;
-		}
-
-		kprintf("New connection from: %x\n", tcbtab[nslot].tcb_rip);
-		retval = tcp_recv(nslot, name, 10);
-		name[retval] = 0;
-		memset(msg, 0, 50);
-		sprintf(msg, "Hello %s\n", name);
-		tcp_send(nslot, msg, strlen(msg));
-		//tcp_send(nslot, name, strlen(name));
-		kprintf("calling tcp_close\n");
-		tcp_close(nslot);
-	}
-#endif
-
-#if 0
+#if 1
 	kprintf("\n...creating a shell\n");
 	recvclr();
 	resume(create(shell, 8192, 50, "shell", 1, CONSOLE));

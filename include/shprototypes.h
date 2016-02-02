@@ -58,6 +58,12 @@ extern	shellcmd  xsh_ps	(int32, char *[]);
 /* in file xsh_sleep.c */
 extern	shellcmd  xsh_sleep	(int32, char *[]);
 
+/* in file xsh_tcpclient.c */
+extern	shellcmd  xsh_tcpclient	(int32, char *[]);
+
+/* in file xsh_tcpserver.c */
+extern	shellcmd  xsh_tcpserver	(int32, char *[]);
+
 /* in file xsh_udpdump.c */
 extern	shellcmd  xsh_udpdump	(int32, char *[]);
 
