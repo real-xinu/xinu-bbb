@@ -46,6 +46,11 @@ void	ip_in(
 		udp_ntoh(pktptr);
 		break;
 
+		case IP_TCP:
+		/*kprintf("\t[ip_in: received TCP packet]\n");*/
+		tcp_ntoh(pktptr);
+		break;
+
 	    case IP_ICMP:
 		icmplen = pktptr->net_iplen - IP_HDR_LEN;
 		if (icmp_cksum((char *)&pktptr->net_ictype,icmplen) != 0){
@@ -195,6 +200,11 @@ void	ip_local(
 		udp_in(pktptr);
 		return;
 
+		case IP_TCP:
+		/*kprintf("\t[ip_local: delivering TCP to local stack]\n");*/
+		tcp_in(pktptr);
+		return;
+
 	    case IP_ICMP:
 		icmp_in(pktptr);
 		return;
@@ -246,6 +256,12 @@ status	ip_out(
 			cksum = icmp_cksum((char *)&pktptr->net_ictype,
 								len);
 			pktptr->net_iccksum = 0xffff & htons(cksum);
+			break;
+
+		case IP_TCP:
+			tcp_hton(pktptr);
+			cksum = tcpcksum(pktptr);
+			pktptr->net_tcpcksum = htons(cksum) & 0xffff;
 			break;
 
 	    default:
