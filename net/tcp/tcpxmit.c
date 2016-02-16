@@ -2,6 +2,12 @@
 
 #include <xinu.h>
 
+#if 1
+#define DEBUG(x) (x)
+#else
+#define DEBUG(x)
+#endif
+
 /*------------------------------------------------------------------------
  *  tcpxmit  -  Send a segment if needed
  *------------------------------------------------------------------------
@@ -87,7 +93,9 @@ int32	tcpxmit(
 		}
 
 		/* Send a segment */
+		DEBUG(kprintf("\t[tcpxmit: about to send segment]\n"));
 		tcpsendseg (tcbptr, offset, len, code);
+		DEBUG(kprintf("\t[tcpxmit: finished sending segment]\n"));
 		seq = seq + len + codelen;
 
 		if (SEQ_CMP(tcbptr->tcb_snext, seq) < 0) {

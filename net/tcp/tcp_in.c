@@ -2,6 +2,12 @@
 
 #include <xinu.h>
 
+#if 1
+#define DEBUG(x) (x)
+#else
+#define DEBUG(x)
+#endif
+
 /*------------------------------------------------------------------------
  *  tcp_in  -  process an incoming TCP segment
  *------------------------------------------------------------------------
@@ -26,15 +32,20 @@ void	tcp_in(
 
 	if ((memcmp(pkt->net_ethdst,ebcast,ETH_ADDR_LEN)== 0) ||
 				(pkt->net_ipdst == IP_BCAST)) {
+		DEBUG(kprintf("\t[tcp_in: rejecting broadcast/multicast packet]\n"));
 		freebuf ((char *)pkt);
 		return;
 	}
-/*DEBUG*/ //kprintf("\nIN: seq %x, ackseq %x\n", pkt->net_tcpseq, pkt->net_tcpack);
-	//pdumph(pkt);
+	/*DEBUG*/
+	DEBUG(kprintf("\t[tcp_in: seq %x ackseq %x]\n", pkt->net_tcpseq, pkt->net_tcpack));
+	pdumph(pkt);
 
 	/* Validate header lengths */
 
 	if (len < (IP_HDR_LEN + TCP_HLEN(pkt)) ) {
+		DEBUG(kprintf("\t[tcp_in: invalid header length]\n"));
+		DEBUG(kprintf("\t[tcp_in lengths: ip %d / tcp expected %d]\n",
+				len, IP_HDR_LEN + TCP_HLEN(pkt)));
 		freebuf ((char *)pkt);
 		return;
 	}
@@ -82,13 +93,15 @@ void	tcp_in(
 	/* See if full match found, partial match found, or none */
 
 	if (complete != -1) {
+		DEBUG(kprintf("\t[tcp_in: found complete match for packet]\n"));
 		entry = complete;
 	} else if (partial != -1) {
+		DEBUG(kprintf("\t[tcp_in: found partial match for packet]\n"));
 		entry = partial;
 	} else {
 
 		/* No match - send a reset and drop the packet */
-
+		DEBUG(kprintf("\t[tcp_in: no match for packet]\n"));
 		signal (Tcp.tcpmutex);
 		tcpreset (pkt);
 		freebuf ((char *)pkt);
@@ -102,6 +115,7 @@ void	tcp_in(
 
 	/* Process the segment according to the state of the TCB */
 
+	DEBUG(kprintf("\t[tcp_in: about to process segment based on TCP state]\n"));
 	tcpdisp (&tcbtab[entry], pkt);
 	signal (tcbtab[entry].tcb_mutex);
 	freebuf ((char *)pkt);
