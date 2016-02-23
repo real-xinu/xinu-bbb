@@ -47,6 +47,11 @@ void	clkhandler()
 		}
 	}
 
+	/* check if TCP timer needs to fire */
+	if(tmnext && (--(*tmnext)) == 0) {
+		tmfire();
+	}
+
 	/* Decrement the preemption counter */
 	/* Reschedule if necessary	    */
 
