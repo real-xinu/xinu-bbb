@@ -33,7 +33,9 @@ int32	tcpfin1(
 
 		/* FIN was received and ours was ACKed, so the	*/
 		/*     connection is closed and TCB can expire	*/
+		/* (BUT, we have to send an ACK first!)			*/
 
+		tcpack (tcbptr, TRUE);
 		tcptmset (TCP_MSL << 1, tcbptr, TCBC_EXPIRE);
 		tcbptr->tcb_state = TCB_TWAIT;
 	} else if (rfin)
@@ -43,7 +45,7 @@ int32	tcpfin1(
 		tcbptr->tcb_state = TCB_CLOSING;
 	else if (ack)
 
-		/* ACK arrived and ew move to FIN-WAIT2 */
+		/* ACK arrived and we move to FIN-WAIT2 */
 		tcbptr->tcb_state = TCB_FIN2;
 
 	tcpxmit (tcbptr, tcbptr->tcb_snext);
