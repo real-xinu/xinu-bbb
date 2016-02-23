@@ -2,7 +2,7 @@
 
 #include <xinu.h>
 
-#if 1
+#if 0
 #define DEBUG(x) (x)
 #else
 #define DEBUG(x)
@@ -37,7 +37,7 @@ void	tcp_in(
 		return;
 	}
 	/*DEBUG*/
-	DEBUG(kprintf("\t[tcp_in: seq %x ackseq %x]\n", pkt->net_tcpseq, pkt->net_tcpack));
+	kprintf("IN: seq %x ackseq %x\n", pkt->net_tcpseq, pkt->net_tcpack);
 	pdumph(pkt);
 
 	/* Validate header lengths */

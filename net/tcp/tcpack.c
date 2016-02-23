@@ -44,8 +44,8 @@ void	tcpack(
 
 	tcbptr->tcb_flags &= ~(TCBF_NEEDACK | TCBF_ACKPEND);
 
-	//kprintf("OUT: seq %x ackseq %x\n", pkt->net_tcpseq, pkt->net_tcpack);
-	//pdumph(pkt);
+	kprintf("OUT: seq %x ackseq %x\n", pkt->net_tcpseq, pkt->net_tcpack);
+	pdumph(pkt);
 	ip_enqueue(pkt);
 	return;
 }
