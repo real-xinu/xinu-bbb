@@ -51,9 +51,9 @@ void	tcpdisp(
 	)
 {
 	int32		state;		/* state of the TCB		*/
-/*DEBUG*///char *dnames[] = {"tcpnull","tcplisten","tcpsynsent","tcpsynrcvd",
-/*DEBUG*///	"tcpestd","tcpfin1","tcpfin2","tcpcwait","tcpclosing",
-/*DEBUG*///	"tcplastack","tcptwait"};
+/*DEBUG*/char *dnames[] = {"tcpnull","tcplisten","tcpsynsent","tcpsynrcvd",
+/*DEBUG*/	"tcpestd","tcpfin1","tcpfin2","tcpcwait","tcpclosing",
+/*DEBUG*/	"tcplastack","tcptwait"};
 
 	/* Obtain the state from the TCB */
 
@@ -101,7 +101,7 @@ void	tcpdisp(
 
 	/* Dispatch processing according to the state of the TCB */
 
-/*DEBUG*/ //kprintf("tcpdisp: dispatching to %s\n",dnames[state]);
+	kprintf("tcpdisp: dispatching to %s\n", dnames[state]);
 	(tcpstatesw[state]) (tcbptr, pkt);
 
 	return;
