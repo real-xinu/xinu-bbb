@@ -2,6 +2,12 @@
 
 #include <xinu.h>
 
+#if 1
+#define DEBUG(x) (x)
+#else
+#define DEBUG(x)
+#endif
+
 /*------------------------------------------------------------------------
  *  tcpack  -  Send or schedule transmission of a TCP Acknowledgement
  *------------------------------------------------------------------------
@@ -31,6 +37,7 @@ void	tcpack(
 	/*   has specified forcing an ACK, so go send it now		*/
 
 	if (tcbptr->tcb_flags & TCBF_ACKPEND) {
+		DEBUG(kprintf("\t[tcpack: deleting pending ack]\n"));
 		tcptmdel (tcbptr, TCBC_DELACK);
 	}
 

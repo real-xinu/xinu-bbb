@@ -110,7 +110,7 @@ int32	tcp_register (
 		tcbptr->tcb_sbuf = (char *)getmem (65535);
 		if (tcbptr->tcb_sbuf == (char *)SYSERR) {
 			DEBUG(kprintf("\t[TCP: Error allocating!]\n"));
-			/* IS THIS RIGHT?!!?!?! (or is above right, not freeing) */
+			/* Need to free the *receive* buffer */
 			freemem ((char *)tcbptr->tcb_rbuf, 65535);
 			signal (Tcp.tcpmutex);
 			return SYSERR;
