@@ -55,8 +55,8 @@ shellcmd xsh_tcpclient(int nargs, char *args[])
 	tcp_recv(slot, rcvbuf, RECV_MAX);
 	printf("%s\n", rcvbuf);
 
-	printf("Closing slot...\n");
-	tcp_close(slot);
+	printf("Closing slot... ");
+	kprintf("%d\n", tcp_close(slot));
 
 	return 0;
 }

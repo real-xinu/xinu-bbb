@@ -3,7 +3,7 @@
 #include <xinu.h>
 
 int32	tmpending;
-int32	*tmnext;
+int32	*tmnext = NULL;
 
 struct	tmentry	tmtab[NTIMERS];
 int32	tmfree;
@@ -21,8 +21,8 @@ void	tminit(void)
 
 	/* Initialize globals */
 
+	// tmnext - initialized above
 	tmpending = 0;
-	tmnext = NULL;
 	tmfree = 0;
 
 	/* Link table entries together except for last one */
@@ -67,6 +67,7 @@ process	timer(void)
 		/* When time expires send a message */
 
 		while (tmhead != BADTIMER && tmtab[tmhead].tm_remain <= 0) {
+/*DEBUG*/	//kprintf("\t[tcp timer: sending %x]\n", tmtab[tmhead].tm_msg);
 			mqsend (tmtab[tmhead].tm_mq, tmtab[tmhead].tm_msg);
 			tmp = tmhead;
 			tmhead = tmtab[tmhead].tm_next;
@@ -170,6 +171,9 @@ int32	tmset (
 	tmpending = TRUE;
 	tmnext = &tmtab[tmhead].tm_remain;
 	restore(mask);
+
+/*DEBUG*/	//kprintf("\t[tmset: message %x in %d ms]\n", msg, delay);
+
 	signal (tmlock);
 	return OK;
 }

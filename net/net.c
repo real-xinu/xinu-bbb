@@ -3,6 +3,12 @@
 #include <xinu.h>
 #include <stdio.h>
 
+#if 0
+#define DEBUG(x) (x)
+#else
+#define DEBUG(x)
+#endif
+
 struct	network	NetData;
 bpid32	netbufpool;
 
@@ -101,6 +107,7 @@ process	netin ()
 			continue;
 
 		    case ETH_IP:			/* Handle IP	*/
+			DEBUG(kprintf("\t[netin: handling IP packet]\n"));
 			ip_in(pkt);
 			continue;
 	

@@ -3,6 +3,12 @@
 #include <xinu.h>
 #include <string.h>
 
+#if 0
+#define DEBUG(x) (x)
+#else
+#define DEBUG(x)
+#endif
+
 /*------------------------------------------------------------------------
  *  ckecktuple  -  Verify that a TCP connection is not already in use by
  *			checking (src IP, src port, Dst IP, Dst port)
@@ -75,10 +81,12 @@ int32	tcp_register (
 	tcbptr = &tcbtab[i];
 	tcbclear (tcbptr);
 	slot = i;
+	DEBUG(kprintf("\t[TCP: Got free TCB slot %d]\n", slot));
 
 	/* Either set up active or passive endpoint */
 
 	if (active) {
+		DEBUG(kprintf("\t[TCP: Creating active connection]\n"));
 
 		/* Obtain local IP address from interface */
 
@@ -86,16 +94,23 @@ int32	tcp_register (
 
 		/* Allocate receive buffer and initialize ptrs */
 
+		DEBUG(kprintf("\t[TCP: Allocating receive buffer]\n"));
 		tcbptr->tcb_rbuf = (char *)getmem (65535);
 		if (tcbptr->tcb_rbuf == (char *)SYSERR) {
+			DEBUG(kprintf("\t[TCP: Error allocating!]\n"));
 			signal (Tcp.tcpmutex);
 			return SYSERR;
 		}
 		tcbptr->tcb_rbsize = 65535;
 		tcbptr->tcb_rbdata = tcbptr->tcb_rbuf;
 		tcbptr->tcb_rbend = tcbptr->tcb_rbuf + tcbptr->tcb_rbsize;
+
+
+		DEBUG(kprintf("\t[TCP: Allocating sender buffer]\n"));
 		tcbptr->tcb_sbuf = (char *)getmem (65535);
 		if (tcbptr->tcb_sbuf == (char *)SYSERR) {
+			DEBUG(kprintf("\t[TCP: Error allocating!]\n"));
+			/* Need to free the *receive* buffer */
 			freemem ((char *)tcbptr->tcb_rbuf, 65535);
 			signal (Tcp.tcpmutex);
 			return SYSERR;
@@ -106,6 +121,7 @@ int32	tcp_register (
 		/*   the iteration covers at least Ntcp+1 port	*/
 		/*   numbers and there are only Ntcp slots	*/
 
+		DEBUG(kprintf("\t[TCP: finding usable local port]\n"));
 		for (i = 0; i < Ntcp + 1; i++) {
 			if (checktuple (lip, Tcp.tcpnextport,
 					      ip, port) == OK) {
@@ -115,15 +131,19 @@ int32	tcp_register (
 			if (Tcp.tcpnextport > 63000)
 				Tcp.tcpnextport = 33000;
 		}
+		DEBUG(kprintf("\t[TCP: calculation complete]\n"));
 
 		tcbptr->tcb_lip = lip;
 
 		/* Assign next local port */
-
 		tcbptr->tcb_lport = Tcp.tcpnextport++;
+		DEBUG(kprintf("\t[TCP: local port is %d]\n", tcbptr->tcb_lport));
+
 		if (Tcp.tcpnextport > 63000) {
 			Tcp.tcpnextport = 33000;
 		}
+
+		DEBUG(kprintf("\t[TCP: finishing TCB setup]\n"));
 		tcbptr->tcb_rip = ip;
 		tcbptr->tcb_rport = port;
 		tcbptr->tcb_snext = tcbptr->tcb_suna = tcbptr->tcb_ssyn = 1;
@@ -133,7 +153,9 @@ int32	tcp_register (
 		signal (Tcp.tcpmutex);
 
 		tcbref (tcbptr);
+		DEBUG(kprintf("\t[TCP: Sending SYN]\n"));
 		mqsend (Tcp.tcpcmdq, TCBCMD(tcbptr, TCBC_SEND));
+		DEBUG(kprintf("\t[TCP: mqsend completed]\n"));
 		while (tcbptr->tcb_state != TCB_CLOSED
 		       && tcbptr->tcb_state != TCB_ESTD) {
 			tcbptr->tcb_readers++;
@@ -145,9 +167,12 @@ int32	tcp_register (
 			tcbunref (tcbptr);
 		}
 		signal (tcbptr->tcb_mutex);
+		DEBUG(kprintf("\t[TCP: State is %d]\n", state));
 		return (state == TCB_ESTD ? slot : SYSERR);
 
 	} else {  /* Passive connection */
+		DEBUG(kprintf("\t[TCP: Creating passive slot]\n"));
+
 		for (i = 0; i < Ntcp; i++) {
 			if (tcbtab[i].tcb_state == TCB_LISTEN
 			    && tcbtab[i].tcb_lip == ip
@@ -155,6 +180,7 @@ int32	tcp_register (
 
 				/* Duplicates prior connection */
 
+				DEBUG(kprintf("\t[TCP: Prior connection duplicated]\n"));
 				signal (Tcp.tcpmutex);
 				return SYSERR;
 			}
@@ -162,6 +188,7 @@ int32	tcp_register (
 
 		/* New passive endpoint - fill in TCB */
 
+		DEBUG(kprintf("\t[TCP: New endpoint]\n"));
 		tcbptr->tcb_lip = ip;
 		tcbptr->tcb_lport = port;
 		tcbptr->tcb_state = TCB_LISTEN;
@@ -170,6 +197,7 @@ int32	tcp_register (
 
 		/* Return slave device to caller */
 
+		DEBUG(kprintf("\t[TCP: Returning slot %d]\n", slot));
 		return slot;
 	}
 }
