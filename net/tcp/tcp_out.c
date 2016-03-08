@@ -2,7 +2,7 @@
 
 #include <xinu.h>
 
-#if 0
+#if 1
 #define DEBUG(x) (x)
 #else
 #define DEBUG(x)
@@ -41,6 +41,7 @@ process	tcp_out(void)
 		/* Insure TCB has remained active */
 
 		if (tcbptr->tcb_state <= TCB_CLOSED) {
+			DEBUG_TCBUNREF(tcbptr, "tcp_out message on CLOSED dev");
 			tcbunref (tcbptr);
 			signal (tcbptr->tcb_mutex);
 			signal (Tcp.tcpmutex);
@@ -86,6 +87,7 @@ process	tcp_out(void)
 		case TCBC_EXPIRE:
 			DEBUG(kprintf("\t[tcp_out: Command TCB EXPIRE]\n"));
 			tcbptr->tcb_state = TCB_CLOSED;
+			DEBUG_TCBUNREF(tcbptr, "tcp_out expire");
 			tcbunref (tcbptr);
 			break;
 
@@ -97,6 +99,7 @@ process	tcp_out(void)
 
 		/* Command has been handled, so reduce reference count	*/
 
+		DEBUG_TCBUNREF(tcbptr, "tcp_out handling done");
 		tcbunref (tcbptr);
 
 		/* Release TCP mutex while waiting for next message	*/

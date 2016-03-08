@@ -42,6 +42,7 @@ int32	tcp_close(
 			tcp_close(child);
 		}
 		ptcb->tcb_state = TCB_CLOSED;
+		DEBUG_TCBUNREF(ptcb, "tcpclose listen");
 		tcbunref (ptcb);
 		return OK;
 	}
@@ -54,6 +55,7 @@ int32	tcp_close(
 
 		tcptmdel (ptcb, TCBC_RTO);
 		ptcb->tcb_state = TCB_CLOSED;
+		DEBUG_TCBUNREF(ptcb, "tcpclose synsent");
 		tcbunref (ptcb);
 		return OK;
 	}

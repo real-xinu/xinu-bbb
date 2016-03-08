@@ -78,6 +78,7 @@ int32	tcp_send(
 		tcbptr->tcb_flags |= TCBF_SPUSHOK;
 		tcbptr->tcb_spush = tcbptr->tcb_suna + tcbptr->tcb_sblen;
 
+		DEBUG_TCBREF(tcbptr, "tcp_send data deposited");
 		tcbref (tcbptr);
 
 		/* send a message to the output process */

@@ -149,9 +149,11 @@ int32	tcp_register (
 		tcbptr->tcb_snext = tcbptr->tcb_suna = tcbptr->tcb_ssyn = 1;
 		tcbptr->tcb_state = TCB_SYNSENT;
 		wait (tcbptr->tcb_mutex);
+		DEBUG_TCBREF(tcbptr, "tcp_register active before signal");
 		tcbref (tcbptr);
 		signal (Tcp.tcpmutex);
 
+		DEBUG_TCBREF(tcbptr, "tcp_register active after signal");
 		tcbref (tcbptr);
 		DEBUG(kprintf("\t[TCP: Sending SYN]\n"));
 		mqsend (Tcp.tcpcmdq, TCBCMD(tcbptr, TCBC_SEND));
@@ -164,6 +166,7 @@ int32	tcp_register (
 			wait (tcbptr->tcb_mutex);
 		}
 		if ((state = tcbptr->tcb_state) == TCB_CLOSED) {
+			DEBUG_TCBUNREF(tcbptr, "tcp_register active closed after wait");
 			tcbunref (tcbptr);
 		}
 		signal (tcbptr->tcb_mutex);
@@ -192,6 +195,7 @@ int32	tcp_register (
 		tcbptr->tcb_lip = ip;
 		tcbptr->tcb_lport = port;
 		tcbptr->tcb_state = TCB_LISTEN;
+		DEBUG_TCBREF(tcbptr, "tcp_register passive");
 		tcbref (tcbptr);
 		signal (Tcp.tcpmutex);
 

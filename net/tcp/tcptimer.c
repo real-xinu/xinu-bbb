@@ -13,6 +13,7 @@ void	tcptmset(
 	)
 {
 	/* Increment reference count for TCB */
+	DEBUG_TCBREF(tcbptr, "tcptmset");
 	tcbref (tcbptr);
 
 	/* Set the event */
@@ -35,6 +36,7 @@ void	tcptmdel(
 
 		/* Decrement the refernce count */
 
+		DEBUG_TCBUNREF(tcbptr, "tcptmdel");
 		tcbunref (tcbptr);
 	}
 	return;
