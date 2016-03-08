@@ -87,8 +87,6 @@ process	tcp_out(void)
 		case TCBC_EXPIRE:
 			DEBUG(kprintf("\t[tcp_out: Command TCB EXPIRE]\n"));
 			tcbptr->tcb_state = TCB_CLOSED;
-			DEBUG_TCBUNREF(tcbptr, "tcp_out expire");
-			tcbunref (tcbptr);
 			break;
 
 		/* Unknown command (should not happen) */
