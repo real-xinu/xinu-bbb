@@ -37,8 +37,8 @@ void	tcp_in(
 		return;
 	}
 	/*DEBUG*/
-	kprintf("IN: seq %x ackseq %x\n", pkt->net_tcpseq, pkt->net_tcpack);
-	pdumph(pkt);
+	//kprintf("IN: seq %x ackseq %x\n", pkt->net_tcpseq, pkt->net_tcpack);
+	//pdumph(pkt);
 
 	/* Validate header lengths */
 

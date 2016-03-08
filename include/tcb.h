@@ -42,8 +42,13 @@
 #define TCPW_READERS	0x1
 #define TCPW_WRITERS	0x2
 
+#if 0
 #define DEBUG_TCBREF(ptr, msg) (kprintf("\t[tcbref %x @ %d : %s]\n", (ptr), (ptr)->tcb_ref, (msg)))
 #define DEBUG_TCBUNREF(ptr, msg) (kprintf("\t[tcbunref %x @ %d : %s]\n", (ptr), (ptr)->tcb_ref, (msg)))
+#else
+#define DEBUG_TCBREF(ptr, msg)
+#define DEBUG_TCBUNREF(ptr, msg)
+#endif
 
 /* Format of a TCP Control Block */
 
