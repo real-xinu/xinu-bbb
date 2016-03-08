@@ -50,7 +50,7 @@ typedef	int32	tcpseq;			/* TCP sequence number type	*/
 
 #define TCP_MAXRTO	5		/* Maximum round-trip timeout	*/
 
-#define TCP_MSL		120000		/* Maximum Segment Lifetime 	*/
+#define TCP_MSL		15000		/* Maximum Segment Lifetime 	*/
 
 /* TCP header format */
 
