@@ -19,12 +19,6 @@ int32	tcpsynrcvd(
 		return SYSERR;
 	}
 
-	/* The following increment of the refernce count is for	*/
-	/*    the system because the TCB is now synchronized	*/
-
-	DEBUG_TCBREF(tcbptr, "tcpsynrcvd");
-	tcbref (tcbptr);
-
 	/* Change state to ESTABLISHED */
 
 	tcbptr->tcb_state = TCB_ESTD;
