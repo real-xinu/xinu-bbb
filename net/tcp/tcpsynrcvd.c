@@ -11,7 +11,7 @@ int32	tcpsynrcvd(
 	  struct netpacket *pkt		/* Ptr to a packet		*/
 	)
 {
-	/* Check for ACK or bas sequence number */
+	/* Check for ACK or bad sequence number */
 
 	if (!(pkt->net_tcpcode & TCPF_ACK)
 	    || pkt->net_tcpseq != tcbptr->tcb_rnext) {

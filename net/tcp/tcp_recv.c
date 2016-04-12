@@ -40,7 +40,6 @@ int32	tcp_recv(
 	wait (tcbptr->tcb_mutex);
 	signal (Tcp.tcpmutex);
 
-	DEBUG_TCBREF(tcbptr, "tcp_recv");
 	tcbref (tcbptr);
 
 	/* Interpret semantics according to TCB state */
@@ -65,7 +64,6 @@ int32	tcp_recv(
 			tcbptr->tcb_qlen--;
 			child = mqrecv (tcbptr->tcb_lq);
 		}
-		DEBUG_TCBUNREF(tcbptr, "tcp_recv listen read");
 		tcbunref (tcbptr);
 		signal (tcbptr->tcb_mutex);
 		if (child == SYSERR){
@@ -132,7 +130,6 @@ int32	tcp_recv(
 		}
 	}
 
-	DEBUG_TCBUNREF(tcbptr, "tcp_recv end");
 	tcbunref (tcbptr);
 	signal (tcbptr->tcb_mutex);
 

@@ -2,12 +2,6 @@
 
 #include <xinu.h>
 
-#if 0
-#define DEBUG(x) (x)
-#else
-#define DEBUG(x)
-#endif
-
 /*------------------------------------------------------------------------
  *  tcpfin1  -  Handle an incoming segment in the FIN1 state
  *------------------------------------------------------------------------
@@ -36,8 +30,6 @@ int32	tcpfin1(
 		ack = 1;
 
 	if (rfin && ack) {
-		DEBUG(kprintf("\t[tcpfin1: rfin && ack]\n"));
-
 		/* FIN was received and ours was ACKed, so the	*/
 		/*     connection is closed and TCB can expire	*/
 		/* (BUT, we have to send an ACK first!)			*/
@@ -46,13 +38,9 @@ int32	tcpfin1(
 		tcptmset (TCP_MSL << 1, tcbptr, TCBC_EXPIRE);
 		tcbptr->tcb_state = TCB_TWAIT;
 	} else if (rfin) {
-		DEBUG(kprintf("\t[tcpfin1: rfin only]\n"));
-
 		/* FIN was received - connection is closing */
 		tcbptr->tcb_state = TCB_CLOSING;
 	} else if (ack) {
-		DEBUG(kprintf("\t[tcpfin1: ack only]\n"));
-
 		/* ACK arrived and we move to FIN-WAIT2 */
 		tcbptr->tcb_state = TCB_FIN2;
 	}

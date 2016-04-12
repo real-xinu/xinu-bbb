@@ -2,12 +2,6 @@
 
 #include <xinu.h>
 
-#if 0
-#define DEBUG(x) (x)
-#else
-#define DEBUG(x)
-#endif
-
 /*------------------------------------------------------------------------
  *  tcpalloc  -  allocate a buffer for an IP datagram carrying TCP
  *------------------------------------------------------------------------
@@ -54,12 +48,8 @@ struct netpacket *tcpalloc(
 	pkt->net_tcpcode = (TCP_HDR_LEN << 10);
 
 	if (tcbptr->tcb_state > TCB_SYNSENT) {
-		DEBUG(kprintf("\t[tcpalloc: OR-ing TCPF_ACK because > SYNSENT]\n"));
 		pkt->net_tcpcode |= TCPF_ACK;
 		pkt->net_tcpack = tcbptr->tcb_rnext;
-	} else {
-		DEBUG(kprintf("\t[tcpalloc: NOT OR-ING TCPF_ACK!!! %d]\n",
-					tcbptr->tcb_state));
 	}
 
 	/* Set the window advertisement */

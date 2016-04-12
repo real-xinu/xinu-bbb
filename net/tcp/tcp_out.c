@@ -2,12 +2,6 @@
 
 #include <xinu.h>
 
-#if 0
-#define DEBUG(x) (x)
-#else
-#define DEBUG(x)
-#endif
-
 /*------------------------------------------------------------------------
  *  tcp_out  -  TCP output process that executes scheduled events
  *------------------------------------------------------------------------
@@ -22,9 +16,7 @@ process	tcp_out(void)
 	while (1) {
 
 		/* Extract next message */
-		DEBUG(kprintf("\t[tcp_out: waiting for msg]\n"));
 		msg = mqrecv (Tcp.tcpcmdq);
-		DEBUG(kprintf("\t[tcp_out: recvd msg]\n"));
 
 		/* Extract the TCB pointer from the message */
 
@@ -41,7 +33,6 @@ process	tcp_out(void)
 		/* Insure TCB has remained active */
 
 		if (tcbptr->tcb_state <= TCB_CLOSED) {
-			DEBUG_TCBUNREF(tcbptr, "tcp_out message on CLOSED dev");
 			tcbunref (tcbptr);
 			signal (tcbptr->tcb_mutex);
 			signal (Tcp.tcpmutex);
@@ -56,21 +47,18 @@ process	tcp_out(void)
 		/* Send data */
 
 		case TCBC_SEND:
-			DEBUG(kprintf("\t[tcp_out: Command SEND]\n"));
 			tcpxmit (tcbptr, tcbptr->tcb_snext);
 			break;
 
 		/* Send a delayed ACK */
 
 		case TCBC_DELACK:
-			DEBUG(kprintf("\t[tcp_out: Command DELAYED ACK]\n"));
 			tcpack (tcbptr, FALSE);
 			break;
 
 		/* Retransmission Timer expired */
 
 		case TCBC_RTO:
-			DEBUG(kprintf("\t[tcp_out: Command RTO]\n"));
 			tcbptr->tcb_ssthresh = max(tcbptr->tcb_cwnd >> 1,
 						 tcbptr->tcb_mss);
 			tcbptr->tcb_cwnd = tcbptr->tcb_mss;
@@ -85,7 +73,6 @@ process	tcp_out(void)
 		/* TCB has expired, so mark it closed */
 
 		case TCBC_EXPIRE:
-			DEBUG(kprintf("\t[tcp_out: Command TCB EXPIRE]\n"));
 			tcbptr->tcb_state = TCB_CLOSED;
 			break;
 
@@ -97,7 +84,6 @@ process	tcp_out(void)
 
 		/* Command has been handled, so reduce reference count	*/
 
-		DEBUG_TCBUNREF(tcbptr, "tcp_out handling done");
 		tcbunref (tcbptr);
 
 		/* Release TCP mutex while waiting for next message	*/

@@ -21,7 +21,6 @@ void	tcpabort(
 	/* If connection in progress, decrement reference count */
 
 	if (tcbptr->tcb_state > TCB_SYNRCVD) {
-		DEBUG_TCBUNREF(tcbptr, "tcpabort");
 		tcbunref (tcbptr);
 	}
 

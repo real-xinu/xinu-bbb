@@ -63,11 +63,9 @@ int32	tcplisten(
 	/* New connection is in SYN-Received State */
 
 	pnewtcb->tcb_state = TCB_SYNRCVD;
-	DEBUG_TCBREF(pnewtcb, "tcplisten");
 	tcbref (pnewtcb);
 	wait (pnewtcb->tcb_mutex);
 	if (mqsend (tcbptr->tcb_lq, i) == SYSERR) {
-		DEBUG_TCBUNREF(pnewtcb, "tcplisten mqsend error");
 		tcbunref (pnewtcb);
 		signal (pnewtcb->tcb_mutex);
 		signal (Tcp.tcpmutex);

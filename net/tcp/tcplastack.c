@@ -25,7 +25,6 @@ int32	tcplastack(
 
 		/* Reduce the reference count */
 
-		DEBUG_TCBUNREF(tcbptr, "tcplastack");
 		tcbunref (tcbptr);
 	}
 	return OK;

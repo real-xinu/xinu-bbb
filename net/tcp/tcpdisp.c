@@ -39,7 +39,6 @@ int32 (*tcpstatesw[]) (struct tcb *tcbptr,struct netpacket *pkt)
 	tcptwait,			/* TIME WAIT			*/
 };
 
-
 /*------------------------------------------------------------------------
  *  tcpdisp  -  Use the current state of the TCB to dispatch segment
  *			processing to one of the input functions
