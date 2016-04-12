@@ -63,7 +63,7 @@ int32	mqcreate (
 		/* Create a semaphore to control access */
 
 		if ((mqtab[i].mq_sem = semcreate (0)) == SYSERR) {
-			kprintf("error1 i = %d\n", i);
+			kprintf("mqcreate: semcreate failed (i = %d)\n", i);
 			signal (mqsem);
 			return SYSERR;
 		}
@@ -71,8 +71,8 @@ int32	mqcreate (
 		/* Allocate memory to hold a set of qlen messages */
 
 		if ((mqtab[i].mq_msgs = (int32 *)getmem (qlen * sizeof(int32)))
-		    == (int32 *)SYSERR) {
-		    	kprintf("error2\n");
+				== (int32 *)SYSERR) {
+			kprintf("mqcreate: getmem failed\n");
 			semdelete(mqtab[i].mq_sem);
 			signal (mqsem);
 			return SYSERR;
@@ -94,7 +94,7 @@ int32	mqcreate (
 	}
 
 	/* Table is full */
-	kprintf("error3\n");
+	kprintf("mqcreate: table full\n");
 	signal (mqsem);
 	return SYSERR;
 }
