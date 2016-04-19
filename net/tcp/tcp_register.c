@@ -3,7 +3,7 @@
 #include <xinu.h>
 #include <string.h>
 
-#if 0
+#if 1
 #define DEBUG(x) (x)
 #else
 #define DEBUG(x)
