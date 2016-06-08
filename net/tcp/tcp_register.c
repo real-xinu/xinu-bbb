@@ -3,6 +3,12 @@
 #include <xinu.h>
 #include <string.h>
 
+#if 1
+#define DEBUG(x) (x)
+#else
+#define DEBUG(x)
+#endif
+
 /*------------------------------------------------------------------------
  *  ckecktuple  -  Verify that a TCP connection is not already in use by
  *			checking (src IP, src port, Dst IP, Dst port)

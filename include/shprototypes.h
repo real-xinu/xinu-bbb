@@ -61,8 +61,14 @@ extern	shellcmd  xsh_sleep	(int32, char *[]);
 /* in file xsh_tcpclient.c */
 extern	shellcmd  xsh_tcpclient	(int32, char *[]);
 
+/* in file xsh_tcpclient_big.c */
+extern	shellcmd  xsh_tcpclient_big (int32, char *[]);
+
 /* in file xsh_tcpserver.c */
 extern	shellcmd  xsh_tcpserver	(int32, char *[]);
+
+/* in file xsh_tcpclient_big.c */
+extern	shellcmd  xsh_tcpserver_big (int32, char *[]);
 
 /* in file xsh_udpdump.c */
 extern	shellcmd  xsh_udpdump	(int32, char *[]);
