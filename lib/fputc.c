@@ -1,23 +1,23 @@
-/**
- * @file fputc.c
- * @provides fputc.
- *
- * $Id: fputc.c 2020 2009-08-13 17:50:08Z mschul $
- */
-/* Embedded Xinu, Copyright (C) 2009.  All rights reserved. */
+/* fputc.c - fputc */
 
 extern int putc(int, char);
 
+#ifndef	SYSERR
 #define	SYSERR   (-1)
+#endif
+#ifndef	EOF
 #define EOF      (-2)
+#endif
 
-/**
- * Write a character string to a device (file)
- * @param c string to write
- * @param dev device to write to
- * @return character written, EOF if error
+/*------------------------------------------------------------------------
+ *  fputc  -  Write a character string to a device (file).
+ *			  Return character written, EOF if error.
+ *------------------------------------------------------------------------
  */
-int fputc(int c, int dev)
+int	fputc(
+	  int		c,		/* char to write		*/
+	  int		dev		/* device to use		*/
+	)
 {
     if (SYSERR == (int)putc(dev, c))
     {

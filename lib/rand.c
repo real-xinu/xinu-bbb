@@ -1,27 +1,38 @@
-/**
- * @file rand.c
- * @provides srand, rand.
- *
- * $Id: rand.c 2020 2009-08-13 17:50:08Z mschul $
- */
-/* Embedded Xinu, Copyright (C) 2009.  All rights reserved. */
+/* rand.c - rand, rand_r, srand */
 
-static unsigned long randx = 1;
+#include <stdlib.h>
 
-/**
- * Sets the random seed.
- * @param x random seed
+static unsigned int rand_seed = 1;
+extern	int rand_r(unsigned int*);
+
+/*------------------------------------------------------------------------
+ *  rand  -  Calculates a uniform random number [0, RAND_MAX]
+ *------------------------------------------------------------------------
  */
-void srand(unsigned long x)
+int	rand()
 {
-    randx = x;
+    return rand_r(&rand_seed);
 }
 
-/**
- * Generates a random long.
- * @return random long
+/*------------------------------------------------------------------------
+ *  rand_r  -  Calculates a uniform random number [0, RAND_MAX]
+ *------------------------------------------------------------------------
  */
-unsigned long rand(void)
+int	rand_r(
+	  unsigned int*		seedp
+	)
 {
-    return (((randx = randx * 1103515245 + 12345) >> 16) & 077777);
+	*seedp = 16807 * (*seedp) % (RAND_MAX + 1);
+	return (int)(*seedp);
+}
+
+/*------------------------------------------------------------------------
+ *  srand  -  Set the seed for rand
+ *------------------------------------------------------------------------
+ */
+void	srand(
+	  unsigned int		seed
+	)
+{
+    rand_seed = seed;
 }

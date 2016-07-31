@@ -1,12 +1,12 @@
-/* strlen.c  -  strlen */
+/* strlen.c - strlen */
 
 /*------------------------------------------------------------------------
- * strlen - compute the length of a null-terminated character string, not
- *			counting the null byte
+ * strlen - Compute the length of a null-terminated character string, not
+ *			counting the null byte.
  *------------------------------------------------------------------------
  */
-int strlen(
-	  char *str				/* string to use	*/
+int	strlen(
+	  char		*str		/* string to use		*/
 	)
 {
 	int	len;

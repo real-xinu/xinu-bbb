@@ -1,13 +1,11 @@
-/**
- * @file fscanf.c
- * @provides fscanf, getch, ungetch.
- *
- * $Id: fscanf.c 2020 2009-08-13 17:50:08Z mschul $
- */
-/* Embedded Xinu, Copyright (C) 2009.  All rights reserved. */
+/* fscanf.c - fscanf, getch, ungetch */
 
+#ifndef	EMPTY
 #define EMPTY (-1)
+#endif
+#ifndef	EOF
 #define EOF   (-2)
+#endif
 
 extern int getc(int);
 
@@ -17,14 +15,16 @@ extern int _doscan(register char *, register int **,
                    int (*getc) (int, int), int (*ungetc) (int, int), int,
                    int);
 
-/**
- * Read from a device (file) according to a format.
- * @param dev device to read from
- * @param *fmt format string
- * @param args number of arguments in format string
- * @return result of _doscan
+/*------------------------------------------------------------------------
+ *  fscanf  -  Read from a device (file) according to a format.
+ *			   Return result of _doscan.
+ *------------------------------------------------------------------------
  */
-int fscanf(int dev, char *fmt, int args)
+int	fscanf(
+	  int		dev,		/* device to use		*/
+	  char		*fmt,		/* format string		*/
+	  int		args		/* num of args in format	*/
+	)
 {
     int buf;
 
@@ -33,12 +33,14 @@ int fscanf(int dev, char *fmt, int args)
             (fmt, (int **)&args, getch, ungetch, dev, (int)(int)&buf));
 }
 
-/**
- * Get a character from a device with pushback.
- * @param dev device to read from
- * @param abuf buffer for reading into
+/*------------------------------------------------------------------------
+ *  getch  -  Get a character from a device with pushback.
+ *------------------------------------------------------------------------
  */
-static int getch(int dev, int abuf)
+static int	getch(
+		  int		dev,	/* device to use		*/
+		  int		abuf	/* buffer to use		*/
+		)
 {
     int *buf = (int *)abuf;
 
@@ -51,12 +53,14 @@ static int getch(int dev, int abuf)
     return (*buf);
 }
 
-/**
- * Pushback a character for getch.
- * @param dev device to push back to
- * @param abuf buffer for pushing back from
+/*------------------------------------------------------------------------
+ *  ungetch  -  Pushback a character for getch.
+ *------------------------------------------------------------------------
  */
-static int ungetch(int dev, int abuf)
+static int	ungetch(
+		  int		dev,	/* device to use		*/
+		  int		abuf	/* buffer to use		*/
+		)
 {
     int *buf = (int *)abuf;
 

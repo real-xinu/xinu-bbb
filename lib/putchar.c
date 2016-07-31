@@ -1,9 +1,15 @@
-/* putchar.c */
+/* putchar.c - putchar */
 
 #include <xinu.h>
 #include <stdio.h>
 
-int putchar(int c)
+/*------------------------------------------------------------------------
+ *  putchar  -  C putchar function
+ *------------------------------------------------------------------------
+ */
+int	putchar(
+	  int		c
+	)
 {
     return fputc(c, stdout);
 }
