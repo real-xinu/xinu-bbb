@@ -54,6 +54,6 @@ uint32	dot2ip (
 	if ( (seg >= 4) || (ch != NULLCH) ) {
 		return SYSERR;
 	}
-	*result = ipaddr;
+	memcpy((char *)result, (char *)&ipaddr, 4);
 	return OK;
 }
