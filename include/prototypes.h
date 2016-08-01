@@ -5,85 +5,60 @@ extern	status	addargs(pid32, int32, int32[], int32,char *, void *);
 extern	int32	am335x_eth_init(struct ethcblk *);
 
 /* in file arp.c */
-
-extern	void	arp_init();
+extern	void	arp_init(void);
 extern	status	arp_resolve(uint32, byte[]);
 extern	void	arp_in(struct arppacket *);
-extern	int32	arp_alloc();
+extern	int32	arp_alloc(void);
 extern	void	arp_ntoh(struct arppacket *);
 extern	void	arp_hton(struct arppacket *);
 
 /* in file ascdate.c */
-
 extern	status	ascdate(uint32, char *);
 
 /* in file bufinit.c */
-
 extern	status	bufinit(void);
 
 /* in file chprio.c */
-
 extern	pri16	chprio(pid32, pri16);
 
 /* in file clkupdate.S */
-
 extern	uint32	clkcount(void);
 
 /* in file clkhandler.c */
-
 extern	interrupt clkhandler(void);
 
 /* in file clkinit.c */
-
 extern	void	clkinit(void);
 
 /* in file clkint.S */
-
 extern	void	clkint(void);
 
 /* in file close.c */
-
 extern	syscall	close(did32);
 
 /* in file control.c */
-
 extern	syscall	control(did32, int32, int32, int32);
 
 /* in file create.c */
-
 extern	pid32	create(void *, uint32, pri16, char *, uint32, ...);
 
 /* in file ctxsw.S */
-
 extern	void	ctxsw(void *, void *);
 
 /* in file dhcp.c */
-
 extern	uint32	getlocalip(void);
 
-extern	uint32	getlocalip_boot(uint32 *, char *, uint32 *);
+/* in file dns.c */
+extern	uint32	dnslookup(char *);
 
 /* in file dot2ip.c */
-
 extern	uint32	dot2ip(char *, uint32 *);
-
-/* in file queue.c */
-
-extern	pid32	enqueue(pid32, qid16);
-
-/* in file intr.S */
-
-extern	intmask	disable(void);
-
-/* in file intr.S */
-
-extern	void	enable(void);
 
 /* in file ethcontrol.c */
 extern	int32	ethcontrol(struct dentry *, int32, int32, int32);
 
 /* in file ethinit.c */
-extern	int32	ethinit(struct dentry *);
+extern 	int32	ethinit(struct dentry *);
 
 /* in file ethhandler.c */
 extern	interrupt ethhandler(uint32);
@@ -96,6 +71,7 @@ extern	int32	ethwrite(struct dentry *, void *, uint32);
 
 /* in file evec.c */
 
+extern	int32	initintc(void);
 extern	int32	initevec(void);
 extern	int32	set_evec(uint32, uint32);
 extern	void	trap(int32);
@@ -117,6 +93,8 @@ extern	syscall	getc(did32);
 
 /* in file getitem.c */
 extern	pid32	getfirst(qid16);
+extern	pid32	getlast(qid16);
+extern	pid32	getitem(pid32);
 
 /* in file getmem.c */
 extern	char	*getmem(uint32);
@@ -161,6 +139,10 @@ extern	status	insert(pid32, qid16, int32);
 /* in file insertd.c */
 extern	status	insertd(pid32, qid16, int32);
 
+/* in file intr.S */
+extern	intmask	disable(void);
+extern	void	enable(void);
+
 /* in file ioerr.c */
 extern	devcall	ioerr(void);
 
@@ -168,7 +150,6 @@ extern	devcall	ioerr(void);
 extern	devcall	ionull(void);
 
 /* in file ip.c */
-
 extern	void	ip_in(struct netpacket *);
 extern	status	ip_send(struct netpacket *);
 extern	void	ip_local(struct netpacket *);
@@ -181,32 +162,26 @@ extern	process	ipout(void);
 extern	status	ip_enqueue(struct netpacket *);
 
 /* in file net.c */
-
 extern	void	net_init(void);
-extern	process	netin();
+extern	process	netin(void);
 extern	process	netout(void);
 extern	process	rawin(void);
 extern	void	eth_hton(struct netpacket *);
 extern	void	eth_ntoh(struct netpacket *);
 
 /* in file netstart.c */
-
 extern	void	netstart(void);
 
 /* in file kill.c */
-
 extern	syscall	kill(pid32);
 
 /* in file lexan.c */
-
 extern	int32	lexan(char *, int32, char *, int32 *, int32 [], int32 []);
 
 /* in file lfibclear.c */
-
 extern	void	lfibclear(struct lfiblk *, int32);
 
 /* in file lfibget.c */
-
 extern	void	lfibget(did32, ibid32, struct lfiblk *);
 
 /* in file lfibput.c */
@@ -360,6 +335,10 @@ extern	syscall	ptsend(int32, umsg32);
 /* in file putc.c */
 extern	syscall	putc(did32, char);
 
+/* in file queue.c */
+extern	pid32	enqueue(pid32, qid16);
+extern	pid32	dequeue(qid16);
+
 /* in file ramclose.c */
 extern	devcall	ramclose(struct dentry *);
 
@@ -420,6 +399,7 @@ extern	umsg32	recvtime(int32);
 
 /* in file resched.c */
 extern	void	resched(void);
+extern	status	resched_cntl(int32);
 
 /* in file intr.S */
 extern	void	restore(intmask);
@@ -492,9 +472,6 @@ extern	status	rdscomm(struct rd_msg_hdr *, int32, struct rd_msg_hdr *, int32, st
 
 /* in file rdsprocess.c */
 extern	void	rdsprocess(struct rdscblk *);
-
-/* in file resched.c */
-extern	status	resched_cntl(int32);
 
 /* in file seek.c */
 extern	syscall	seek(did32, uint32);

@@ -11,8 +11,8 @@ syscall kputc(
 	  byte	c			/* character to write		*/
 	)
 {
-	struct	dentry		*devptr;
-	struct	uart_csreg	*csrptr;
+	struct	dentry	*devptr;
+	volatile struct	uart_csreg	*csrptr;
 
 	/* Get CSR address of the console */
 
@@ -21,28 +21,20 @@ syscall kputc(
 
 	/* wait for UART transmit queue to empty */
 
-	//while ( (inb( (int)&csrptr->lsr) & UART_LSR_THRE) == 0 ) {
-	//	;	/* reepatedly poll the device */
-	//}
 	while ( (csrptr->lsr & UART_LSR_THRE) == 0 ) {
 		;
 	}
 
 	/* write the character */
 
-	//outb( (int) &csrptr->buffer, c);
 	csrptr->buffer = c;
 
 	/* Honor CRLF - when writing NEWLINE also send CARRIAGE RETURN	*/
 
 	if (c == '\n') {
-	        //while ( (inb( (int)&csrptr->lsr) & UART_LSR_THRE) == 0 ) {
-		//	;	/* poll until transmitter queue to empty */
-		//}
 		while ( (csrptr->lsr & UART_LSR_THRE) == 0 ) {
 			;
 		}
-		//outb( (int) &csrptr->buffer, '\r');
 		csrptr->buffer = '\r';
 	}
 	return OK;

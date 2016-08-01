@@ -19,7 +19,6 @@ pid32	create(
 	  ...
 	)
 {
-	uint32		savsp, *pushsp;
 	intmask 	mask;    	/* interrupt mask		*/
 	pid32		pid;		/* stores new process id	*/
 	struct	procent	*prptr;		/* pointer to proc. table entry */
@@ -61,7 +60,6 @@ pid32	create(
 	/* Initialize stack as if the process was called		*/
 
 	*saddr = STACKMAGIC;
-	savsp = (uint32)saddr;
 
 	/* push arguments */
 	a = (uint32 *)(&nargs + 1);	/* start of args		*/

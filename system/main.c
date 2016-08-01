@@ -1,24 +1,15 @@
 /*  main.c  - main */
 
 #include <xinu.h>
-#include <stdio.h>
-int32 cpudelay;
-volatile uint32	gcounter = 400000000;
-process	counterproc() {
-
-	while(gcounter > 0) {
-		gcounter--;
-	}
-	return OK;
-}
 
 process	main(void)
 {
-	/* Start the network */
+	/* Obtain an IP address */
 
 	netstart();
 
-	kprintf("\n...creating a shell\n");
+	/* Run the Xinu shell */
+
 	recvclr();
 	resume(create(shell, 8192, 50, "shell", 1, CONSOLE));
 
@@ -31,4 +22,5 @@ process	main(void)
 		resume(create(shell, 4096, 20, "shell", 1, CONSOLE));
 	}
 	return OK;
+    
 }
