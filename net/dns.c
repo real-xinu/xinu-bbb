@@ -238,22 +238,24 @@ uint32	dns_geta (
 		memcpy((char *)&tmptype, dptr, 2);
 		if( (strncmp(dname, rname, strlen(dname)) == 0) &&
 		    (ntohs(tmptype) == DNS_QT_A) ) {
-			/* Move past the type, class, ttl, and length */
-			dptr += 10;
 
 			/* Pick up the IP address */
 
-			memcpy((char *)&tmpip, dptr, 4);
+			memcpy((char *)&tmpip, dptr+10, 4);
 			if ((ipaddr == 0) ||
-				    ( (NetData.ipmask&htonl(tmpip)) ==
+				    ((NetData.ipmask&ntohl(tmpip)) ==
 					NetData.ipprefix) ) {
 				ipaddr = tmpip;
 			}
 		}
 
-		/* Move to the rdlength field */
+
+		/* Move past the type, class, and ttl fields to the length */
 
 		dptr += 8;
+
+		/* Move past the length field itself (2 bytes) and data */
+
 		memcpy((char *)&tmplen, dptr, 2);
 		dptr += ntohs(tmplen) + 2;
 	}
