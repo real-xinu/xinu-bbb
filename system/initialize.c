@@ -26,6 +26,8 @@ struct	memblk	memlist;	/* List of free memory blocks		*/
 int	prcount;		/* Total number of live processes	*/
 pid32	currpid;		/* ID of currently executing process	*/
 
+#define	CONSOLE_RESET	" \033[0m\033[2J\033[;H"
+
 /*------------------------------------------------------------------------
  * nulluser - initialize the system and become the null process
  *
@@ -49,8 +51,6 @@ void	nulluser()
 
 	sysinit();
 
-	kprintf("\n\r%s\n\n\r", VERSION);
-	
 	/* Output Xinu memory layout */
 	free_mem = 0;
 	for (memptr = memlist.mnext; memptr != NULL;
@@ -106,6 +106,9 @@ static	void	sysinit()
 	int32	i;
 	struct	procent	*prptr;		/* Ptr to process table entry	*/
 	struct	sentry	*semptr;	/* Prr to semaphore table entry	*/
+
+	kprintf(CONSOLE_RESET);
+	kprintf("\n\r%s\n\n\r", VERSION);
 
 	/* Platform Specific Initialization */
 
