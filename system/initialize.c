@@ -59,7 +59,7 @@ void	nulluser()
 	}
 	kprintf("%10d bytes of free memory.  Free list:\n", free_mem);
 	for (memptr=memlist.mnext; memptr!=NULL;memptr = memptr->mnext) {
-	    kprintf("           [0x%08X to 0x%08X]\r\n",
+	    kprintf("           [0x%08X to 0x%08X]\n",
 		(uint32)memptr, ((uint32)memptr) + memptr->mlength - 1);
 	}
 
@@ -108,7 +108,7 @@ static	void	sysinit()
 	struct	sentry	*semptr;	/* Prr to semaphore table entry	*/
 
 	kprintf(CONSOLE_RESET);
-	kprintf("\n\r%s\n\n\r", VERSION);
+	kprintf("\n%s\n\n", VERSION);
 
 	/* Platform Specific Initialization */
 
