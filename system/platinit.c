@@ -3,6 +3,28 @@
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
+ *  counterinit  -  Initialize the ARM performance counters
+ *------------------------------------------------------------------------
+ */
+void		counterinit()
+{
+	/* Program the performance-counter control-register:		*/
+	/*	Enable all counters:					*/
+	asm volatile ("MCR p15, 0, %0, c9, c12, 0\t\n" :: "r"
+							(0x00000011));
+
+	/* Program the count enable set control-register:		*/
+	/*	Enable all counters:					*/
+	asm volatile ("MCR p15, 0, %0, c9, c12, 1\t\n" :: "r"
+							(0x80000003));
+
+	/* Program the overflow flag status-register:			*/
+	/*	Clear overflows:					*/
+	asm volatile ("MCR p15, 0, %0, c9, c12, 3\t\n" :: "r"
+							(0x80000003));
+}
+
+/*------------------------------------------------------------------------
  * platinit - platform specific initialization for BeagleBone Black
  *------------------------------------------------------------------------
  */
@@ -23,6 +45,10 @@ void	platinit(void)
 	/* Initialize the Interrupt Controller */
 
 	initintc();
+
+	/* Initialize the Performance Counters */
+
+	counterinit();
 
 	/* Pad control for CONSOLE */
 
