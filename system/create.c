@@ -65,7 +65,7 @@ pid32	create(
 	a = (uint32 *)(&nargs + 1);	/* start of args		*/
 	a += nargs -1;			/* last argument		*/
 	for ( ; nargs > 4 ; nargs--)	/* machine dependent; copy args	*/
-		*--saddr = *a--;	/* onto created process' stack	*/
+		*--saddr = *a--;	/* onto created process's stack	*/
 	*--saddr = (long)procaddr;
 	for(i = 11; i >= 4; i--)
 		*--saddr = 0;
