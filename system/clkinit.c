@@ -26,7 +26,7 @@ void	clkinit(void)
 
 	csrptr->tiocp_cfg |= AM335X_TIMER1MS_TIOCP_CFG_SOFTRESET;
 
-	/* Wait until the reset os complete */
+	/* Wait until the reset is complete */
 
 	while((csrptr->tistat & AM335X_TIMER1MS_TISTAT_RESETDONE) == 0)
 		/* Do nothing */ ;
