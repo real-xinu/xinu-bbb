@@ -814,44 +814,44 @@ Linker script and memory map
                 0x81013d3c       0xc8 binaries/xsh_kill.o
                                 0x138 (size before relaxing)
  .rodata.str1.4
-                0x81013e04      0x1e6 binaries/xsh_memdump.o
-                                0x264 (size before relaxing)
- *fill*         0x81013fea        0x2 
+                0x81013e04      0x206 binaries/xsh_memdump.o
+                                0x284 (size before relaxing)
+ *fill*         0x8101400a        0x2 
  .rodata.str1.4
-                0x81013fec      0x1cc binaries/xsh_memstat.o
+                0x8101400c      0x1cc binaries/xsh_memstat.o
                                 0x234 (size before relaxing)
  .rodata.str1.4
-                0x810141b8      0x13f binaries/xsh_ping.o
+                0x810141d8      0x13f binaries/xsh_ping.o
                                 0x1b4 (size before relaxing)
- *fill*         0x810142f7        0x1 
- .rodata        0x810142f8       0x20 binaries/xsh_ps.o
+ *fill*         0x81014317        0x1 
+ .rodata        0x81014318       0x20 binaries/xsh_ps.o
  .rodata.str1.4
-                0x81014318      0x11a binaries/xsh_ps.o
+                0x81014338      0x11a binaries/xsh_ps.o
                                 0x1d4 (size before relaxing)
- *fill*         0x81014432        0x2 
+ *fill*         0x81014452        0x2 
  .rodata.str1.4
-                0x81014434       0x5e binaries/xsh_sleep.o
+                0x81014454       0x5e binaries/xsh_sleep.o
                                  0xf8 (size before relaxing)
- *fill*         0x81014492        0x2 
- .rodata        0x81014494        0xc binaries/xsh_udpdump.o
+ *fill*         0x810144b2        0x2 
+ .rodata        0x810144b4        0xc binaries/xsh_udpdump.o
  .rodata.str1.4
-                0x810144a0      0x122 binaries/xsh_udpdump.o
+                0x810144c0      0x122 binaries/xsh_udpdump.o
                                 0x1e0 (size before relaxing)
- *fill*         0x810145c2        0x2 
+ *fill*         0x810145e2        0x2 
  .rodata.str1.4
-                0x810145c4      0x1ae binaries/xsh_udpecho.o
+                0x810145e4      0x1ae binaries/xsh_udpecho.o
                                 0x224 (size before relaxing)
- *fill*         0x81014772        0x2 
+ *fill*         0x81014792        0x2 
  .rodata.str1.4
-                0x81014774       0x97 binaries/xsh_udpeserver.o
+                0x81014794       0x97 binaries/xsh_udpeserver.o
                                 0x13c (size before relaxing)
- *fill*         0x8101480b        0x1 
+ *fill*         0x8101482b        0x1 
  .rodata.str1.4
-                0x8101480c       0x78 binaries/xsh_uptime.o
+                0x8101482c       0x78 binaries/xsh_uptime.o
                                 0x114 (size before relaxing)
-                0x81014884                etext = ABSOLUTE (.)
+                0x810148a4                etext = ABSOLUTE (.)
                 0x81015000                . = ALIGN (0x1000)
- *fill*         0x81014884      0x77c 
+ *fill*         0x810148a4      0x75c 
 
 .glue_7         0x81015000        0x0
  .glue_7        0x00000000        0x0 linker stubs
