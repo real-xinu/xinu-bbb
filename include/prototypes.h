@@ -388,7 +388,6 @@ extern	status	rdscomm(struct rd_msg_hdr *, int32, struct rd_msg_hdr *,
 
 /* in file rdsprocess.c */
 extern	void	rdsprocess(struct rdscblk *);
-extern	void	rdsrun(struct rdscblk *);
 
 /* in file read.c */
 extern	syscall	read(did32, char *, uint32);
