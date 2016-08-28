@@ -13,6 +13,10 @@ syscall kputc(
 {
 	struct	dentry	*devptr;
 	volatile struct	uart_csreg	*csrptr;
+	intmask	mask;
+
+	/* Disable interrupts */
+	mask = disable();
 
 	/* Get CSR address of the console */
 
@@ -37,43 +41,50 @@ syscall kputc(
 		}
 		csrptr->buffer = '\r';
 	}
+
+	restore(mask);
 	return OK;
 }
 
-/**
- * perform a synchronous kernel read from a serial device
- * @param *devptr pointer to device on which to write character
- * @return character read on success, SYSERR on failure
+/*------------------------------------------------------------------------
+ * kgetc - use polled I/O to read a character from the console serial line
+ *------------------------------------------------------------------------
  */
 syscall kgetc(void)
 {
-    int irmask;
-    volatile struct uart_csreg *regptr;
-    byte c;
+	int irmask;
+	volatile struct uart_csreg *regptr;
+	byte c;
 	struct	dentry	*devptr;
+	intmask	mask;
+
+	/* Disable interrupts */
+	mask = disable();
 
 	devptr = (struct dentry *) &devtab[CONSOLE];
-    regptr = (struct uart_csreg *)devptr->dvcsr;
+	regptr = (struct uart_csreg *)devptr->dvcsr;
 
-    irmask = regptr->ier;       /* Save UART interrupt state.   */
-    regptr->ier = 0;            /* Disable UART interrupts.     */
+	irmask = regptr->ier;		/* Save UART interrupt state.   */
+	regptr->ier = 0;		/* Disable UART interrupts.     */
 
-    while (0 == (regptr->lsr & UART_LSR_DR))
-    {                           /* Do Nothing */
-    }
+	while (0 == (regptr->lsr & UART_LSR_DR)) {
+		; /* Do Nothing */
+	}
 
-    /* read character from Receive Holding Register */
-    c = regptr->rbr;
-    regptr->ier = irmask;       /* Restore UART interrupts.     */
-    return c;
+	/* Read character from Receive Holding Register */
+
+	c = regptr->rbr;
+	regptr->ier = irmask;		/* Restore UART interrupts.     */
+
+	restore(mask);
+	return c;
 }
 
 extern	void	_doprnt(char *, va_list, int (*)(int), int);
 
-/**
- * kernel printf: formatted, unbuffered output to CONSOLE
- * @param *fmt pointer to string being printed
- * @return OK on success
+/*------------------------------------------------------------------------
+ * kprintf  -  use polled I/O to print formatted output on the console
+ *------------------------------------------------------------------------
  */
 syscall kprintf(char *fmt, ...)
 {
