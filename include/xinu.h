@@ -21,7 +21,6 @@
 #include <lfilesys.h>
 #include <spi.h>
 #include <ether.h>
-#include <gpio.h>
 #include <net.h>
 #include <ip.h>
 #include <arp.h>
