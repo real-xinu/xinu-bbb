@@ -43,3 +43,10 @@ bloop:	cmp	r0, r1			/* Loop until last address	*/
 	add	r0, r0, #4		/* Move to next word		*/
 	b	bloop			/* Continue to iterate		*/
 bexit:	mov	pc, lr			/* Return to caller		*/
+
+.data
+/* Page directory base address must be aligned at 16 KB boundary */
+	.align	14
+	.globl page_dir
+page_dir:
+	.space	(0x1000 * 4)
