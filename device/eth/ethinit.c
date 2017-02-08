@@ -274,7 +274,7 @@ int32	ethinit	(
 	ethptr->rxRingSize = ETH_AM335X_RX_RING_SIZE;
 
 	/* Allocate memory for the rx ring */
-	ethptr->rxRing = (void*)getmem(sizeof(struct eth_a_rx_desc)*
+	ethptr->rxRing = (void*)getucmem(sizeof(struct eth_a_rx_desc)*
 					ethptr->rxRingSize);
 	if((int32)ethptr->rxRing == SYSERR) {
 		return SYSERR;
@@ -285,7 +285,7 @@ int32	ethinit	(
 		sizeof(struct eth_a_rx_desc)*ethptr->rxRingSize);
 
 	/* Allocate memory for rx buffers */
-	ethptr->rxBufs = (void*)getmem(sizeof(struct netpacket) *
+	ethptr->rxBufs = (void*)getucmem(sizeof(struct netpacket) *
 					ethptr->rxRingSize);
 	if((int32)ethptr->rxBufs == SYSERR) {
 		return SYSERR;
@@ -322,7 +322,7 @@ int32	ethinit	(
 	ethptr->txRingSize = ETH_AM335X_TX_RING_SIZE;
 
 	/* Allocate memory for tx ring */
-	ethptr->txRing = (void*)getmem(sizeof(struct eth_a_tx_desc)*
+	ethptr->txRing = (void*)getucmem(sizeof(struct eth_a_tx_desc)*
 					ethptr->txRingSize);
 	if((int32)ethptr->txRing == SYSERR) {
 		return SYSERR;
@@ -333,7 +333,7 @@ int32	ethinit	(
 		sizeof(struct eth_a_tx_desc)*ethptr->txRingSize);
 
 	/* Allocate memory for tx buffers */
-	ethptr->txBufs = (void*)getmem(sizeof(struct netpacket) *
+	ethptr->txBufs = (void*)getucmem(sizeof(struct netpacket) *
 					ethptr->txRingSize);
 	if((int32)ethptr->txBufs == SYSERR) {
 		return SYSERR;

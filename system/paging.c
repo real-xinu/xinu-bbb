@@ -10,6 +10,7 @@ status	init_paging (void) {
 
 	int32	i;	/* Loop counter			*/
 	uint32	*pd;	/* Page directory pointer	*/
+	int32	ucpage;	/* Starting page of uncached mem*/
 
 	pd = (uint32 *)&page_dir;
 
@@ -33,7 +34,7 @@ status	init_paging (void) {
 
 	/* Now, initialize normal memory		*/
 	/* AP[2:0] = 0b011 for full access		*/
-	/* TEX[2:0] = 0b101 B = 1, C = 1 for write back	*/
+	/* TEX[2:0] = 0b101 B = 1, C = 0 for write back	*/
 	/*	write alloc. outer & inner caches	*/
 	/* NS = 1 for non-shareable mem.		*/
 
@@ -45,6 +46,20 @@ status	init_paging (void) {
 			  PDE_TEX5	|
 			  PDE_NS	|
 			  (i << 20) );
+	}
+
+	/* Initialize uncached memory block		*/
+	/* TEX[2:0] = 0b100, B = 0, C = 0		*/
+
+	if(ucmemlist.mlength > 0) {
+
+		ucpage = ((uint32)ucmemlist.mnext) >> 20;
+
+		for(i = 0; i < UCMEM_NPAGES; i++) {
+
+			pd[ucpage+i] &= ~(PDE_TEX | PDE_B | PDE_C);
+			pd[ucpage+i] |= PDE_TEX4 | PDE_S;
+		}
 	}
 
 	asm volatile (

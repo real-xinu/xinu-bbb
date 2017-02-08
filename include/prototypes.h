@@ -85,6 +85,9 @@ extern	syscall	freebuf(char *);
 /* in file freemem.c */
 extern	syscall	freemem(char *, uint32);
 
+/* in file freeucmem.c */
+extern	syscall	freeucmem(char *, uint32);
+
 /* in file getbuf.c */
 extern	char	*getbuf(bpid32);
 
@@ -113,6 +116,9 @@ extern	uint32	getticks(void);
 
 /* in file gettime.c */
 extern	status	gettime(uint32 *);
+
+/* in file getucmem.c */
+extern	char	*getucmem(uint32);
 
 /* in file getutime.c */
 extern	status	getutime(uint32 *);
@@ -298,6 +304,9 @@ extern	qid16	newqueue(void);
 
 /* in file open.c */
 extern	syscall	open(did32, char *, char *);
+
+/* in file paging.c */
+extern	status	init_paging(void);
 
 /* in file panic.c */
 extern	void	panic(char *);

@@ -28,4 +28,7 @@
 #define	PDE_NS		0x00080000
 #define	PDE_BASEADDR	0xFFF00000
 
+/* No. of pages reserved for uncached memory */
+#define	UCMEM_NPAGES	1
+
 extern	uint32	page_dir[];
