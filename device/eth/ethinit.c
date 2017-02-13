@@ -322,7 +322,7 @@ int32	ethinit	(
 	ethptr->txRingSize = ETH_AM335X_TX_RING_SIZE;
 
 	/* Allocate memory for tx ring */
-	ethptr->txRing = (void*)getucmem(sizeof(struct eth_a_tx_desc)*
+	ethptr->txRing = (void*)ucalloc(sizeof(struct eth_a_tx_desc)*
 					ethptr->txRingSize);
 	if((int32)ethptr->txRing == SYSERR) {
 		return SYSERR;
@@ -333,7 +333,7 @@ int32	ethinit	(
 		sizeof(struct eth_a_tx_desc)*ethptr->txRingSize);
 
 	/* Allocate memory for tx buffers */
-	ethptr->txBufs = (void*)getucmem(sizeof(struct netpacket) *
+	ethptr->txBufs = (void*)ucalloc(sizeof(struct netpacket) *
 					ethptr->txRingSize);
 	if((int32)ethptr->txBufs == SYSERR) {
 		return SYSERR;
