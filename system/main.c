@@ -9,6 +9,7 @@ volatile int a;
 extern	struct memblk ucmemlist;
 process	main(void)
 {
+	cache_inv_all();
 
 	kprintf("Normal Memory List:\n");
 	struct	memblk *memptr;
@@ -45,6 +46,8 @@ process	main(void)
 	kprintf("pd[0x811] %08x\n", pd[0x811]);
 	kprintf("pd[0x800] %08x\n", pd[0x800]);
 
+	tlb_inv_all();
+
 	asm(
 		"push	{r0, r1}\n"
 		"mcr	p15, 0, r0, c8, c7, 0\n"
@@ -58,8 +61,8 @@ process	main(void)
 		"orr	r0, #1\n"
 		"mcr	p15, 0, r0, c1, c0, 0\n"
 		"isb\n"
-		"mov	r0, #0\n"
-		"mcr	p15, 0, r0, c8, c7, 0\n"
+		//"mov	r0, #0\n"
+		//"mcr	p15, 0, r0, c8, c7, 0\n"
 		"isb\n"
 		"ldr	r0, =0x81100000\n"
 		"mcr	p15, 0, r0, c7, c6, 1\n"
@@ -69,7 +72,7 @@ process	main(void)
 	);
 
 	int32	i;
-	//time1 = clktimems;
+	time1 = clktimems;
 
 	i = 10000000;
 	while(i > 0) {
@@ -77,13 +80,13 @@ process	main(void)
 		i--;
 	}
 
-	//time2 = clktimems;
+	time2 = clktimems;
 
 	kprintf("Writing to cached mem: %d\n", (time2-time1));
 
 	time1 = time2 = 0;
 
-	//time1 = clktimems;
+	time1 = clktimems;
 
 	i = 10000000;
 	while(i > 0) {
@@ -91,7 +94,7 @@ process	main(void)
 		i--;
 	}
 
-	//time2 = clktimems;
+	time2 = clktimems;
 
 	kprintf("Writing to uncached mem: %d\n", (time2-time1));
 

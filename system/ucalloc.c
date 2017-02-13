@@ -10,7 +10,6 @@ char	*ucalloc (
 		uint32	nbytes	/* Size of memory requested	*/
 		)
 {
-	struct	memblk *memptr;	/* Memory block pointer	*/
 	intmask	mask;		/* Saved interrupt mask	*/
 	char	*retval;	/* Return value		*/
 

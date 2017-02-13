@@ -18,6 +18,11 @@ extern	status	ascdate(uint32, char *);
 /* in file bufinit.c */
 extern	status	bufinit(void);
 
+/* in file cache.c */
+extern	void	tlb_inv_all(void);
+extern	void	cache_inv_all(void);
+extern	void	cache_get_info(struct cache_info *);
+
 /* in file chprio.c */
 extern	pri16	chprio(pid32, pri16);
 

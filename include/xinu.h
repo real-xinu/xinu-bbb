@@ -31,6 +31,7 @@
 #include <name.h>
 #include <shell.h>
 #include <date.h>
+#include <cache.h>
 #include <prototypes.h>
 #include <delay.h>
 #include <stdio.h>
