@@ -85,9 +85,6 @@ extern	syscall	freebuf(char *);
 /* in file freemem.c */
 extern	syscall	freemem(char *, uint32);
 
-/* in file freeucmem.c */
-extern	syscall	freeucmem(char *, uint32);
-
 /* in file getbuf.c */
 extern	char	*getbuf(bpid32);
 
@@ -116,9 +113,6 @@ extern	uint32	getticks(void);
 
 /* in file gettime.c */
 extern	status	gettime(uint32 *);
-
-/* in file getucmem.c */
-extern	char	*getucmem(uint32);
 
 /* in file getutime.c */
 extern	status	getutime(uint32 *);
@@ -565,6 +559,9 @@ extern	devcall	ttyread(struct dentry *, char *, int32);
 
 /* in file ttywrite.c */
 extern	devcall	ttywrite(struct dentry *, char *, int32);
+
+/* in file ucalloc.c */
+extern	char	*ucalloc(uint32);
 
 /* in file udp.c */
 

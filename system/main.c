@@ -19,20 +19,22 @@ process	main(void)
 		memptr = memptr->mnext;
 	}
 
+	/*
 	kprintf("\nUncache Memory List:\n");
 	memptr = ucmemlist.mnext;
 	while(memptr) {
 		kprintf("\tAddress: %08x, Length: %d bytes\n", (uint32)memptr, memptr->mlength);
 		memptr = memptr->mnext;
 	}
+	*/
 
 	volatile byte	*ptr1, *ptr2;
 	volatile uint32	time1, time2;
 
-	ptr1 = (byte *)getucmem(100);
+	ptr1 = (byte *)ucalloc(100);
 	ptr2 = (byte *)getmem(100);
 
-	kprintf("getucmem. ptr1 %08x, ptr2 %08x\n", ptr1, ptr2);
+	kprintf("ucalloc. ptr1 %08x, ptr2 %08x\n", ptr1, ptr2);
 
 	init_paging();
 
@@ -93,7 +95,7 @@ process	main(void)
 
 	kprintf("Writing to uncached mem: %d\n", (time2-time1));
 
-	freeucmem((char *)ptr1, 100);
+	//freeucmem((char *)ptr1, 100);
 /*
 	while(1);
 

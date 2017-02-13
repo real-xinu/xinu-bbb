@@ -274,7 +274,7 @@ int32	ethinit	(
 	ethptr->rxRingSize = ETH_AM335X_RX_RING_SIZE;
 
 	/* Allocate memory for the rx ring */
-	ethptr->rxRing = (void*)getucmem(sizeof(struct eth_a_rx_desc)*
+	ethptr->rxRing = (void*)ucalloc(sizeof(struct eth_a_rx_desc)*
 					ethptr->rxRingSize);
 	if((int32)ethptr->rxRing == SYSERR) {
 		return SYSERR;
@@ -285,7 +285,7 @@ int32	ethinit	(
 		sizeof(struct eth_a_rx_desc)*ethptr->rxRingSize);
 
 	/* Allocate memory for rx buffers */
-	ethptr->rxBufs = (void*)getucmem(sizeof(struct netpacket) *
+	ethptr->rxBufs = (void*)ucalloc(sizeof(struct netpacket) *
 					ethptr->rxRingSize);
 	if((int32)ethptr->rxBufs == SYSERR) {
 		return SYSERR;
