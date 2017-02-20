@@ -42,7 +42,7 @@ int32	ethread	(
 	/* Initialize the descriptor for next packet */
 	rdescptr->stat = ETH_AM335X_RDS_OWN;
 	rdescptr->bufoff = 0;
-	rdescptr->buflen = sizeof(struct netpacket);
+	rdescptr->buflen = ETH_BUF_SIZE;
 	rdescptr->packlen = 0;
 	rdescptr->next = NULL;
 

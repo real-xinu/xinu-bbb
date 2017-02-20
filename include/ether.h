@@ -31,9 +31,7 @@ struct	etherPkt {
 
 #define	ETH_MAX_PKT_LEN	( ETH_HDR_LEN + ETH_VLAN_LEN + ETH_MTU )
 
-#define	ETH_BUF_SIZE		2048	/* A multiple of 16 greater 	*/
-					/* 	than the max packet 	*/
-					/*  	size(cache alignment)	*/
+#define	ETH_BUF_SIZE		1518	/* 1500 MTU + 14 ETH Header + 4 bytes optional VLAN Tagging */
 
 /* State of the Ethernet interface */
 
