@@ -19,6 +19,8 @@ extern	status	ascdate(uint32, char *);
 extern	status	bufinit(void);
 
 /* in file cache.c */
+extern	void	cache_enable_all(void);
+extern	void	cache_disable_all(void);
 extern	void	tlb_inv_all(void);
 extern	void	cache_inv_all(void);
 extern	void	cache_get_info(struct cache_info *);
@@ -283,6 +285,11 @@ extern  void    *memset(void *, const int, int32);
 /* in file mkbufpool.c */
 extern	bpid32	mkbufpool(int32, int32);
 
+/* in file mmu.c */
+extern	void	mmu_enable(void);
+extern	void	mmu_disable(void);
+extern	void	mmu_set_ttbr(void *);
+
 /* in file mount.c */
 extern	syscall	mount(char *, char *, did32);
 extern	int32	namlen(char *, int32);
@@ -305,7 +312,7 @@ extern	qid16	newqueue(void);
 extern	syscall	open(did32, char *, char *);
 
 /* in file paging.c */
-extern	status	init_paging(void);
+extern	status	paging_init(void);
 
 /* in file panic.c */
 extern	void	panic(char *);

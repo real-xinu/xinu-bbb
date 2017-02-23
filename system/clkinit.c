@@ -53,14 +53,15 @@ void	clkinit(void)
 
 	csrptr->tclr = AM335X_TIMER1MS_TCLR_AR;
 
-	/* Start the timer */
-
-	csrptr->tclr |= AM335X_TIMER1MS_TCLR_ST;
-
 	/* Enable overflow interrupt which will generate */
 	/*   an interrupt every 1 ms			 */
 
 	csrptr->tier = AM335X_TIMER1MS_TIER_OVF_IT_ENA;
+
+
+	/* Start the timer */
+
+	csrptr->tclr |= AM335X_TIMER1MS_TCLR_ST;
 
 	/* Kickstart the timer */
 

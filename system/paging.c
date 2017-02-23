@@ -1,12 +1,12 @@
-/* paging.c - init_paging */
+/* paging.c - paging_init */
 
 #include <xinu.h>
 
 /*------------------------------------------------------------------------
- * init_paging  -  Initialize Paging
+ * paging_init  -  Initialize Page Tables
  *------------------------------------------------------------------------
  */
-status	init_paging (void) {
+status	paging_init (void) {
 
 	int32	i;	/* Loop counter			*/
 	uint32	*pd;	/* Page directory pointer	*/
@@ -36,7 +36,7 @@ status	init_paging (void) {
 	/* AP[2:0] = 0b011 for full access		*/
 	/* TEX[2:0] = 0b101 B = 1, C = 0 for write back	*/
 	/*	write alloc. outer & inner caches	*/
-	/* NS = 1 for non-shareable mem.		*/
+	/* NS = 1 for non-secure mem.		*/
 
 	for(i = 2048; i < 4096; i++) {
 
@@ -62,22 +62,9 @@ status	init_paging (void) {
 		}
 	}
 
-	asm volatile (
+	/* Set the Translation Table Base Address Register */
 
-		/* Set PD0=1 and N=0 in TTBCR	*/
-		"ldr	r0, =0x00000020\n"
-		"mcr	p15, 0, r0, c2, c0, 2\n"
-		"isb\n"
-
-		/* Set the PD base address in TTBR0	*/
-		"orr	%0, #2\n"
-		"mcr	p15, 0, %0, c2, c0, 0\n"
-		"isb\n"
-
-		: /* No output	*/
-		: "r" (&page_dir)
-		: "r0"
-		);
+	mmu_set_ttbr(&page_dir);
 
 	return OK;
 }

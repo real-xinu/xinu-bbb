@@ -62,7 +62,7 @@ irq_except:
 	sub	lr, lr, #4	/* Correct the return address		*/
 	srsdb	sp!, #19	/* Save return state on the supervisor	*/
 				/*   mode stack				*/
-	cps	#19		/* Change to supervisor mode		*/
+	cpsid	i, #19		/* Change to supervisor mode		*/
 	push	{r0-r12, lr}	/* Save all registers			*/
 	bl	irq_dispatch	/* Call IRQ dispatch			*/
 	pop	{r0-r12, lr}	/* Restore all registers		*/

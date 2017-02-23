@@ -1,6 +1,83 @@
-/* cache.c - tlb_inv_all */
+/* cache.c - cache_enable_all, cache_disable_all, cache_inv_all	 */
+/*         - tlb_inv_all, cache_get_info			 */
 
 #include <xinu.h>
+
+/*------------------------------------------------------------------------
+ * cache_enable_all  -  Enable caches at all levels
+ *------------------------------------------------------------------------
+ */
+void	cache_enable_all (void) {
+
+	asm volatile (
+			/* Read the Control Register */
+
+			"mrc	p15, 0, r0, c1, c0, 0\n"
+
+			/* Set the bits for L1 D and I caches */
+
+			"ldr	r1, =0x1004\n"
+			"orr	r0, r1\n"
+
+			/* Write the new Control register */
+
+			"mcr	p15, 0, r0, c1, c0, 0\n"
+
+			/* Read the Auxialiary Control Register */
+
+			"mrc	p15, 0, r0, c1, c0, 1\n"
+
+			/* Set the bit for L2 cache */
+
+			"orr	r0, #0x2\n"
+
+			/* Write the new Auxialiary Control Register */
+
+			//"mcr	p15, 0, r0, c1, c0, 0\n"
+			
+			:		/* Output	*/
+			:		/* Input	*/
+			: "r0", "r1"	/* Clobber	*/
+			);
+}
+
+/*------------------------------------------------------------------------
+ * cache_disable_all  -  Disable caches at all levels
+ *------------------------------------------------------------------------
+ */
+void	cache_disable_all (void) {
+
+	asm volatile (
+			/* Read the Auxialiary Control Register */
+
+			"mrc	p15, 0, r0, c1, c0, 1\n"
+
+			/* Reset the bit for L2 cache */
+
+			"bic	r0, #0x2\n"
+
+			/* Write the new Auxiliary Control Register */
+
+			"mcr	p15, 0, r0, c1, c0, 1\n"
+
+			/* Read the Control Register */
+
+			"mrc	p15, 0, r0, c1, c0, 0\n"
+
+			/* Reset the bits for D and I caches */
+
+			"ldr	r1, =0x1004\n"
+			"bic	r0, r1\n"
+
+			/* Write the new Control Register */
+
+			"mcr	p15, 0, r0, c1, c0, 0\n"
+
+			:		/* Output	*/
+			:		/* Input	*/
+			: "r0", "r1"	/* Clobber	*/
+			);
+}
 
 /*------------------------------------------------------------------------
  * tlb_inv_all  -  Invalidate all TLB entries (data and instr.)
@@ -116,15 +193,19 @@ void	cache_get_info (
 			:		/* Clobber	*/
 		     );
 
+	/* Extract the levels of unification and coherence */
+
 	cinfo->lou = (clid >> 27) & 0x7;
 	cinfo->loc = (clid >> 24) & 0x7;
+
+	/* Compute the number of cache levels */
 
 	cinfo->ncaches = 0;
 	while((clid & 0x7) != 0) {
 		clid >>= 3;
 	}
 
-	kprintf("No. of caches: %d\n", cinfo->ncaches);
-	kprintf("Level of Unification: %d\n", cinfo->lou);
-	kprintf("Level of Coherence: %d\n", cinfo->loc);
+	//kprintf("No. of caches: %d\n", cinfo->ncaches);
+	//kprintf("Level of Unification: %d\n", cinfo->lou);
+	//kprintf("Level of Coherence: %d\n", cinfo->loc);
 }

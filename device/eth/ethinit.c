@@ -127,7 +127,7 @@ int32	eth_phy_reset (
 
 	/* Check if Reset operation is complete */
 
-	for(retries = 0; retries < 10; retries++) {
+	for(retries = 0; retries < 1000; retries++) {
 		if(eth_phy_read(mdio, ETH_PHY_CTLREG, phyadr, &phyreg) == SYSERR) {
 			return SYSERR;
 		}
@@ -140,13 +140,13 @@ int32	eth_phy_reset (
 			continue;
 		}
 	}
-	if(retries >= 3) {
+	if(retries >= 1000) {
 		return SYSERR;
 	}
 
 	/* Check if the Link is established */
 
-	for(retries = 0; retries < 10; retries++) {
+	for(retries = 0; retries < 1000; retries++) {
 		if(eth_phy_read(mdio, ETH_PHY_STATREG, phyadr, &phyreg) == SYSERR) {
 			return SYSERR;
 		}
@@ -159,7 +159,7 @@ int32	eth_phy_reset (
 			continue;
 		}
 	}
-	if(retries >= 3) {
+	if(retries >= 1000) {
 		return SYSERR;
 	}
 

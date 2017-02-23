@@ -71,7 +71,8 @@ int32	set_evec(uint32 xnum, uint32 handler)
  */
 void	irq_dispatch()
 {
-	struct	intc_csreg *csrptr = (struct intc_csreg *)0x48200000;
+	volatile struct	intc_csreg *csrptr =
+				(struct intc_csreg *)0x48200000;
 	uint32	xnum;		/* Interrupt number of device	*/
 	interrupt (*handler)(); /* Pointer to handler function	*/
 
@@ -79,16 +80,39 @@ void	irq_dispatch()
 
 	xnum = csrptr->sir_irq & 0x7F;
 
+	if(!(csrptr->sir_irq)) {	/* Spurious Interrupt */
+		csrptr->control |= INTC_CONTROL_NEWIRQAGR;
+		return;
+	}
+
 	/* If a handler is set for the interrupt, call it */
 
+	/* Defer scheduling until we have acknowledged interrupt */
+
+	//kprintf(".id%d", xnum);
+	resched_cntl(DEFER_START);
 	if(intc_vector[xnum]) {
 		handler = ( interrupt(*)() )intc_vector[xnum];
 		handler(xnum);
 	}
 
-	/* Acknowledge the interrupt */
+	/* Make sure all writes to device memory are finished */
 
-	csrptr->control |= (INTC_CONTROL_NEWIRQAGR);
+	asm volatile (
+			"dsb\n"
+			"dmb"
+			:
+			:
+			:
+		     );
+
+	/* Acknowledge interrupt in interrupt controller */
+
+	csrptr->control |= INTC_CONTROL_NEWIRQAGR;
+
+	/* Stop defering scheduler */
+	//kprintf(".ir");
+	resched_cntl(DEFER_STOP);
 }
 
 #if 0

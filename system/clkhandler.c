@@ -24,7 +24,14 @@ void	clkhandler()
 
 	csrptr->tisr = AM335X_TIMER1MS_TISR_OVF_IT_FLAG;
 
-	/* Decrement 1000ms counter */
+	/* Make sure interrupt is acknowledged */
+
+	while(csrptr->tisr & AM335X_TIMER1MS_TISR_OVF_IT_FLAG)
+		;
+
+	/* Reset the value of TOCR */
+
+	csrptr->tocr = 0;
 
 	count1000--;
 

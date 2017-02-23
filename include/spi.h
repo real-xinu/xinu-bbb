@@ -35,6 +35,8 @@ struct	spi_csreg {
 #define	SPI_1_PADCTL_D1		0x44E10998
 #define	SPI_1_PADCTL_CS0	0x44E1099C
 
+#define	SPI_1_CLKCTL_ADDR	0x44E00050
+
 /* Bit definitions of SPI registers */
 
 #define	SPI_SYSCONFIG_SOFTRESET	0x00000002

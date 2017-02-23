@@ -102,4 +102,35 @@ void	meminit(void)
 		memptr->mlength = ucmemlist.mlength =
 			(uint32)ucend - (uint32)ucstart;
 	}
+
+	/* Disable all caches */
+
+	cache_disable_all();
+
+	/* Invalidate all caches */
+
+	cache_inv_all();
+
+	/* Invalidate the TLB */
+
+	tlb_inv_all();
+
+	/* Initialize page tables */
+
+	paging_init();
+
+	/* Make sure all memory operations are completed */
+
+	asm volatile (
+		"dsb\n"
+		"dmb\n"
+		);
+
+	/* Turn on the MMU */
+
+	mmu_enable();
+
+	/* Enable caches  */
+
+	cache_enable_all();
 }

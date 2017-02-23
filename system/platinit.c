@@ -62,4 +62,8 @@ void	platinit(void)
 	uptr = (struct uart_csreg *)devtab[CONSOLE].dvcsr;
 	uptr->sysc |= UART_SYSC_SOFTRESET;
 	while((uptr->syss & UART_SYSS_RESETDONE) == 0);
+
+	/* Enable SPI1 Clock */
+
+	*((uint32 *)SPI_1_CLKCTL_ADDR) = 0x2;
 }
