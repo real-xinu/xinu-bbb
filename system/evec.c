@@ -79,6 +79,10 @@ void	irq_dispatch()
 
 	xnum = csrptr->sir_irq & 0x7F;
 
+	/* Defer scheduling until interrupt is acknowledged */
+
+	resched_cntl(DEFER_START);
+
 	/* If a handler is set for the interrupt, call it */
 
 	if(intc_vector[xnum]) {
@@ -89,6 +93,10 @@ void	irq_dispatch()
 	/* Acknowledge the interrupt */
 
 	csrptr->control |= (INTC_CONTROL_NEWIRQAGR);
+
+	/* Resume scheduling */
+
+	resched_cntl(DEFER_STOP);
 }
 
 #if 0
