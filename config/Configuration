@@ -24,6 +24,14 @@ null:
 		-r ionull	-g ionull	-p ionull
 		-w ionull	-s ioerr
 
+/* type of a gpio device */
+gpio:
+	on am335x_gpio
+		-i gpioinit      -o ionull       -c ionull
+		-r gpioread      -g ionull       -p ionull
+		-w gpiowrite     -s ioerr        -n gpiocontrol
+		-intr gpiohandler
+
 /* type of a tty device */
 tty:
 	on uart
@@ -109,6 +117,15 @@ spi:
 
    /* Define the console device to be a tty and specify CSR*/
    CONSOLE is tty  on uart  csr 0x44E09000 -irq 72
+   
+   /* Define the console device to be a tty and specify CSR*/
+   GPIO0 is gpio  on am335x_gpio  csr 0x44E07000 -irq 96
+   /* Define the console device to be a tty and specify CSR*/
+   GPIO1 is gpio  on am335x_gpio  csr 0x4804C000 -irq 98
+   /* Define the console device to be a tty and specify CSR*/
+   GPIO2 is gpio  on am335x_gpio  csr 0x481AC000 -irq 32
+   /* Define the console device to be a tty and specify CSR*/
+   GPIO3 is gpio  on am335x_gpio  csr 0x481AE000 -irq 62
 
    /* Define a null device */
    NULLDEV is null on nothing

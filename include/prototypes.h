@@ -117,6 +117,24 @@ extern	status	gettime(uint32 *);
 /* in file getutime.c */
 extern	status	getutime(uint32 *);
 
+/* in file gpiocontrol.c */
+extern	devcall	gpiocontrol(struct dentry *, int32, int32, int32);
+
+/* in file gpiohandler.c */
+extern	void	gpiohandler(uint32);
+
+/* in file gpioinit.c */
+extern	devcall	gpioinit(struct dentry *);
+
+/* in file gpioselect.c */
+extern devcall gpioselect(uint32, uint32, uint32);
+
+/* in file gpioread.c */
+extern	devcall	gpioread(struct dentry *,char *, int32);
+
+/* in file gpiowrite.c */
+extern	devcall	gpiowrite(struct dentry *,  char *, int32);
+
 /* in file halt.S */
 extern	void	halt(void);
 
