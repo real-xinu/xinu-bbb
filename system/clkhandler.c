@@ -9,7 +9,7 @@
 void	clkhandler()
 {
 
-	static uint32 count1000 = 1000;	/* variable to count 1000ms */
+	
 	volatile struct am335x_timer1ms *csrptr =
 			(struct am335x_timer1ms *)0x44E31000;
 			/* Set csrptr to address of timer CSR	    */
@@ -24,15 +24,15 @@ void	clkhandler()
 
 	csrptr->tisr = AM335X_TIMER1MS_TISR_OVF_IT_FLAG;
 
-	/* Decrement 1000ms counter */
+	/* Increment 1000ms counter */
 
-	count1000--;
+	count1000++;
 
 	/* After 1 sec, increment clktime */
 
-	if(count1000 == 0) {
+	if(count1000 >= 1000) {
 		clktime++;
-		count1000 = 1000;
+		count1000 = 0;
 	}
 
 	/* check if sleep queue is empty */

@@ -3,7 +3,7 @@
 #include <xinu.h>
 
 uint32	clktime;		/* Seconds since boot			*/
-uint32	ctr1000 = 0;		/* Milliseconds since boot		*/
+uint32  count1000;              /* ms since last clock tick             */
 qid16	sleepq;			/* Queue of sleeping processes		*/
 uint32	preempt;		/* Preemption counter			*/
 
@@ -41,7 +41,7 @@ void	clkinit(void)
 	preempt = QUANTUM;	/* Set the preemption time		*/
 
 	clktime = 0;		/* Start counting seconds		*/
-
+        count1000 = 0;
 	/* The following values are calculated for a	*/
 	/*   timer that generates 1ms tick rate		*/
 
