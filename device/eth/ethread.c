@@ -6,10 +6,10 @@
  * ethread - read an incoming packet on TI AM335X Ethernet
  *------------------------------------------------------------------------
  */
-int32	ethread	(
+devcall	ethread	(
 		struct	dentry *devptr,
-		void	*buf,
-		uint32	count
+		char	*buf,
+		int32	count
 	)
 {
 	struct	ethcblk *ethptr;	/* Ethernet ctl blk ptr	*/

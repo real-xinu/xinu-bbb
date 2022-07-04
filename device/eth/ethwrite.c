@@ -8,8 +8,8 @@
  */
 int32	ethwrite (
 		struct	dentry *devptr,
-		void	*buf,
-		uint32	count
+		char	*buf,
+		int32	count
 	)
 {
 	struct	ethcblk *ethptr;	/* Ether entry pointer	*/

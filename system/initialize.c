@@ -91,7 +91,10 @@ void	nulluser()
 	/*  something to run when no other process is ready to execute)	*/
 
 	while (TRUE) {
-		;		/* Do nothing */
+
+		/* Loop until there is an external interrupt */
+
+		;
 	}
 
 }
@@ -147,6 +150,8 @@ static	void	sysinit()
 	int32	i;
 	struct	procent	*prptr;		/* Ptr to process table entry	*/
 	struct	sentry	*semptr;	/* Ptr to semaphore table entry	*/
+
+	/* Reset the console */
 
 	kprintf(CONSOLE_RESET);
 	kprintf("\n%s\n\n", VERSION);

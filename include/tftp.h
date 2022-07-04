@@ -18,14 +18,18 @@
 #define TFTP_ERROR_NO_SUCH_USER        7  /* No such user.                            */
 
 #define TFTP_PORT       69      /* UDP Port for TFTP            */
-#define	TFTP_MAXNAM	    64      /* Max length of a file name    */
+#define	TFTP_MAXNAM	64      /* Max length of a file name    */
 #define	TFTP_MAXDATA    512     /* Max size of a data packet    */
 #define	TFTP_MAXRETRIES	3       /* Number of retranmissions     */
 #define	TFTP_WAIT       5000    /* Time to wait for reply (ms)  */
 
 /* Xinu Specific Flags */
-#define TFTP_NON_VERBOSE 0  /* Do not use verbose output */
-#define TFTP_VERBOSE     1  /* Use verbose output        */
+#define TFTP_NON_VERBOSE 0	/* Do not use verbose output	*/
+#define TFTP_VERBOSE     1	/* Use verbose output        	*/
+
+#define TFTP_FUNC_MAGIC	0xFFFFFF00	/* Magic value used to indicate	*/
+					/*	input to tftpget is a	*/
+					/*	function pointer	*/
 
 /* Format of a TFTP message (items following opcode depend on msg type)	*/
 

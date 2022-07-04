@@ -24,14 +24,6 @@ null:
 		-r ionull	-g ionull	-p ionull
 		-w ionull	-s ioerr
 
-/* type of a gpio device */
-gpio:
-	on am335x_gpio
-		-i gpioinit      -o ionull       -c ionull
-		-r gpioread      -g ionull       -p ionull
-		-w gpiowrite     -s ioerr        -n gpiocontrol
-		-intr gpiohandler
-
 /* type of a tty device */
 tty:
 	on uart
@@ -51,7 +43,7 @@ eth:
 /* type of a remote disk system device */
 rds:
 	on udp
-		-i rdsinit	-o rdsopen	-c rdsclose
+		-i rdsinit	-o rdsopen	-c ioerr
 		-r rdsread	-g ioerr	-p ioerr
 		-w rdswrite	-s ioerr	-n rdscontrol
 		-intr ionull
@@ -95,7 +87,7 @@ lfl:
 		-r lflread	-g lflgetc	-p lflputc
 		-w lflwrite	-s lflseek	-n lflcontrol
 		-intr ionull
-		
+
 /* type of namespace device */
 nam:
 	on top
@@ -103,6 +95,17 @@ nam:
 		-r ioerr 	-g ioerr 	-p ioerr
 		-w ioerr 	-s ioerr 	-n ioerr
 		-intr ioerr
+
+/* type of a gpio device */
+
+gpio:
+	on am335x_gpio
+		-i gpioinit      -o ionull       -c ionull
+		-r gpioread      -g ionull       -p ionull
+		-w gpiowrite     -s ioerr        -n gpiocontrol
+		-intr gpiohandler
+
+/* type of a spi device */
 
 spi:
 	on top
@@ -118,15 +121,6 @@ spi:
    /* Define the console device to be a tty and specify CSR*/
    CONSOLE is tty  on uart  csr 0x44E09000 -irq 72
    
-   /* Define the console device to be a tty and specify CSR*/
-   GPIO0 is gpio  on am335x_gpio  csr 0x44E07000 -irq 96
-   /* Define the console device to be a tty and specify CSR*/
-   GPIO1 is gpio  on am335x_gpio  csr 0x4804C000 -irq 98
-   /* Define the console device to be a tty and specify CSR*/
-   GPIO2 is gpio  on am335x_gpio  csr 0x481AC000 -irq 32
-   /* Define the console device to be a tty and specify CSR*/
-   GPIO3 is gpio  on am335x_gpio  csr 0x481AE000 -irq 62
-
    /* Define a null device */
    NULLDEV is null on nothing
 
@@ -141,7 +135,7 @@ spi:
    
    /* Define a ram disk device */
    RAM0 is ram on mem
- 
+
    /* Define the remote file system device */
 
    RFILESYS is rfs on udp
@@ -158,7 +152,7 @@ spi:
    RFILE7 is rfl on rfs
    RFILE8 is rfl on rfs
    RFILE9 is rfl on rfs
-  
+
    /* Define the local file system master device (one per system) */
 
    LFILESYS is lfs on ram
@@ -171,6 +165,13 @@ spi:
    LFILE3 is lfl on lfs
    LFILE4 is lfl on lfs
    LFILE5 is lfl on lfs
+
+   /* Define the four GPIO devices and the CSR/IRQ for each */
+
+   GPIO0 is gpio  on am335x_gpio  csr 0x44E07000 -irq 96
+   GPIO1 is gpio  on am335x_gpio  csr 0x4804C000 -irq 98
+   GPIO2 is gpio  on am335x_gpio  csr 0x481AC000 -irq 32
+   GPIO3 is gpio  on am335x_gpio  csr 0x481AE000 -irq 62
 
    /* SPI devices */
 
@@ -187,5 +188,3 @@ spi:
 #define	IRQ_TIMER    IRQ_HW5	/* timer IRQ is wired to hardware 5	*/
 #define	IRQ_ATH_MISC IRQ_HW4	/* Misc. IRQ is wired to hardware 4	*/
 #define CLKFREQ      200000000	/* 200 MHz clock			*/
-
-#define	LF_DISK_DEV	RAM0

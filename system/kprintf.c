@@ -4,7 +4,7 @@
 #include <stdarg.h>
 
 /*------------------------------------------------------------------------
- * kputc - use polled I/O to write a character to the console serial line
+ * kputc  -  use polled I/O to write a character to the console
  *------------------------------------------------------------------------
  */
 syscall kputc(
@@ -12,7 +12,7 @@ syscall kputc(
 	)
 {
 	struct	dentry	*devptr;
-	volatile struct	uart_csreg	*csrptr;
+	volatile struct	uart_csreg *csrptr;
 	intmask	mask;
 
 	/* Disable interrupts */
@@ -21,21 +21,29 @@ syscall kputc(
 	/* Get CSR address of the console */
 
 	devptr = (struct dentry *) &devtab[CONSOLE];
-	csrptr = (struct uart_csreg *) devptr->dvcsr;
+	csrptr = (struct uart_csreg *)devptr->dvcsr;
 
-	/* wait for UART transmit queue to empty */
+	/* Fail if no console device was found */
+
+	if (csrptr == NULL) {
+		restore(mask);
+		return SYSERR;
+	}
+
+	/* Repeatedly poll the device until it becomes nonbusy */
 
 	while ( (csrptr->lsr & UART_LSR_THRE) == 0 ) {
 		;
 	}
 
-	/* write the character */
+	/* Write the character */
 
 	csrptr->buffer = c;
 
 	/* Honor CRLF - when writing NEWLINE also send CARRIAGE RETURN	*/
 
 	if (c == '\n') {
+		/* Poll until transmitter queue is empty */
 		while ( (csrptr->lsr & UART_LSR_THRE) == 0 ) {
 			;
 		}
@@ -53,7 +61,7 @@ syscall kputc(
 syscall kgetc(void)
 {
 	int irmask;
-	volatile struct uart_csreg *regptr;
+	volatile struct	uart_csreg *csrptr;
 	byte c;
 	struct	dentry	*devptr;
 	intmask	mask;
@@ -62,25 +70,33 @@ syscall kgetc(void)
 	mask = disable();
 
 	devptr = (struct dentry *) &devtab[CONSOLE];
-	regptr = (struct uart_csreg *)devptr->dvcsr;
+	csrptr = (struct uart_csreg *)devptr->dvcsr;
 
-	irmask = regptr->ier;		/* Save UART interrupt state.   */
-	regptr->ier = 0;		/* Disable UART interrupts.     */
+	/* Fail if no console device was found */
+	if (csrptr == NULL) {
+		restore(mask);
+		return SYSERR;
+	}
 
-	while (0 == (regptr->lsr & UART_LSR_DR)) {
+	irmask = csrptr->ier;		/* Save UART interrupt state.   */
+	csrptr->ier = 0;		/* Disable UART interrupts.     */
+
+	/* wait for UART transmit queue to empty */
+
+	while (0 == (csrptr->lsr & UART_LSR_DR)) {
 		; /* Do Nothing */
 	}
 
 	/* Read character from Receive Holding Register */
 
-	c = regptr->rbr;
-	regptr->ier = irmask;		/* Restore UART interrupts.     */
+	c = csrptr->rbr;
+	csrptr->ier = irmask;		/* Restore UART interrupts.     */
 
 	restore(mask);
 	return c;
 }
 
-extern	void	_doprnt(char *, va_list, int (*)(int), int);
+extern	void	_doprnt(char *, va_list, int (*)(int));
 
 /*------------------------------------------------------------------------
  * kprintf  -  use polled I/O to print formatted output on the console
@@ -88,10 +104,10 @@ extern	void	_doprnt(char *, va_list, int (*)(int), int);
  */
 syscall kprintf(char *fmt, ...)
 {
-    va_list ap;
+	va_list ap;
 
-    va_start(ap, fmt);
-    _doprnt(fmt, ap, (int (*)(int))kputc, (int)&devtab[CONSOLE]);
-    va_end(ap);
-    return OK;
+	va_start(ap, fmt);
+	_doprnt(fmt, ap, (int (*)(int))kputc);
+	va_end(ap);
+	return OK;
 }

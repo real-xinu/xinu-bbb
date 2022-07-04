@@ -7,7 +7,7 @@
  *------------------------------------------------------------------------
  */
 interrupt ethhandler (
-		uint32	xnum	/* IRQ number	*/
+		uint32	xnum			/* IRQ number		*/
 	)
 {
 	struct	eth_a_csreg *csrptr;		/* Ethernet CSR pointer	*/
