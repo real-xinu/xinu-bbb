@@ -1,1 +1,25 @@
 This directory holds Xinu sources for the Beaglebone Black.
+
+The instructions for booting on a BeagleBone Black can be found at:
+
+	https://github.com/jarrocha/XinuBBB/tree/main
+
+However, they do not work on all versions of the board because some versions of
+uboot require bootm to specify the same memory location as specified to "fatload".
+You may see the following error output:
+
+    Running uenvcmd ...
+    reading xinu.boot
+    98368 bytes read in 10 ms (9.4 MiB/s)
+    Wrong Image Format for bootm command
+    ERROR: can't get kernel image!
+
+To solve the problem, substitute the following uEnv.txt file and boot the binary
+file "xinu" (no extension).
+
+    bootfile=xinu
+    memloc=0x81000000
+    boot_mmc=fatload mmc 0 ${memloc} ${bootfile}; bootm ${memloc}
+    uenvcmd=run boot_mmc
+
+Thanks to Nick Daly for identifying the problem and finding a solution.
