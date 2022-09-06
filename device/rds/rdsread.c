@@ -100,7 +100,7 @@ devcall	rdsread (
 	/*   two actions, and then resetting the priority to its	*/
 	/*   original value when the process is awakened		*/
 
-	myprio = 0xffff & rdssetprio(MAXPRIO);
+	myprio = rdssetprio(MAXPRIO);
 	signal(rdptr->rd_comsem);
 	suspend(getpid());
 	rdssetprio(myprio);
