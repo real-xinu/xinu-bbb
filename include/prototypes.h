@@ -1,5 +1,5 @@
 /* in file addargs.c */
-extern	status	addargs(pid32, int32, int32[], int32,char *, void *);
+extern	status	addargs(pid32, int32, int32[], char *, void *);
 
 /* in file am335x_eth_init.c */
 extern	int32	am335x_eth_init(struct ethcblk *);
@@ -198,7 +198,7 @@ extern	uint16	getport(void);
 extern	syscall	kill(pid32);
 
 /* in file lexan.c */
-extern	int32	lexan(char *, int32, char *, int32 *, int32 [], int32 []);
+extern	int32	lexan(char *, int32, char *, int32 [], int32 []);
 
 /* in file lfibclear.c */
 extern	void	lfibclear(struct lfiblk *, int32);
@@ -323,8 +323,26 @@ extern	syscall	open(did32, char *, char *);
 /* in file panic.c */
 extern	void	panic(char *);
 
-/* in file pci.c */
-extern	int32	pci_init(void);
+/* in file pipe_close.c */
+extern	devcall pipe_close(struct dentry *);
+
+/* in file pipe_getc.c */
+extern	devcall pipe_getc(struct dentry *);
+
+/* in file pipe_init.c */
+extern	devcall pipe_init(struct dentry *);
+
+/* in file pipe_open.c */
+extern	devcall pipe_open(struct dentry *, char *, int32);
+
+/* in file pipe_putc.c */
+extern	devcall pipe_putc(struct dentry *, char);
+
+/* in file pipe_read.c */
+extern	devcall pipe_read(struct dentry *, char *, int32);
+
+/* in file pipe_write.c */
+extern	devcall pipe_write(struct dentry *, char *, int32);
 
 /* in file pdump.c */
 extern	void	pdump(struct netpacket *);

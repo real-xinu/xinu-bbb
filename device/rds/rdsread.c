@@ -96,7 +96,7 @@ devcall	rdsread (
 
 	/* Atomically signal the comm. process semaphore and suspend	*/
 	/*   the current process by temporarily setting the process	*/
-	/*   prirority to the highest possible value, performing the	*/
+	/*   priority to the highest possible value, performing the	*/
 	/*   two actions, and then resetting the priority to its	*/
 	/*   original value when the process is awakened		*/
 

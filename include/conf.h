@@ -55,6 +55,17 @@ extern	struct	dentry	devtab[]; /* one entry per device */
 #define GPIO3               27	/* type gpio     */
 #define SPI0                28	/* type spi      */
 #define SPI1                29	/* type spi      */
+#define PIPE                30	/* type pipem    */
+#define PIPE0               31	/* type pip      */
+#define PIPE1               32	/* type pip      */
+#define PIPE2               33	/* type pip      */
+#define PIPE3               34	/* type pip      */
+#define PIPE4               35	/* type pip      */
+#define PIPE5               36	/* type pip      */
+#define PIPE6               37	/* type pip      */
+#define PIPE7               38	/* type pip      */
+#define PIPE8               39	/* type pip      */
+#define PIPE9               40	/* type pip      */
 
 /* Control block sizes */
 
@@ -70,8 +81,10 @@ extern	struct	dentry	devtab[]; /* one entry per device */
 #define	Nnam	1
 #define	Ngpio	4
 #define	Nspi	2
+#define	Npipem	1
+#define	Npip	10
 
-#define NDEVS 30
+#define NDEVS 41
 
 
 /* Configuration and Size Constants */

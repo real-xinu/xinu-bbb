@@ -87,7 +87,7 @@ lfl:
 		-r lflread	-g lflgetc	-p lflputc
 		-w lflwrite	-s lflseek	-n lflcontrol
 		-intr ionull
-
+		
 /* type of namespace device */
 nam:
 	on top
@@ -113,6 +113,23 @@ spi:
 		-r ionull	-g ionull	-p ionull
 		-w ionull	-s ionull	-n spicontrol
 		-intr ionull
+
+/* type of the main pipe device */
+pipem:
+	on none
+		-i ionull	-o pipe_open	-c ioerr
+		-r ioerr	-g ioerr	-p ioerr
+		-w ioerr	-s ioerr	-n ioerr
+		-intr ionull
+
+/* type of a pipe pseudo-device */
+pip:
+	on none
+		-i pipe_init	-o ioerr	-c pipe_close
+		-r pipe_read	-g pipe_getc	-p pipe_putc
+		-w pipe_write	-s ioerr	-n ioerr
+		-intr ionull
+
 %%
 
 /* Actual device declarations that each give the name of a device that	*/
@@ -177,6 +194,23 @@ spi:
 
    SPI0 is spi on top csr 0x48030000
    SPI1 is spi on top csr 0x481A0000
+
+   /* Main pipe device */
+
+   PIPE is pipem on none
+
+   /* Definitions of actual pipe pseudo devices */
+
+   PIPE0 is pip on none
+   PIPE1 is pip on none
+   PIPE2 is pip on none
+   PIPE3 is pip on none
+   PIPE4 is pip on none
+   PIPE5 is pip on none
+   PIPE6 is pip on none
+   PIPE7 is pip on none
+   PIPE8 is pip on none
+   PIPE9 is pip on none
 
 %%
 
