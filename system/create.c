@@ -4,8 +4,6 @@
 
 local	int newpid();
 
-#define	roundew(x)	( (x+3)& ~0x3)
-
 /*------------------------------------------------------------------------
  *  create  -  create a process to start running a procedure
  *------------------------------------------------------------------------
@@ -27,9 +25,9 @@ pid32	create(
 	uint32		*saddr;		/* stack address		*/
 
 	mask = disable();
-	if (ssize < MINSTK)
+	if (ssize < MINSTK){
 		ssize = MINSTK;
-	ssize = (uint32) roundew(ssize);
+	}
 	if (((saddr = (uint32 *)getstk(ssize)) ==
 	    (uint32 *)SYSERR ) ||
 	    (pid=newpid()) == SYSERR || priority < 1 ) {
@@ -41,6 +39,7 @@ pid32	create(
 	prptr = &proctab[pid];
 
 	/* initialize process table entry for new process */
+
 	prptr->prstate = PR_SUSP;	/* initial state is suspended	*/
 	prptr->prprio = priority;
 	prptr->prstkbase = (char *)saddr;
