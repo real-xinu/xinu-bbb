@@ -28,7 +28,6 @@
 #define	RD_QNODES	30		/* Number of request queue nodes*/
 #define	RD_CNODES	32		/* Number of cache bodes	*/
 
-
 /* Constants for remote disk device control block */
 
 #define	RD_IDLEN	64		/* Size of a remote disk ID	*/

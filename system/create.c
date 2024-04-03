@@ -25,7 +25,7 @@ pid32	create(
 	uint32		*saddr;		/* stack address		*/
 
 	mask = disable();
-	if (ssize < MINSTK){
+	if (ssize < MINSTK) {
 		ssize = MINSTK;
 	}
 	if  ((priority < 1) || ((pid=newpid()) == SYSERR) ||
