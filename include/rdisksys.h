@@ -28,6 +28,7 @@
 #define	RD_QNODES	30		/* Number of request queue nodes*/
 #define	RD_CNODES	32		/* Number of cache bodes	*/
 
+
 /* Constants for remote disk device control block */
 
 #define	RD_IDLEN	64		/* Size of a remote disk ID	*/
@@ -38,9 +39,10 @@
 
 /* Constants for state of the device */
 
-#define	RD_CLOSED	 0		/* Device is not in use		*/
-#define	RD_OPEN		 1		/* Device is open		*/
-#define	RD_PEND		 2		/* Open is pending		*/
+#define	RD_CLOSED	0		/* Device is not in use		*/
+#define	RD_OPEN		1		/* Device is open		*/
+#define	RD_PEND		2		/* Device is being opened	*/
+#define RD_DELETING	3		/* Device is being deleted	*/
 
 /* Operations for request queue */
 
@@ -113,6 +115,7 @@ extern	struct	rdscblk	rdstab[];	/* Remote disk control block	*/
 
 #define RDS_CTL_SYNC	1		/* Write all pending blocks	*/
 #define	RDS_CTL_DEL	2		/* Delete the entire disk	*/
+#define	RDS_CTL_CLOSE	3		/* Close the disk device	*/
 
 /************************************************************************/
 /*	Definition of messages exchanged with the remote disk server	*/
