@@ -11,7 +11,7 @@ void	clkhandler()
 
 	
 	volatile struct am335x_timer1ms *csrptr =
-			(struct am335x_timer1ms *)AM335X_TIMER1MS_ADDR
+			(struct am335x_timer1ms *)AM335X_TIMER1MS_ADDR;
 			/* Set csrptr to address of timer CSR	    */
 
 	/* If there is no interrupt, return */
