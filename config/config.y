@@ -103,6 +103,7 @@ char *devstab[] = {
 };
 
 char	saveattrid[MAXNAME];		/* Holds the IDENT from an attribute	*/
+char    devtypename[MAXNAME];
 
 /********************************************************************************/
 /*										*/
@@ -111,7 +112,6 @@ char	saveattrid[MAXNAME];		/* Holds the IDENT from an attribute	*/
 /********************************************************************************/
 
 void	addattr(int, int);
-int	addton(char *);
 int	config_atoi(char *, int);
 void	devisid(char *);
 void	devonid(char *);
@@ -119,6 +119,7 @@ void	getattrid(char *);
 void	newdev(char *);
 int	newtype(char *);
 void	yyerror(char *);
+void savename(char *);
 
 
 %}
@@ -146,7 +147,7 @@ devtypes:	/* nothing */ { doing = "device definitions"; }
 devtype:	tname COLON dev_tlist
 ;
 
-tname:		IDENT { $$ = newtype(yytext); }
+tname:		IDENT { savename(yytext); }
 ;
 
 dev_tlist:	theader attr_list
@@ -156,7 +157,7 @@ dev_tlist:	theader attr_list
 theader:	ON tonid { $$ = $2; }
 ;
 
-tonid:		IDENT { $$ = addton(yytext); }
+tonid:		IDENT { newtype(yytext); }
 ;
 
 attr_list:	/* nothing */
@@ -462,28 +463,6 @@ void	addattr(int tok, int val) {
 	}
 }
 
-
-/************************************************************************/
-/*									*/
-/* addton -- add an "on XXX" to the current type			*/
-/*									*/
-/************************************************************************/
-
-int	addton(char *tonid) {
-	int	currtype;		/* The current type		*/
-
-	if (strlen(tonid) >= MAXNAME) {
-		fprintf(stderr,"string %s is too long on line %d\n",
-				tonid, linectr);
-		exit(1);
-	}
-	currtype = ntypes - 1;
-	strcpy(dtypes[currtype].ison, tonid);
-
-	return currtype;
-}
-
-
 /************************************************************************/
 /*									*/
 /* config_atoi - convert an ascii string of text to an integer,		*/
@@ -674,14 +653,32 @@ void	newdev(char *name) {
 }
 
 
+
 /************************************************************************/
 /*									*/
-/* newtype -- allocate an entry in the type array and fill in the name	*/
+/* savename -- save the name of a new device type for use when making dentrys	*/
 /*									*/
 /************************************************************************/
 
-int	newtype(char *name) {
+void savename(char *name) {
+    if (strlen(name) >= MAXNAME) {
+		fprintf(stderr,"Type name %s is too long on line %d\n",
+				name, linectr);
+		exit(1);
+	}
+    strcpy(devtypename, name);
+}
 
+
+/************************************************************************/
+/*									*/
+/* newtype -- allocate an entry in the type array and fill in the name ison fields	*/
+/*									*/
+/************************************************************************/
+
+int	newtype(char *tonid) {
+
+    char *name = devtypename;
 	struct	dev_ent	*dptr;		/* Ptr. to an entry in dtypes	*/
 	int	i;			/* Index into the type table	*/
 
@@ -695,12 +692,18 @@ int	newtype(char *name) {
 		exit(1);
 	}
 
-	/* Verify that the type name is unique */
+    if (strlen(tonid) >= MAXNAME) {
+		fprintf(stderr,"string %s is too long on line %d\n",
+				tonid, linectr);
+		exit(1);
+	}
+
+	/* Verify that the (type name, is on) pair is unique */
 
 	for (i=0; i<ntypes; i++) {
-		if (strcmp(name, dtypes[i].tname) == 0) {
-			fprintf(stderr, "Duplicate type name %s on line %d\n",
-				name, linectr);
+		if (strcmp(name, dtypes[i].tname) == 0 && strcmp(tonid, dtypes[i].ison) == 0) {
+			fprintf(stderr, "Duplicate type name on line %d: %s on %s\n",
+				linectr, name, tonid);
 			exit(1);
 		}
 	}
@@ -711,6 +714,7 @@ int	newtype(char *name) {
 
 	bzero((void *)dptr, sizeof(struct dev_ent));
 	strcpy(dptr->tname,	 name);
+    strcpy(dptr->ison, tonid);
 	strncpy(dptr->intr,	"ioerr", 5);
 	strncpy(dptr->init,	"ioerr", 5);
 	strncpy(dptr->open,	"ioerr", 5);
