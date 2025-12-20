@@ -103,7 +103,7 @@ char *devstab[] = {
 };
 
 char	saveattrid[MAXNAME];		/* Holds the IDENT from an attribute	*/
-char    devtypename[MAXNAME];
+char	devtypename[MAXNAME];
 
 /********************************************************************************/
 /*										*/
@@ -572,7 +572,7 @@ void	devonid(char *onname) {
 	for (i=0; i<ntypes; i++) {
 		tptr = &dtypes[i];
 		if ( (strcmp(dptr->tname,tptr->tname) == 0 ) &&
-		     (strcmp(dptr->ison, tptr->ison)  == 0 )  ){
+			 (strcmp(dptr->ison, tptr->ison)  == 0 ) ){
 
 			/* The specified type matches the ith entry, so	*/
 			/*  set all attributes equal to the ones in the	*/
@@ -661,12 +661,12 @@ void	newdev(char *name) {
 /************************************************************************/
 
 void savename(char *name) {
-    if (strlen(name) >= MAXNAME) {
+	if (strlen(name) >= MAXNAME) {
 		fprintf(stderr,"Type name %s is too long on line %d\n",
 				name, linectr);
 		exit(1);
 	}
-    strcpy(devtypename, name);
+	strcpy(devtypename, name);
 }
 
 
@@ -678,9 +678,10 @@ void savename(char *name) {
 
 int	newtype(char *tonid) {
 
-    char *name = devtypename;
+	char *name = devtypename;
 	struct	dev_ent	*dptr;		/* Ptr. to an entry in dtypes	*/
 	int	i;			/* Index into the type table	*/
+	int last = -1;  /* The last entry in the type table with the same type name */
 
 	if (ntypes >= NTYPES) {
 		fprintf(stderr,"Too many types on line %d", linectr);
@@ -692,7 +693,7 @@ int	newtype(char *tonid) {
 		exit(1);
 	}
 
-    if (strlen(tonid) >= MAXNAME) {
+	if (strlen(tonid) >= MAXNAME) {
 		fprintf(stderr,"string %s is too long on line %d\n",
 				tonid, linectr);
 		exit(1);
@@ -701,10 +702,13 @@ int	newtype(char *tonid) {
 	/* Verify that the (type name, is on) pair is unique */
 
 	for (i=0; i<ntypes; i++) {
-		if (strcmp(name, dtypes[i].tname) == 0 && strcmp(tonid, dtypes[i].ison) == 0) {
+		if (strcmp(name, dtypes[i].tname) == 0) {
+			last = i;
+			if (strcmp(tonid, dtypes[i].ison) == 0) {
 			fprintf(stderr, "Duplicate type name on line %d: %s on %s\n",
 				linectr, name, tonid);
 			exit(1);
+			}
 		}
 	}
 
@@ -714,7 +718,7 @@ int	newtype(char *tonid) {
 
 	bzero((void *)dptr, sizeof(struct dev_ent));
 	strcpy(dptr->tname,	 name);
-    strcpy(dptr->ison, tonid);
+	strcpy(dptr->ison, tonid);
 	strncpy(dptr->intr,	"ioerr", 5);
 	strncpy(dptr->init,	"ioerr", 5);
 	strncpy(dptr->open,	"ioerr", 5);
@@ -726,6 +730,20 @@ int	newtype(char *tonid) {
 	strncpy(dptr->getc,	"ioerr", 5);
 	strncpy(dptr->putc,	"ioerr", 5);
 
+	if (last != -1) {
+		struct	dev_ent	*lptr = &dtypes[last];
+
+		strncpy(dptr->intr,	lptr->intr, 5);
+		strncpy(dptr->init,	lptr->init, 5);
+		strncpy(dptr->open,	lptr->open, 5);
+		strncpy(dptr->close,	lptr->close, 5);
+		strncpy(dptr->read,	lptr->read, 5);
+		strncpy(dptr->write,	lptr->write, 5);
+		strncpy(dptr->control,	lptr->control, 5);
+		strncpy(dptr->seek,	lptr->seek, 5);
+		strncpy(dptr->getc,	lptr->getc, 5);
+		strncpy(dptr->putc,	lptr->putc, 5);
+	}
 	return ntypes++;
 }
 
