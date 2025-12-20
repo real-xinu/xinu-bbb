@@ -733,16 +733,16 @@ int	newtype(char *tonid) {
 	if (last != -1) {
 		struct	dev_ent	*lptr = &dtypes[last];
 
-		strncpy(dptr->intr,	lptr->intr, 5);
-		strncpy(dptr->init,	lptr->init, 5);
-		strncpy(dptr->open,	lptr->open, 5);
-		strncpy(dptr->close,	lptr->close, 5);
-		strncpy(dptr->read,	lptr->read, 5);
-		strncpy(dptr->write,	lptr->write, 5);
-		strncpy(dptr->control,	lptr->control, 5);
-		strncpy(dptr->seek,	lptr->seek, 5);
-		strncpy(dptr->getc,	lptr->getc, 5);
-		strncpy(dptr->putc,	lptr->putc, 5);
+		strcpy(dptr->intr,	lptr->intr);
+		strcpy(dptr->init,	lptr->init);
+		strcpy(dptr->open,	lptr->open);
+		strcpy(dptr->close,	lptr->close);
+		strcpy(dptr->read,	lptr->read);
+		strcpy(dptr->write,	lptr->write);
+		strcpy(dptr->control,	lptr->control);
+		strcpy(dptr->seek,	lptr->seek);
+		strcpy(dptr->getc,	lptr->getc);
+		strcpy(dptr->putc,	lptr->putc);
 	}
 	return ntypes++;
 }
