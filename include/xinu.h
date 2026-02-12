@@ -42,3 +42,4 @@
 #include <gpioselect.h>
 #include <spi.h>
 #include <pipe.h>
+#include <tcp.h>

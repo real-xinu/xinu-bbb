@@ -114,6 +114,21 @@ spi:
 		-w ionull	-s ionull	-n spicontrol
 		-intr ionull
 
+/* type of main tcp device */
+tcpm:
+	on tcp
+		-i tcpinit	-o tcpmopen	-c tcpmclose
+		-r ioerr	-g ioerr	-p ioerr
+		-w ioerr	-s ioerr	-n ioerr
+		-intr ioerr
+
+tcpd:
+	on tcp
+		-i ionull	-o tcpopen	-c tcpmclose
+		-r tcpread	-g ioerr 	-p ionull
+		-w ionull	-s ionull	-n spicontrol
+		-intr ioerr
+
 /* type of the main pipe device */
 pipem:
 	on none
@@ -211,6 +226,19 @@ pip:
    PIPE7 is pip on none
    PIPE8 is pip on none
    PIPE9 is pip on none
+
+   /* TCP Main device */
+
+   TCP is tcpm on tcp
+
+   /* TCP pseudo devices */
+
+   TCP0 is tcpd on tcp
+   TCP1 is tcpd on tcp
+   TCP2 is tcpd on tcp
+   TCP3 is tcpd on tcp
+   TCP4 is tcpd on tcp
+   TCP5 is tcpd on tcp
 
 %%
 

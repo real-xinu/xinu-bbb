@@ -9,6 +9,7 @@
 #define	ETH_ARP     0x0806		/* Ethernet type for ARP	*/
 #define	ETH_IP      0x0800		/* Ethernet type for IP		*/
 #define	ETH_IPv6    0x86DD		/* Ethernet type for IPv6	*/
+#define TCP_PAYLOAD_LIM 65536 - 20 - 20 /* Max TCP payload size = max IP packet size - IP header size - TCP header size */
 
 /* Format of an Ethernet packet carrying IPv4 and UDP */
 
@@ -43,6 +44,18 @@ struct	netpacket	{
 	  uint16	net_icseq;	/* ICMP sequence number		*/
 	  byte		net_icdata[1500-28];/* ICMP payload (1500-above)*/
 	 };
+	 struct {
+		uint16 net_tcpsport; // source port
+		uint16 net_tcpdport; // destination port
+		uint16 net_tcplen; // length of entire packet
+		uint16 net_tcpack; // ack num
+		uint32 net_tcpseqnum; // sequence num
+		uint16 net_tcpcksum; // checksum of TCP header and data
+		byte net_tcpflags; // flags for RST, FIN, SYN, ACK
+		byte net_tcpdoff; // data offset
+		uint16 net_tcpwnd; // window size
+		byte net_tcpdata[TCP_PAYLOAD_LIM];
+	 }
 	};
 };
 #pragma pack()
