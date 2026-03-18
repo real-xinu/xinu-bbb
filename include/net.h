@@ -47,14 +47,14 @@ struct	netpacket	{
 	 struct {
 		uint16 net_tcpsport; // source port
 		uint16 net_tcpdport; // destination port
-		uint16 net_tcplen; // length of entire packet
-		uint16 net_tcpack; // ack num
-		uint32 net_tcpseqnum; // sequence num
-		uint16 net_tcpcksum; // checksum of TCP header and data
-		byte net_tcpflags; // flags for RST, FIN, SYN, ACK
-		byte net_tcpdoff; // data offset
-		uint16 net_tcpwnd; // window size
-		byte net_tcpdata[TCP_PAYLOAD_LIM];
+		uint32 net_tcpseqnum; // sequence number
+		uint32 net_tcpacknum; // ack number
+		byte net_tcplen; // header length (in 32 bit words)
+		byte net_tcpflags; // control flags
+		uint16 net_tcp_wnd; // window size
+		uint16 net_tcpcksum; // checksum
+		uint16 net_tcp_urgptr; // urgent pointer
+		byte net_tcpdata[1500 - 40]; /* TCP payload (1500 - 20 (IP) - 20 (TCP)) */
 	 }
 	};
 };

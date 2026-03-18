@@ -8,7 +8,7 @@
 
 #define TCP_SLOTS 10
 #define TCP_FREE 0
-#define TCP_USED 1
+#define TCP_HANDSHAKE 1
 #define TCP_LISTEN 2
 #define TCP_SYN_SENT 3
 #define TCP_SYN_RECEIVED 4
@@ -19,42 +19,57 @@
 #define TCP_CLOSING 9
 #define TCP_LAST_ACK 10
 #define TCP_TIME_WAIT 11
+#define TCP_OPEN 12
 
-#define MAX_BUFFER_LEN 65536
-#define MAX_HDR_SIZ 60
+/* Bitshifts for flags */
 
-struct tcppacket {
-    uint32 srcip;
-    uint32 dstip;
-    char tcpbuf[MAX_BUFFER_LEN];
-    byte ipvh;
-    uint16 tcpid;
-    uint16 tcpsport;
-    uint16 tcpdport;
-    uint32 seqnum;
-    uint32 acknum;
-    uint16 tcplen;
-    uint16 tcpcksum;
-    byte tcpflags;
-};
+#define TCP_FIN 1
+#define TCP_SYN 1 << 1
+#define TCP_RST 1 << 2
+#define TCP_ACK 1 << 4
+
+#define MAX_BUFFER_LEN 4096
+#define TCP_RETRANSMISSION 500
+
+// struct tcppacket {
+//     uint32 srcip;
+//     uint32 dstip;
+//     char tcpbuf[MAX_BUFFER_LEN];
+//     byte ipvh;
+//     uint16 tcpid;
+//     uint16 tcpsport;
+//     uint16 tcpdport;
+//     uint32 seqnum;
+//     uint32 acknum;
+//     uint16 tcplen;
+//     uint16 tcpcksum;
+//     byte tcpflags;
+// };
 
 struct tcpentry {
-    uint32 ipmask;
     uint32 tcp_state;
     uint32 tcpremip;
     uint32 tcpremport;
     uint32 tcplocport;
+
+    /* the following fields are offsets in the window */
     uint32 tcp_lar; // last ACK received (sender)
     uint32 tcp_lfs; // last frame sent (sender)
     uint32 tcp_nfe; // next frame expected (receiver)
     uint32 tcp_lfa; // last frame ACK (receiver)
-    uint32 tcpcount;
-    uint32 retrans_time; /* time to wait before retransmitting packet */
-    uint32 time_to_live; /* max time before giving up */
+    uint32 retrans_time; /* time to wait before retransmitting packet (ms) */
+    /* window offsets end */
+
+    uint32 seq;
+    uint32 ack;
+
+    sid32 tcpriem;
+    sid32 tcposem;
     pid32 tcppid;
-    struct netpacket *tcpsqueue[TCP_QSIZ]; // sliding window
-    struct netpacket *tcprqueue[TCP_QSIZ];
-    struct netpacket last_pkt; /* used to store the last packet sent for retransmission */
+    char tcpsbuf[MAX_BUFFER_LEN];
+    char tcprbuf[MAX_BUFFER_LEN];
+    struct netpacket *tcpsqueue[TCP_QSIZ]; // sliding window sending
+    struct netpacket *tcprqueue[TCP_QSIZ]; // sliding window receiving
 };
 
-extern struct tcpentry tcptab[]; /* to be initialized in system */
+extern struct tcpentry tcptab[TCP_SLOTS]; /* to be initialized in system */
