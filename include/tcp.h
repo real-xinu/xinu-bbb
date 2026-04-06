@@ -5,30 +5,42 @@
 #define TCP_DNS_PORT 53
 #define TCP_LIFETIME 10000
 #define TCP_QSIZ 100
+#define TCP_HEADER_LEN 20
+
+/* state of the connection */
 
 #define TCP_SLOTS 10
-#define TCP_FREE 0
-#define TCP_HANDSHAKE 1
-#define TCP_LISTEN 2
-#define TCP_SYN_SENT 3
-#define TCP_SYN_RECEIVED 4
-#define TCP_ESTABLISHED 5
-#define TCP_FIN_WAIT_1 6
-#define TCP_FIN_WAIT_2 7
-#define TCP_CLOSE_WAIT 8
-#define TCP_CLOSING 9
-#define TCP_LAST_ACK 10
-#define TCP_TIME_WAIT 11
-#define TCP_OPEN 12
+#define TCP_FREE 0 /* no connection */
+#define TCP_SYN_SENT 1 << 3 /* SYN has been sent */
+#define TCP_SYN_RECEIVED 1 << 4 /* ACK for SYN received */
+#define TCP_ESTABLISHED 1 << 5 /* ACK for SYN_ACK sent */
+#define TCP_FIN_WAIT_1 1 << 6
+#define TCP_FIN_WAIT_2 1 << 7
+#define TCP_CLOSE_WAIT 1 << 8
+#define TCP_CLOSING 1 << 9
+#define TCP_LAST_ACK 1 << 10
+#define TCP_TIME_WAIT 1 << 11
+#define TCP_OPEN 1 << 12
+#define TCP_HANDSHAKE 1 << 13
+#define TCP_SYN_ACK_RECEIVED 1 << 14
+#define TCP_SYN_ACK_SENT 1 << 15
+#define TCP_ACK_RECEIVED 1 << 16
+#define TCP_SEQ_SENT 1 << 17 /* this might be unnecessary since it is SEQ, ACK */
+
+#define REMOVE_TCP_STATE(x,y) (x & ~y) /* remove state y from tcp_state x */
+#define ADD_TCP_STATE(x,y) (x | y) /* add state y to tcp_state x */
 
 /* Bitshifts for flags */
+
+#define TCP_RECVFROM 1
+#define TCP_SENDTO 2
 
 #define TCP_FIN 1
 #define TCP_SYN 1 << 1
 #define TCP_RST 1 << 2
 #define TCP_ACK 1 << 4
 
-#define MAX_BUFFER_LEN 4096
+#define TCP_MTU 4096
 #define TCP_RETRANSMISSION 500
 
 // struct tcppacket {
@@ -62,10 +74,14 @@ struct tcpentry {
 
     uint32 seq;
     uint32 ack;
+    uint32 seq_init = 0;
+    uint32 ack_init = 0;
 
-    sid32 tcpriem;
-    sid32 tcposem;
+    // sid32 tcpisem;
+    // sid32 tcposem;
     pid32 tcppid;
+    uint16 tcp_rwnd; // effective receiving window size
+    uint16 tcp_swnd; // effective sending window size
     char tcpsbuf[MAX_BUFFER_LEN];
     char tcprbuf[MAX_BUFFER_LEN];
     struct netpacket *tcpsqueue[TCP_QSIZ]; // sliding window sending

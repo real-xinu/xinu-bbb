@@ -55,6 +55,10 @@ void	ip_in(
 		icmp_ntoh(pktptr);
 		break;
 
+		case IP_TCP:
+		tcp_ntoh(pktptr);
+		break;
+
 	    default:
 		break;
 	}
@@ -199,6 +203,10 @@ void	ip_local(
 		icmp_in(pktptr);
 		return;
 
+		case IP_TCP:
+		tcp_in(pktptr);
+		return;
+
 	    default:
 		freebuf((char *)pktptr);
 		return;
@@ -215,7 +223,7 @@ status	ip_out(
 	)
 {
 	uint16	cksum;			/* Checksum in host byte order	*/
-	int32	len;			/* Length of ICMP message	*/	
+	int32	len;			/* Length of ICMP message	*/
 	int32	pktlen;			/* Length of entire packet	*/
 	int32	retval;			/* Value returned by write	*/
 
@@ -462,5 +470,5 @@ status	ip_enqueue(
 	}
 	signal(iptr->iqsem);
 	restore(mask);
-	return OK;	
+	return OK;
 }

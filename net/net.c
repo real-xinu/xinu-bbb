@@ -32,7 +32,7 @@ void	net_init (void)
 
 	/* Create the network buffer pool */
 
-	nbufs = UDP_SLOTS * UDP_QSIZ + ICMP_SLOTS * ICMP_QSIZ + 1;
+	nbufs = UDP_SLOTS * UDP_QSIZ + ICMP_SLOTS * ICMP_QSIZ + TCP_SLOTS * TCP_QSIZ + 1;
 
 	netbufpool = mkbufpool(PACKLEN, nbufs);
 
@@ -47,6 +47,10 @@ void	net_init (void)
 	/* Initialize ICMP */
 
 	icmp_init();
+
+	/* Initialize TCP */
+
+	tcp_init();
 
 	/* Initialize the IP output queue */
 
@@ -108,7 +112,7 @@ process	netin ()
 		    case ETH_IP:			/* Handle IP	*/
 			ip_in(pkt);
 			continue;
-	
+
 		    case ETH_IPv6:			/* Handle IPv6	*/
 			freebuf((char *)pkt);
 			continue;
@@ -144,7 +148,7 @@ void 	eth_ntoh(
 }
 
 /*------------------------------------------------------------------------
- * getport  -  Retrieve a random port number 
+ * getport  -  Retrieve a random port number
  *------------------------------------------------------------------------
  */
 uint16 	getport()
