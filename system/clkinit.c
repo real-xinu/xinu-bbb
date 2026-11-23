@@ -31,7 +31,7 @@ void	clkinit(void)
 	while((csrptr->tistat & AM335X_TIMER1MS_TISTAT_RESETDONE) == 0)
 		/* Do nothing */ ;
 
-	/* Set interrupt vector for clock to invoke clkint */
+	/* Set interrupt vector for clock to invoke clkhandler */
 
 	set_evec(AM335X_TIMER1MS_IRQ, (uint32)clkhandler);
 
